@@ -1260,7 +1260,7 @@ export default function StudentStudioPage() {
                     href="/share-project"
                     className="rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-4 py-1.5 text-xs font-semibold transition-colors"
                   >
-                    + Add New Project
+                    + Contribute
                   </Link>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
