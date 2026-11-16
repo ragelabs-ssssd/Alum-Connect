@@ -741,12 +741,6 @@ export default function StudentStudioPage() {
                     </button>
                   ))}
                 </div>
-                <Link
-                  href="/share-project"
-                  className="text-xs font-semibold text-[#2563EB] hover:underline shrink-0"
-                >
-                  + Upload Research Paper
-                </Link>
               </div>
 
               <div className="space-y-5">
