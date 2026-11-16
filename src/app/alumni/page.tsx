@@ -36,8 +36,8 @@ export default function AlumniPage() {
               Gateway
             </button>
             <div className="flex items-center gap-2">
-              <div className="h-7 w-7 rounded-md bg-[#0A66C2] flex items-center justify-center text-white font-bold text-xs">
-                in
+              <div className="h-7 w-7 rounded-md bg-white dark:bg-slate-800 border border-stone-200 dark:border-slate-700 flex items-center justify-center p-0.5 overflow-hidden">
+                <img src="/logo.png" alt="ITER Alum Connect" className="h-full w-full object-contain dark:invert" />
               </div>
               <span className="text-sm font-bold tracking-tight text-[#191919] dark:text-white hidden sm:inline">
                 ITER Network
