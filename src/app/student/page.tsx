@@ -558,8 +558,8 @@ export default function StudentStudioPage() {
                   type="button"
                   onClick={() => setSection(tab.id)}
                   className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${active
-                      ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
-                      : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
+                    ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
+                    : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
                     }`}
                 >
                   {tab.icon}
@@ -567,8 +567,8 @@ export default function StudentStudioPage() {
                   {typeof tab.badge === 'number' && tab.badge > 0 && (
                     <span
                       className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${active
-                          ? 'bg-[#2563EB] text-white'
-                          : 'bg-[#2563EB] text-white'
+                        ? 'bg-[#2563EB] text-white'
+                        : 'bg-[#2563EB] text-white'
                         }`}
                     >
                       {tab.badge}
@@ -586,7 +586,7 @@ export default function StudentStudioPage() {
               className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-3.5 py-1.5 text-xs font-semibold transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Share Project</span>
+              <span className="hidden sm:inline">Contribute</span>
             </Link>
             <ThemeToggle compact />
           </div>
@@ -606,8 +606,8 @@ export default function StudentStudioPage() {
               type="button"
               onClick={() => setSection(tab.id)}
               className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${section === tab.id
-                  ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
-                  : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-400'
+                ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-400'
                 }`}
             >
               {tab.label}
@@ -733,8 +733,8 @@ export default function StudentStudioPage() {
                       type="button"
                       onClick={() => setSelectedDomain(d)}
                       className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${selectedDomain === d
-                          ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
-                          : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800 hover:border-[#2563EB]'
+                        ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                        : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800 hover:border-[#2563EB]'
                         }`}
                     >
                       {d}
@@ -840,8 +840,8 @@ export default function StudentStudioPage() {
                                 setLikedIds((p) => ({ ...p, [build.id]: !p[build.id] }))
                               }
                               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${isLiked
-                                  ? 'border-[#2563EB] bg-blue-50 dark:bg-sky-500/10 text-[#2563EB]'
-                                  : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
+                                ? 'border-[#2563EB] bg-blue-50 dark:bg-sky-500/10 text-[#2563EB]'
+                                : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
                                 }`}
                             >
                               <ThumbsUp className="w-3.5 h-3.5" />
@@ -853,8 +853,8 @@ export default function StudentStudioPage() {
                                 setSavedIds((p) => ({ ...p, [build.id]: !p[build.id] }))
                               }
                               className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${isSaved
-                                  ? 'border-[#2563EB] text-[#2563EB]'
-                                  : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
+                                ? 'border-[#2563EB] text-[#2563EB]'
+                                : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
                                 }`}
                             >
                               <Bookmark className="w-3.5 h-3.5" />
@@ -924,8 +924,8 @@ export default function StudentStudioPage() {
                     type="button"
                     onClick={() => setNewsCategory(cat)}
                     className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${newsCategory === cat
-                        ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
-                        : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
+                      ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                      : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
                       }`}
                   >
                     {cat}
@@ -994,8 +994,8 @@ export default function StudentStudioPage() {
                     type="button"
                     onClick={() => setJobTypeFilter(jt)}
                     className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${jobTypeFilter === jt
-                        ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
-                        : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
+                      ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                      : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
                       }`}
                   >
                     {jt}
@@ -1064,8 +1064,8 @@ export default function StudentStudioPage() {
                             );
                           }}
                           className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${applied
-                              ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
-                              : 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white'
+                            ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
+                            : 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white'
                             }`}
                         >
                           {applied ? 'Applied with Portfolio ✓' : 'Apply Now'}
@@ -1113,8 +1113,8 @@ export default function StudentStudioPage() {
                       type="button"
                       onClick={() => setNotifFilter(f)}
                       className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${notifFilter === f
-                          ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
-                          : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
+                        ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                        : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
                         }`}
                     >
                       {f}
@@ -1141,8 +1141,8 @@ export default function StudentStudioPage() {
                         )
                       }
                       className={`rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer space-y-2 ${n.unread
-                          ? 'border-[#2563EB]/50 bg-blue-50/30 dark:bg-sky-500/5'
-                          : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
+                        ? 'border-[#2563EB]/50 bg-blue-50/30 dark:bg-sky-500/5'
+                        : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
                         }`}
                     >
                       <div className="flex items-center justify-between gap-2 text-xs">
