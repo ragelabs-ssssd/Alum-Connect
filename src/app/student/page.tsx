@@ -470,17 +470,14 @@ export default function StudentStudioPage() {
       <header className="sticky top-0 z-40 border-b border-[#E4E4E7] dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-3">
           {/* 1. Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="h-8 w-8 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
+          <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
+            <div className="h-9 w-9 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
               <img
                 src="/logo.png"
                 alt="Alum Connect"
                 className="h-full w-full object-contain dark:invert"
               />
             </div>
-            <span className="font-bold text-sm tracking-tight hidden sm:inline">
-              Alum Connect
-            </span>
           </Link>
 
           {/* 2. Search */}
