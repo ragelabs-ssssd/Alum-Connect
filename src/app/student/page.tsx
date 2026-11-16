@@ -468,7 +468,7 @@ export default function StudentStudioPage() {
     <div className="min-h-screen bg-white dark:bg-[#09090B] text-[#09090B] dark:text-zinc-50 transition-colors">
       {/* ==================== TOP HEADER WITH 4-TAB BAR ==================== */}
       <header className="sticky top-0 z-40 border-b border-[#E4E4E7] dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-3">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center gap-3">
           {/* 1. Logo + 2. Search grouped tightly */}
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
@@ -541,7 +541,7 @@ export default function StudentStudioPage() {
           </nav>
 
           {/* 4. Share Project + 5. Modes */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 lg:justify-self-end">
             <button
               type="button"
               onClick={() => setShareModalOpen(true)}
