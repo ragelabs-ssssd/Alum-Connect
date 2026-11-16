@@ -90,7 +90,7 @@ export default function HomePage() {
                 ITER Alum Connect
               </span>
               <p className="text-[11px] text-stone-500 dark:text-slate-400 hidden lg:block">
-                Institute of Technical Education &amp; Research (ITER) • Siksha &apos;O&apos; Anusandhan (SOA)
+                Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
               </p>
             </div>
           </div>
@@ -339,7 +339,7 @@ export default function HomePage() {
             ITER Alum Connect
           </span>
           <span>
-            Institute of Technical Education &amp; Research (ITER) • Siksha &apos;O&apos; Anusandhan (SOA)
+            Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
           </span>
         </footer>
       </div>
