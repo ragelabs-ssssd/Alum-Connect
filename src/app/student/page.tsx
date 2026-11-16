@@ -542,14 +542,13 @@ export default function StudentStudioPage() {
 
           {/* 4. Share Project + 5. Modes */}
           <div className="flex items-center gap-2 shrink-0 lg:justify-self-end">
-            <button
-              type="button"
-              onClick={() => setShareModalOpen(true)}
+            <Link
+              href="/share-project"
               className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-3.5 py-1.5 text-xs font-semibold transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Share Project</span>
-            </button>
+            </Link>
             <ThemeToggle compact />
           </div>
         </div>
