@@ -10,6 +10,7 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
+import { HIRING_COMPANIES } from '../data/hiringCompanies';
 
 interface GatewaySummary {
   status: string;
@@ -276,16 +277,18 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="relative z-10 pt-4 mt-4 border-t border-stone-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-[#52525B] dark:text-slate-400">
-            <span className="font-medium">
-              Alumni Engineers Reviewing &amp; Hiring From:
+          <div className="relative z-10 pt-4 mt-4 border-t border-stone-100 dark:border-slate-800/80 flex items-center gap-4 text-xs text-[#52525B] dark:text-slate-400">
+            <span className="font-medium shrink-0">
+              Alumni Reviewing &amp; Hiring From:
             </span>
-            <div className="flex flex-wrap items-center gap-5 font-semibold text-[#09090B] dark:text-slate-200">
-              <span>Razorpay</span>
-              <span>Atlassian</span>
-              <span>Microsoft</span>
-              <span>Zoho</span>
-              <span>Swiggy</span>
+            <div className="flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+              <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#09090B] dark:text-slate-200">
+                {[...HIRING_COMPANIES, ...HIRING_COMPANIES].map((c, i) => (
+                  <span key={`${c.name}-${i}`} className="shrink-0">
+                    {c.name}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </section>
