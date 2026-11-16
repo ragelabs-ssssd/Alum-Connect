@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Award,
+  Bell,
   Bookmark,
   Briefcase,
   Building2,
@@ -29,7 +30,18 @@ import {
 } from 'lucide-react';
 import ThemeToggle from '../../components/ThemeToggle';
 
-type MainSection = 'home' | 'explore' | 'jobs' | 'profile';
+type MainSection = 'home' | 'explore' | 'jobs' | 'notifications' | 'profile';
+
+interface NotificationItem {
+  id: string;
+  category: 'Endorsements' | 'Jobs' | 'Mentorship' | 'Squads';
+  title: string;
+  message: string;
+  time: string;
+  unread: boolean;
+  targetSection: MainSection;
+  actionLabel: string;
+}
 
 interface StudentBuildCard {
   id: string;
@@ -286,12 +298,72 @@ const MENTOR_CHATS = [
   },
 ];
 
+const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'n-1',
+    category: 'Endorsements',
+    title: 'Vikram Senapati endorsed your build',
+    message:
+      'Staff Engineer @ Razorpay (Batch ’18) left a Verified Alumni Endorsement on "Ragelabs Campus Portfolio & Vouch".',
+    time: '12m ago',
+    unread: true,
+    targetSection: 'home',
+    actionLabel: 'View Endorsement',
+  },
+  {
+    id: 'n-2',
+    category: 'Jobs',
+    title: 'New Alumni Referral Drop at Razorpay',
+    message:
+      'Product Engineering Intern (₹45,000/mo, Bangalore) matches your Next.js & TypeScript portfolio.',
+    time: '45m ago',
+    unread: true,
+    targetSection: 'jobs',
+    actionLabel: 'Open Job',
+  },
+  {
+    id: 'n-3',
+    category: 'Mentorship',
+    title: 'Weekend Office Hours Slots Opened',
+    message:
+      'Priya Nair (Engineering Manager @ Atlassian) opened 15-min portfolio review slots for Sunday 5:00 PM.',
+    time: '2h ago',
+    unread: true,
+    targetSection: 'home',
+    actionLabel: 'Book Slot',
+  },
+  {
+    id: 'n-4',
+    category: 'Squads',
+    title: 'Rohan Das is looking for a UI/UX Co-Builder',
+    message:
+      'CampusPulse AI Mock Interviewer (340+ weekly active ITER users) has an open squad role.',
+    time: '5h ago',
+    unread: false,
+    targetSection: 'home',
+    actionLabel: 'Inspect Squad',
+  },
+  {
+    id: 'n-5',
+    category: 'Jobs',
+    title: 'Atlassian SDE-1 Referral Deadline Approaching',
+    message:
+      '2 referral slots remaining for 2025/2026 graduating ITER builders. Attach your live demo to apply.',
+    time: '1d ago',
+    unread: false,
+    targetSection: 'jobs',
+    actionLabel: 'Apply Now',
+  },
+];
+
 export default function StudentStudioPage() {
   const [section, setSection] = useState<MainSection>('home');
   const [search, setSearch] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<string>('All');
   const [newsCategory, setNewsCategory] = useState<string>('All');
   const [jobTypeFilter, setJobTypeFilter] = useState<string>('All');
+  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+  const [notifFilter, setNotifFilter] = useState<string>('All');
 
   const [builds, setBuilds] = useState<StudentBuildCard[]>(STUDENT_BUILDS);
   const [likedIds, setLikedIds] = useState<Record<string, boolean>>({});
@@ -423,7 +495,7 @@ export default function StudentStudioPage() {
             />
           </div>
 
-          {/* 3. 4-Tab Bar (Home Feed | Explore Tech News | Alumni Jobs | My Profile) */}
+          {/* 3. 5-Tab Bar (Home Feed | Explore Tech News | Alumni Jobs | Notifications | My Profile) */}
           <nav
             aria-label="Student workspace sections"
             className="hidden lg:flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-1"
@@ -432,6 +504,12 @@ export default function StudentStudioPage() {
               { id: 'home' as MainSection, label: 'Home Feed', icon: <Home className="w-3.5 h-3.5" /> },
               { id: 'explore' as MainSection, label: 'Explore Tech News', icon: <Newspaper className="w-3.5 h-3.5" /> },
               { id: 'jobs' as MainSection, label: 'Alumni Jobs', icon: <Briefcase className="w-3.5 h-3.5" /> },
+              {
+                id: 'notifications' as MainSection,
+                label: 'Notifications',
+                icon: <Bell className="w-3.5 h-3.5" />,
+                badge: notifications.filter((n) => n.unread).length,
+              },
               { id: 'profile' as MainSection, label: 'My Profile', icon: <User className="w-3.5 h-3.5" /> },
             ].map((tab) => {
               const active = section === tab.id;
@@ -440,7 +518,7 @@ export default function StudentStudioPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => setSection(tab.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
                     active
                       ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
                       : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
@@ -448,6 +526,17 @@ export default function StudentStudioPage() {
                 >
                   {tab.icon}
                   <span>{tab.label}</span>
+                  {typeof tab.badge === 'number' && tab.badge > 0 && (
+                    <span
+                      className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
+                        active
+                          ? 'bg-[#2563EB] text-white'
+                          : 'bg-[#2563EB] text-white'
+                      }`}
+                    >
+                      {tab.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -467,12 +556,13 @@ export default function StudentStudioPage() {
           </div>
         </div>
 
-        {/* Mobile / Tablet 4-Tab Subbar */}
+        {/* Mobile / Tablet 5-Tab Subbar */}
         <div className="lg:hidden border-t border-[#E4E4E7] dark:border-zinc-800 px-3 py-2 flex items-center gap-1.5 overflow-x-auto">
           {[
             { id: 'home' as MainSection, label: 'Home Feed' },
             { id: 'explore' as MainSection, label: 'Explore Tech News' },
             { id: 'jobs' as MainSection, label: 'Alumni Jobs' },
+            { id: 'notifications' as MainSection, label: `Notifications (${notifications.filter((n) => n.unread).length})` },
             { id: 'profile' as MainSection, label: 'My Profile' },
           ].map((tab) => (
             <button
@@ -931,7 +1021,118 @@ export default function StudentStudioPage() {
             </div>
           )}
 
-          {/* ---------- TAB 4: MY PROFILE ---------- */}
+          {/* ---------- TAB 4: NOTIFICATIONS ---------- */}
+          {section === 'notifications' && (
+            <div className="space-y-5">
+              <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-6 flex flex-wrap items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
+                    <Bell className="w-4 h-4" />
+                    NOTIFICATIONS CENTER
+                  </div>
+                  <h1 className="text-xl sm:text-2xl font-bold">
+                    Every endorsement, referral &amp; mentor update in one place.
+                  </h1>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNotifications((prev) =>
+                      prev.map((n) => ({ ...n, unread: false }))
+                    );
+                    notify('All notifications marked as read');
+                  }}
+                  className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-4 py-1.5 text-xs font-semibold hover:border-[#2563EB]"
+                >
+                  Mark all as read
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {['All', 'Unread', 'Endorsements', 'Jobs', 'Mentorship', 'Squads'].map(
+                  (f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setNotifFilter(f)}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
+                        notifFilter === f
+                          ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                          : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <div className="space-y-3">
+                {notifications
+                  .filter((n) => {
+                    if (notifFilter === 'Unread') return n.unread;
+                    if (notifFilter !== 'All') return n.category === notifFilter;
+                    return true;
+                  })
+                  .map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() =>
+                        setNotifications((prev) =>
+                          prev.map((item) =>
+                            item.id === n.id ? { ...item, unread: false } : item
+                          )
+                        )
+                      }
+                      className={`rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer space-y-2 ${
+                        n.unread
+                          ? 'border-[#2563EB]/50 bg-blue-50/30 dark:bg-sky-500/5'
+                          : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 text-xs">
+                        <div className="flex items-center gap-2">
+                          {n.unread && (
+                            <span className="h-2 w-2 rounded-full bg-[#2563EB]" />
+                          )}
+                          <span className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 px-2.5 py-0.5 text-[11px] font-semibold text-[#2563EB] dark:text-sky-400">
+                            {n.category}
+                          </span>
+                        </div>
+                        <span className="text-[#52525B] dark:text-zinc-400">
+                          {n.time}
+                        </span>
+                      </div>
+
+                      <h3 className="text-sm font-bold">{n.title}</h3>
+                      <p className="text-xs text-[#52525B] dark:text-zinc-300 leading-relaxed">
+                        {n.message}
+                      </p>
+
+                      <div className="pt-1 flex justify-end">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setNotifications((prev) =>
+                              prev.map((item) =>
+                                item.id === n.id ? { ...item, unread: false } : item
+                              )
+                            );
+                            setSection(n.targetSection);
+                          }}
+                          className="rounded-full bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 px-3.5 py-1 text-[11px] font-semibold"
+                        >
+                          {n.actionLabel} →
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* ---------- TAB 5: MY PROFILE ---------- */}
           {section === 'profile' && (
             <div className="space-y-5">
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
