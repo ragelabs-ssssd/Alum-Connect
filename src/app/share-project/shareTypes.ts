@@ -1,4 +1,5 @@
 export type AcademicYear = '1st Year' | '2nd Year' | '3rd Year' | '4th Year';
+export type SubmissionType = 'project' | 'research_paper';
 
 export interface TeammateMember {
   id: string;
@@ -15,7 +16,16 @@ export interface VideoInputState {
   url: string;
 }
 
+export interface ResearchPaperFields {
+  targetVenue: string;
+  researchDomain: string;
+  paperPdfName: string;
+  paperUrl: string;
+  guidanceNeeded: string[];
+}
+
 export interface ShareProjectFormData {
+  submissionType: SubmissionType;
   projectName: string;
   oneLiner: string;
   shortDesc: string;
@@ -28,6 +38,7 @@ export interface ShareProjectFormData {
   githubUrl: string;
   demoVideo: VideoInputState;
   pitchVideo: VideoInputState;
+  research: ResearchPaperFields;
 }
 
 export const ITER_STUDENTS_DIRECTORY: TeammateMember[] = [
@@ -82,6 +93,7 @@ export const ITER_STUDENTS_DIRECTORY: TeammateMember[] = [
 ];
 
 export const EMPTY_SHARE_DATA: ShareProjectFormData = {
+  submissionType: 'project',
   projectName: '',
   oneLiner: '',
   shortDesc: '',
@@ -94,9 +106,17 @@ export const EMPTY_SHARE_DATA: ShareProjectFormData = {
   githubUrl: '',
   demoVideo: { mode: 'link', fileName: '', url: '' },
   pitchVideo: { mode: 'link', fileName: '', url: '' },
+  research: {
+    targetVenue: 'IEEE / arXiv Preprint',
+    researchDomain: 'Applied AI & ML',
+    paperPdfName: '',
+    paperUrl: '',
+    guidanceNeeded: ['Methodology Review', 'Co-Author Mentorship'],
+  },
 };
 
 export const SAMPLE_GROUP_PROJECT: ShareProjectFormData = {
+  submissionType: 'project',
   projectName: 'Ragelabs Campus Proof Engine',
   oneLiner: 'Real-time GitHub sprint & alumni vouch platform for ITER engineering squads.',
   shortDesc:
@@ -118,6 +138,13 @@ export const SAMPLE_GROUP_PROJECT: ShareProjectFormData = {
     mode: 'link',
     fileName: 'ragelabs-founder-pitch.mp4',
     url: 'https://youtu.be/iter-team-pitch-2min',
+  },
+  research: {
+    targetVenue: 'IEEE Access / arXiv',
+    researchDomain: 'Software Engineering & EdTech',
+    paperPdfName: 'iter-proof-of-work-preprint.pdf',
+    paperUrl: 'https://arxiv.org/abs/2501.00001',
+    guidanceNeeded: ['Methodology Review', 'Venue Selection'],
   },
 };
 

@@ -1,10 +1,11 @@
-﻿'use client';
+'use client';
 
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { CampusProduct } from '../../types';
 import {
   Award,
+  BookOpen,
   Briefcase,
   CheckCircle2,
   Code2,
@@ -29,7 +30,46 @@ const HIRING_FILTERS = [
   'Open for Acqui-hire',
   'Open for Internships',
   'Funded & Scaling',
+  'Research Papers',
 ] as const;
+
+interface AlumniResearchPaper {
+  id: string;
+  title: string;
+  authors: string;
+  venue: string;
+  abstract: string;
+  guidanceNeeded: string;
+  guidanceNotes: { alum: string; note: string }[];
+}
+
+const INITIAL_RESEARCH_PAPERS: AlumniResearchPaper[] = [
+  {
+    id: 'arp-1',
+    title: 'Low-Latency RAG Evaluation for Indian Legal Corpora',
+    authors: "Ananya Mohanty & Rohan Das • CSE '26/'25",
+    venue: 'IEEE Access / arXiv Preprint',
+    abstract:
+      'Quantized retrieval-reranking pipeline cutting hallucination rates by 31% on multi-lingual Indian court judgments.',
+    guidanceNeeded: 'Methodology Review • Venue Selection',
+    guidanceNotes: [
+      {
+        alum: "Dr. Anirban Panda (Google DeepMind '15)",
+        note: 'Add latency-vs-recall Pareto curves in Section 4 before IEEE submission.',
+      },
+    ],
+  },
+  {
+    id: 'arp-2',
+    title: 'Federated Anomaly Detection on Edge Smart-Grid Nodes',
+    authors: "Debasis Nayak • ECE '26",
+    venue: 'ACM SenSys Workshop',
+    abstract:
+      'Lightweight TinyML federated averaging across campus power sensors without sharing raw telemetry.',
+    guidanceNeeded: 'Co-Author Mentorship • Dataset Scaling',
+    guidanceNotes: [],
+  },
+];
 
 export default function AlumniFeedSection({ onOpenPortal }: AlumniFeedSectionProps) {
   const {
@@ -46,6 +86,8 @@ export default function AlumniFeedSection({ onOpenPortal }: AlumniFeedSectionPro
   const [scope, setScope] = useState<'for_you' | 'for_all'>('for_all');
   const [search, setSearch] = useState('');
   const [hiringFilter, setHiringFilter] = useState<string>('All');
+  const [papers, setPapers] = useState<AlumniResearchPaper[]>(INITIAL_RESEARCH_PAPERS);
+  const [guidanceDraft, setGuidanceDraft] = useState<Record<string, string>>({});
 
   const myEngagedProducts = useMemo(() => {
     const alumName = currentUser.name.toLowerCase();
@@ -399,7 +441,92 @@ export default function AlumniFeedSection({ onOpenPortal }: AlumniFeedSectionPro
             </div>
           </div>
 
-          {visibleProducts.length === 0 ? (
+          {hiringFilter === 'Research Papers' ? (
+            <div className="space-y-4">
+              {papers.map((paper) => (
+                <article
+                  key={paper.id}
+                  className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-5 shadow-2xs space-y-3"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] dark:text-sky-400 px-2.5 py-0.5 text-[11px] font-semibold">
+                        <BookOpen className="w-3 h-3" /> {paper.venue}
+                      </span>
+                      <h3 className="text-base font-bold mt-1.5 text-[#09090B] dark:text-white">
+                        {paper.title}
+                      </h3>
+                      <p className="text-xs text-[#52525B] dark:text-slate-400">
+                        {paper.authors} • Seeking: {paper.guidanceNeeded}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-[#52525B] dark:text-slate-300 leading-relaxed">
+                    {paper.abstract}
+                  </p>
+
+                  {paper.guidanceNotes.length > 0 && (
+                    <div className="space-y-1.5 pt-2 border-t border-[#E4E4E7] dark:border-slate-800">
+                      {paper.guidanceNotes.map((g, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-lg bg-[#F4F4F5] dark:bg-slate-900 px-3 py-2 text-xs"
+                        >
+                          <strong className="text-[#2563EB] dark:text-sky-400">
+                            {g.alum}:{' '}
+                          </strong>
+                          <span>{g.note}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const text = (guidanceDraft[paper.id] || '').trim();
+                      if (!text) return;
+                      setPapers((prev) =>
+                        prev.map((p) =>
+                          p.id === paper.id
+                            ? {
+                                ...p,
+                                guidanceNotes: [
+                                  ...p.guidanceNotes,
+                                  { alum: currentUser.name, note: text },
+                                ],
+                              }
+                            : p
+                        )
+                      );
+                      setGuidanceDraft((d) => ({ ...d, [paper.id]: '' }));
+                    }}
+                    className="flex gap-2 pt-2 border-t border-[#E4E4E7] dark:border-slate-800"
+                  >
+                    <input
+                      type="text"
+                      value={guidanceDraft[paper.id] || ''}
+                      onChange={(e) =>
+                        setGuidanceDraft((d) => ({
+                          ...d,
+                          [paper.id]: e.target.value,
+                        }))
+                      }
+                      placeholder="Contribute methodology advice, dataset tip, or co-author offer..."
+                      className="flex-1 rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 px-3.5 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
+                    />
+                    <button
+                      type="submit"
+                      className="rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:text-zinc-950 text-white px-4 py-1.5 text-xs font-semibold shrink-0"
+                    >
+                      Contribute &amp; Guide
+                    </button>
+                  </form>
+                </article>
+              ))}
+            </div>
+          ) : visibleProducts.length === 0 ? (
             <div className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-8 text-center space-y-2">
               <p className="text-sm font-semibold text-[#09090B] dark:text-white">
                 {scope === 'for_you'

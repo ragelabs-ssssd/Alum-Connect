@@ -169,6 +169,47 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
     repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
     likes: 43,
   },
+  {
+    id: 'rp-1',
+    isMine: true,
+    title: 'Low-Latency RAG Evaluation for Indian Legal Corpora',
+    subtitle: 'Research Paper • Target Venue: IEEE Access / arXiv Preprint',
+    story:
+      'Proposes a quantized retrieval-reranking pipeline cutting hallucination rates by 31% on multi-lingual Indian court judgments. Seeking alumni methodology & benchmark review.',
+    impactMetric: 'Preprint PDF • 2 Alumni Reviews',
+    author: 'Ananya Mohanty & Rohan Das',
+    batch: "3rd & 4th Yr CSE • ITER",
+    domain: 'Research Papers',
+    coverGradient: 'from-slate-900 via-blue-950 to-indigo-950',
+    tags: ['Research Paper', 'NLP', 'IEEE Preprint'],
+    demoUrl: 'https://arxiv.org',
+    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
+    endorsement: {
+      alumName: 'Dr. Anirban Panda',
+      alumRole: "Research Scientist @ Google DeepMind • Batch '15",
+      quote:
+        'Strong ablation setup. Add latency-vs-recall Pareto curves in Section 4 before IEEE submission.',
+    },
+    likes: 72,
+  },
+  {
+    id: 'rp-2',
+    isMine: false,
+    title: 'Federated Anomaly Detection on Edge Smart-Grid Nodes',
+    subtitle: 'Research Paper • Target Venue: ACM SenSys Workshop',
+    story:
+      'Lightweight TinyML federated averaging across campus power sensors without sharing raw telemetry. Looking for an alumnus co-author for dataset scaling.',
+    impactMetric: 'Draft PDF • Seeking Co-Author',
+    author: 'Debasis Nayak',
+    batch: "3rd Yr ECE '26",
+    domain: 'Research Papers',
+    coverGradient: 'from-zinc-900 via-emerald-950 to-slate-900',
+    tags: ['Research Paper', 'TinyML', 'ACM'],
+    demoUrl: 'https://arxiv.org',
+    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
+    openRole: 'Seeking Alumni Co-Author / Guidance',
+    likes: 58,
+  },
 ];
 
 const TECH_NEWS: TechNewsItem[] = [
@@ -386,7 +427,7 @@ export default function StudentStudioPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const domains = ['All', 'Product & FinTech', 'Applied AI', 'IoT & Systems', 'Consumer FinTech'];
+  const domains = ['All', 'Research Papers', 'Product & FinTech', 'Applied AI', 'IoT & Systems', 'Consumer FinTech'];
   const newsCategories = ['All', 'AI & LLMs', 'Engineering', 'Indian Startups', 'Career & Hiring'];
   const jobTypes = ['All', 'Internship', 'Full-Time', 'Paid Bounty'];
 
@@ -686,21 +727,29 @@ export default function StudentStudioPage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-1.5">
-                {domains.map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => setSelectedDomain(d)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
-                      selectedDomain === d
-                        ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
-                        : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800 hover:border-[#2563EB]'
-                    }`}
-                  >
-                    {d}
-                  </button>
-                ))}
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {domains.map((d) => (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => setSelectedDomain(d)}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
+                        selectedDomain === d
+                          ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
+                          : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800 hover:border-[#2563EB]'
+                      }`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+                <Link
+                  href="/share-project"
+                  className="text-xs font-semibold text-[#2563EB] hover:underline shrink-0"
+                >
+                  + Upload Research Paper
+                </Link>
               </div>
 
               <div className="space-y-5">

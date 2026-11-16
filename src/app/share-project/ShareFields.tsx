@@ -32,11 +32,54 @@ interface SectionProps {
 
 export function IdentitySection({ data, onChange, compact }: SectionProps) {
   const remaining = 120 - data.oneLiner.length;
+  const guidanceOptions = [
+    'Methodology Review',
+    'Dataset / Compute',
+    'Co-Author Mentorship',
+    'Venue Selection',
+  ];
+
+  const toggleGuidance = (item: string) => {
+    const exists = data.research.guidanceNeeded.includes(item);
+    onChange((p) => ({
+      ...p,
+      research: {
+        ...p.research,
+        guidanceNeeded: exists
+          ? p.research.guidanceNeeded.filter((g) => g !== item)
+          : [...p.research.guidanceNeeded, item],
+      },
+    }));
+  };
+
   return (
     <div className="space-y-3">
+      {/* Submission Type Toggle */}
+      <div className="grid grid-cols-2 gap-1 rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-900 p-1">
+        {[
+          { id: 'project' as const, label: 'Project / Product Build' },
+          { id: 'research_paper' as const, label: 'Research Paper (Alumni Guidance)' },
+        ].map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onChange((p) => ({ ...p, submissionType: t.id }))}
+            className={`rounded-lg py-1.5 px-2 text-xs font-semibold transition-all ${
+              data.submissionType === t.id
+                ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                : 'text-[#52525B] dark:text-zinc-400'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
       <div>
         <label className="block text-xs font-semibold mb-1">
-          Project Name *
+          {data.submissionType === 'research_paper'
+            ? 'Research Paper Title *'
+            : 'Project Name *'}
         </label>
         <input
           type="text"
@@ -44,10 +87,115 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
           onChange={(e) =>
             onChange((p) => ({ ...p, projectName: e.target.value }))
           }
-          placeholder="e.g., Ragelabs Campus Proof Engine"
+          placeholder={
+            data.submissionType === 'research_paper'
+              ? 'e.g., Low-Latency RAG Evaluation for Indian Legal Corpora'
+              : 'e.g., Ragelabs Campus Proof Engine'
+          }
           className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-[#2563EB]"
         />
       </div>
+
+      {data.submissionType === 'research_paper' && (
+        <div className="rounded-2xl border border-blue-200 dark:border-sky-500/30 bg-blue-50/40 dark:bg-sky-500/5 p-4 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold mb-1">
+                Target Venue / Conference
+              </label>
+              <input
+                type="text"
+                value={data.research.targetVenue}
+                onChange={(e) =>
+                  onChange((p) => ({
+                    ...p,
+                    research: { ...p.research, targetVenue: e.target.value },
+                  }))
+                }
+                placeholder="IEEE, ACM, Springer, arXiv..."
+                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs focus:outline-none focus:border-[#2563EB]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold mb-1">
+                Research Domain
+              </label>
+              <input
+                type="text"
+                value={data.research.researchDomain}
+                onChange={(e) =>
+                  onChange((p) => ({
+                    ...p,
+                    research: { ...p.research, researchDomain: e.target.value },
+                  }))
+                }
+                placeholder="Applied AI, Systems, Security, IoT..."
+                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs focus:outline-none focus:border-[#2563EB]"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label className="flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs font-semibold cursor-pointer hover:border-[#2563EB]">
+              <Upload className="w-3.5 h-3.5 text-[#2563EB]" />
+              <span className="truncate">
+                {data.research.paperPdfName || 'Upload Paper PDF'}
+              </span>
+              <input
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) {
+                    onChange((p) => ({
+                      ...p,
+                      research: { ...p.research, paperPdfName: f.name },
+                    }));
+                  }
+                }}
+              />
+            </label>
+            <input
+              type="url"
+              value={data.research.paperUrl}
+              onChange={(e) =>
+                onChange((p) => ({
+                  ...p,
+                  research: { ...p.research, paperUrl: e.target.value },
+                }))
+              }
+              placeholder="Or paste arXiv / Overleaf / Drive URL..."
+              className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs font-mono focus:outline-none focus:border-[#2563EB]"
+            />
+          </div>
+
+          <div>
+            <div className="text-xs font-semibold mb-1.5">
+              Alumni Guidance &amp; Contribution Needed
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {guidanceOptions.map((g) => {
+                const active = data.research.guidanceNeeded.includes(g);
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => toggleGuidance(g)}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold border transition-colors ${
+                      active
+                        ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                        : 'bg-white dark:bg-zinc-900 border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
+                    }`}
+                  >
+                    {g}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div>
         <div className="flex items-center justify-between mb-1">
@@ -492,13 +640,22 @@ export function LiveFeedCardPreview({ data }: { data: ShareProjectFormData }) {
   return (
     <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 shadow-sm space-y-3.5">
       <div className="flex items-center justify-between text-xs">
-        <span className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 px-2.5 py-0.5 font-semibold">
-          {data.mode === 'group'
-            ? `Group Project (${data.teammates.length} Members)`
-            : `Individual • ${data.academicYear}`}
-        </span>
+        <div className="flex items-center gap-1.5">
+          {data.submissionType === 'research_paper' && (
+            <span className="rounded-full bg-[#2563EB] text-white px-2.5 py-0.5 font-semibold">
+              Research Paper
+            </span>
+          )}
+          <span className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 px-2.5 py-0.5 font-semibold">
+            {data.mode === 'group'
+              ? `Group (${data.teammates.length} Members)`
+              : `Individual • ${data.academicYear}`}
+          </span>
+        </div>
         <span className="font-mono text-[11px] text-[#2563EB] font-semibold">
-          {platform}
+          {data.submissionType === 'research_paper'
+            ? data.research.targetVenue
+            : platform}
         </span>
       </div>
 
