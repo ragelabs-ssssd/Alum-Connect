@@ -1,0 +1,91 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useApp } from '../../context/AppContext';
+import AlumniPortal from '../../portals/alumni/AlumniPortal';
+import AlumniFeedSection from './AlumniFeedSection';
+import ThemeToggle from '../../components/ThemeToggle';
+import { ArrowLeft, Compass, Store } from 'lucide-react';
+
+export default function AlumniPage() {
+  const router = useRouter();
+  const { currentUser, setCurrentUser, allPresetUsers } = useApp();
+  const [viewMode, setViewMode] = useState<'feed' | 'portal'>('feed');
+
+  // Ensure an alumni persona is active when opening /alumni directly so Roast/Vouch/Deal Room actions work immediately
+  useEffect(() => {
+    if (currentUser.role !== 'alumni') {
+      const firstAlum = allPresetUsers.find((u) => u.role === 'alumni');
+      if (firstAlum) setCurrentUser(firstAlum);
+    }
+  }, [currentUser.role, allPresetUsers, setCurrentUser]);
+
+  return (
+    <div className="min-h-screen bg-[#F4F2EE] dark:bg-[#0B0F17] text-[#191919] dark:text-slate-100 transition-colors">
+      {/* LinkedIn-style Sticky Top Navigation */}
+      <header className="sticky top-0 z-40 border-b border-stone-200 dark:border-slate-800 bg-white/95 dark:bg-[#131A26]/95 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => router.push('/')}
+              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800/80 hover:bg-stone-100 dark:hover:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-stone-700 dark:text-slate-200 transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Gateway
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-md bg-[#0A66C2] flex items-center justify-center text-white font-bold text-xs">
+                in
+              </div>
+              <span className="text-sm font-bold tracking-tight text-[#191919] dark:text-white hidden sm:inline">
+                ITER Network
+              </span>
+              <span className="text-xs font-medium text-stone-400 dark:text-slate-500 hidden md:inline">
+                / Alumni &amp; Hiring
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-1 rounded-full bg-stone-100 dark:bg-slate-800/90 p-1 border border-stone-200 dark:border-slate-700/80">
+              <button
+                type="button"
+                onClick={() => setViewMode('feed')}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+                  viewMode === 'feed'
+                    ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-2xs'
+                    : 'text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white'
+                }`}
+              >
+                <Compass className="w-3.5 h-3.5" />
+                Talent Feed
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('portal')}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all ${
+                  viewMode === 'portal'
+                    ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-2xs'
+                    : 'text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white'
+                }`}
+              >
+                <Store className="w-3.5 h-3.5" />
+                Hiring Portal
+              </button>
+            </div>
+
+            <ThemeToggle compact />
+          </div>
+        </div>
+      </header>
+
+      {viewMode === 'feed' ? (
+        <AlumniFeedSection onOpenPortal={() => setViewMode('portal')} />
+      ) : (
+        <AlumniPortal onBackToGateway={() => router.push('/')} />
+      )}
+    </div>
+  );
+}

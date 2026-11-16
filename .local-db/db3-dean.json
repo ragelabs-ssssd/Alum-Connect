@@ -1,0 +1,118 @@
+{
+  "dean": {
+    "id": "user_tp_admin",
+    "name": "Prof. Sujit Kumar Patra",
+    "role": "tp_admin",
+    "email": "training.placement@soa.ac.in",
+    "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80",
+    "headline": "Head of Training & Placement • SOA (ITER) Deemed to be University • Institutional Analytics",
+    "company": "ITER, SOA University",
+    "designation": "Dean & Head of Placement Operations",
+    "bandwidthShield": "1 session/quarter",
+    "vouchCardsCount": 89
+  },
+  "analytics": {
+    "totalLiveMVPs": 28,
+    "alumniReviewsCount": 142,
+    "vouchCardsIssued": 89,
+    "squadsHired": 14,
+    "activeCompanies": 36,
+    "placementConversionRate": "94.2%",
+    "cohortBreakdown": [
+      {
+        "year": "1st Year",
+        "label": "Campus Ops & Beta Scouts",
+        "activeCount": 184,
+        "verifiedBadges": 42,
+        "role": "Product Testing & Discovery"
+      },
+      {
+        "year": "2nd Year",
+        "label": "Core Squad Builders",
+        "activeCount": 128,
+        "verifiedBadges": 78,
+        "role": "Full Stack & UI/UX MVPs"
+      },
+      {
+        "year": "3rd Year",
+        "label": "10-Day Bounty Sprinters",
+        "activeCount": 96,
+        "verifiedBadges": 64,
+        "role": "Microservices & Freelance Gigs"
+      },
+      {
+        "year": "4th Year",
+        "label": "Lead / Career Switch",
+        "activeCount": 74,
+        "verifiedBadges": 58,
+        "role": "MNC Referrals & Acqui-hires"
+      }
+    ],
+    "topHiringPartners": [
+      {
+        "name": "Microsoft",
+        "hires": 8,
+        "avgPackage": "₹44 LPA",
+        "logo": "MSFT"
+      },
+      {
+        "name": "PayPulse (YC W23)",
+        "hires": 6,
+        "avgPackage": "₹16 LPA + Equity",
+        "logo": "PAY"
+      },
+      {
+        "name": "Oracle Cloud",
+        "hires": 7,
+        "avgPackage": "₹22 LPA",
+        "logo": "ORCL"
+      },
+      {
+        "name": "Amazon AWS",
+        "hires": 5,
+        "avgPackage": "₹42 LPA",
+        "logo": "AMZN"
+      },
+      {
+        "name": "Razorpay",
+        "hires": 4,
+        "avgPackage": "₹28 LPA",
+        "logo": "RZP"
+      }
+    ]
+  },
+  "auditLogs": [
+    {
+      "id": "audit_1",
+      "timestamp": "Nov 13, 2026, 04:30 PM",
+      "category": "deal_room",
+      "title": "PayPulse (YC W23) Acqui-Hire Deal Room Finalized",
+      "actor": "Alok Tripathy (Founder, PayPulse)",
+      "impact": "₹14 LPA Pre-Placement Offer for 3 builders of CampusCart v2.0"
+    },
+    {
+      "id": "audit_2",
+      "timestamp": "Nov 12, 2026, 11:15 AM",
+      "category": "vouch",
+      "title": "Tier-1 Certified Vouch Certificate Registered",
+      "actor": "Ankit Mohanty (SDE-2 @ Microsoft)",
+      "impact": "Direct SDE-1 interview bypass granted for Ananya Dash (NoteHub ITER)"
+    },
+    {
+      "id": "audit_3",
+      "timestamp": "Nov 10, 2026, 02:45 PM",
+      "category": "mvp_ship",
+      "title": "New Production MVP Deployment Verified",
+      "actor": "HostelBite Squad (Batch 2027)",
+      "impact": "1,200+ monthly hostel transactions verified by T&P incubator"
+    },
+    {
+      "id": "audit_4",
+      "timestamp": "Nov 08, 2026, 09:00 AM",
+      "category": "drive_slot",
+      "title": "Exclusive Alumni Keynote & Fast-Track Drive Approved",
+      "actor": "Debashis Tripathy (Senior Engineering Manager @ Oracle)",
+      "impact": "120 auditorium slots booked for Banshee Auditorium Dec 5 session"
+    }
+  ]
+}
