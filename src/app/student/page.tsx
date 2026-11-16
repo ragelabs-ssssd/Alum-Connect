@@ -469,27 +469,28 @@ export default function StudentStudioPage() {
       {/* ==================== TOP HEADER WITH 4-TAB BAR ==================== */}
       <header className="sticky top-0 z-40 border-b border-[#E4E4E7] dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-3">
-          {/* 1. Logo */}
-          <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
-            <div className="h-9 w-9 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
-              <img
-                src="/logo.png"
-                alt="Alum Connect"
-                className="h-full w-full object-contain dark:invert"
+          {/* 1. Logo + 2. Search grouped tightly */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
+              <div className="h-9 w-9 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
+                <img
+                  src="/logo.png"
+                  alt="Alum Connect"
+                  className="h-full w-full object-contain dark:invert"
+                />
+              </div>
+            </Link>
+
+            <div className="relative hidden md:block w-52 lg:w-64">
+              <Search className="w-3.5 h-3.5 text-[#52525B] absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search..."
+                className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
               />
             </div>
-          </Link>
-
-          {/* 2. Search */}
-          <div className="relative hidden md:block w-52 lg:w-64 shrink-0">
-            <Search className="w-3.5 h-3.5 text-[#52525B] absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search..."
-              className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
-            />
           </div>
 
           {/* 3. 5-Tab Bar (Home Feed | Explore Tech News | Alumni Jobs | Notifications | My Profile) */}
