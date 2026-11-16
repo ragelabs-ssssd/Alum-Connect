@@ -557,21 +557,19 @@ export default function StudentStudioPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => setSection(tab.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
-                    active
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${active
                       ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
                       : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
-                  }`}
+                    }`}
                 >
                   {tab.icon}
                   <span>{tab.label}</span>
                   {typeof tab.badge === 'number' && tab.badge > 0 && (
                     <span
-                      className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
-                        active
+                      className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${active
                           ? 'bg-[#2563EB] text-white'
                           : 'bg-[#2563EB] text-white'
-                      }`}
+                        }`}
                     >
                       {tab.badge}
                     </span>
@@ -607,11 +605,10 @@ export default function StudentStudioPage() {
               key={tab.id}
               type="button"
               onClick={() => setSection(tab.id)}
-              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-                section === tab.id
+              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${section === tab.id
                   ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
                   : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-400'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -633,6 +630,10 @@ export default function StudentStudioPage() {
               </div>
 
               <div className="space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-bold">Ananya Mohanty</h2>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+                </div>
                 <h2 className="text-sm font-bold">Ananya Mohanty</h2>
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   3rd Year CSE • ITER Bhubaneswar
@@ -731,11 +732,10 @@ export default function StudentStudioPage() {
                       key={d}
                       type="button"
                       onClick={() => setSelectedDomain(d)}
-                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
-                        selectedDomain === d
+                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${selectedDomain === d
                           ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
                           : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800 hover:border-[#2563EB]'
-                      }`}
+                        }`}
                     >
                       {d}
                     </button>
@@ -839,11 +839,10 @@ export default function StudentStudioPage() {
                               onClick={() =>
                                 setLikedIds((p) => ({ ...p, [build.id]: !p[build.id] }))
                               }
-                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${
-                                isLiked
+                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${isLiked
                                   ? 'border-[#2563EB] bg-blue-50 dark:bg-sky-500/10 text-[#2563EB]'
                                   : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
-                              }`}
+                                }`}
                             >
                               <ThumbsUp className="w-3.5 h-3.5" />
                               {build.likes + (isLiked ? 1 : 0)}
@@ -853,11 +852,10 @@ export default function StudentStudioPage() {
                               onClick={() =>
                                 setSavedIds((p) => ({ ...p, [build.id]: !p[build.id] }))
                               }
-                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${
-                                isSaved
+                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${isSaved
                                   ? 'border-[#2563EB] text-[#2563EB]'
                                   : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
-                              }`}
+                                }`}
                             >
                               <Bookmark className="w-3.5 h-3.5" />
                               {isSaved ? 'Saved' : 'Save'}
@@ -925,11 +923,10 @@ export default function StudentStudioPage() {
                     key={cat}
                     type="button"
                     onClick={() => setNewsCategory(cat)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
-                      newsCategory === cat
+                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${newsCategory === cat
                         ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
                         : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
-                    }`}
+                      }`}
                   >
                     {cat}
                   </button>
@@ -996,11 +993,10 @@ export default function StudentStudioPage() {
                     key={jt}
                     type="button"
                     onClick={() => setJobTypeFilter(jt)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
-                      jobTypeFilter === jt
+                    className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${jobTypeFilter === jt
                         ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
                         : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
-                    }`}
+                      }`}
                   >
                     {jt}
                   </button>
@@ -1067,11 +1063,10 @@ export default function StudentStudioPage() {
                               `Applied to ${job.role} at ${job.company} with your portfolio!`
                             );
                           }}
-                          className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${
-                            applied
+                          className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-colors ${applied
                               ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
                               : 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white'
-                          }`}
+                            }`}
                         >
                           {applied ? 'Applied with Portfolio ✓' : 'Apply Now'}
                         </button>
@@ -1117,11 +1112,10 @@ export default function StudentStudioPage() {
                       key={f}
                       type="button"
                       onClick={() => setNotifFilter(f)}
-                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${
-                        notifFilter === f
+                      className={`rounded-full px-3 py-1 text-xs font-semibold border transition-colors ${notifFilter === f
                           ? 'bg-[#18181B] text-white border-[#18181B] dark:bg-zinc-100 dark:text-zinc-950'
                           : 'bg-white dark:bg-zinc-900 text-[#52525B] dark:text-zinc-300 border-[#E4E4E7] dark:border-zinc-800'
-                      }`}
+                        }`}
                     >
                       {f}
                     </button>
@@ -1146,11 +1140,10 @@ export default function StudentStudioPage() {
                           )
                         )
                       }
-                      className={`rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer space-y-2 ${
-                        n.unread
+                      className={`rounded-2xl border p-4 sm:p-5 transition-all cursor-pointer space-y-2 ${n.unread
                           ? 'border-[#2563EB]/50 bg-blue-50/30 dark:bg-sky-500/5'
                           : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between gap-2 text-xs">
                         <div className="flex items-center gap-2">
@@ -1270,101 +1263,329 @@ export default function StudentStudioPage() {
           )}
         </main>
 
-        {/* RIGHT RAIL: Curated Opportunities */}
+        {/* RIGHT RAIL: Dynamic Per-Page Contextual Rail */}
         <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
-          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
-              Mentor Coffee Chats
-            </h3>
-            <div className="space-y-2.5">
-              {MENTOR_CHATS.map((m) => {
-                const booked = !!bookedChats[m.id];
-                return (
-                  <div
-                    key={m.id}
-                    className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
-                  >
-                    <div className="text-xs font-bold">{m.name}</div>
-                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                      {m.role}
-                    </div>
-                    <div className="text-[11px] font-medium">{m.topic}</div>
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="text-[10px] text-[#52525B]">{m.time}</span>
-                      <button
-                        type="button"
-                        disabled={booked}
-                        onClick={() => {
-                          setBookedChats((b) => ({ ...b, [m.id]: true }));
-                          notify(`Booked 15-min chat with ${m.name}!`);
-                        }}
-                        className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                          booked
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                        }`}
+          {/* 1. HOME FEED -> Option 1 (Mentor Chats + Latest Jobs) + Option 6 (Quick Saved) */}
+          {section === 'home' && (
+            <>
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Mentor Coffee Chats
+                </h3>
+                <div className="space-y-2.5">
+                  {MENTOR_CHATS.map((m) => {
+                    const booked = !!bookedChats[m.id];
+                    return (
+                      <div
+                        key={m.id}
+                        className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
                       >
-                        {booked ? 'Booked ✓' : 'Book 15m'}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+                        <div className="text-xs font-bold">{m.name}</div>
+                        <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                          {m.role}
+                        </div>
+                        <div className="text-[11px] font-medium">{m.topic}</div>
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[10px] text-[#52525B]">{m.time}</span>
+                          <button
+                            type="button"
+                            disabled={booked}
+                            onClick={() => {
+                              setBookedChats((b) => ({ ...b, [m.id]: true }));
+                              notify(`Booked 15-min chat with ${m.name}!`);
+                            }}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
+                              booked
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                            }`}
+                          >
+                            {booked ? 'Booked ✓' : 'Book 15m'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
 
-          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
-                Latest Alumni Jobs
-              </h3>
-              <button
-                type="button"
-                onClick={() => setSection('jobs')}
-                className="text-[11px] font-semibold text-[#2563EB] hover:underline"
-              >
-                See all
-              </button>
-            </div>
-            <div className="space-y-2.5">
-              {ALUMNI_JOBS.slice(0, 2).map((job) => {
-                const applied = !!appliedJobs[job.id];
-                return (
-                  <div
-                    key={job.id}
-                    className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-800/70 p-3 space-y-1.5"
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Latest Alumni Jobs
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setSection('jobs')}
+                    className="text-[11px] font-semibold text-[#2563EB] hover:underline"
                   >
-                    <div className="text-xs font-bold">{job.role}</div>
-                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                      {job.company} • {job.location}
+                    See all
+                  </button>
+                </div>
+                <div className="space-y-2.5">
+                  {ALUMNI_JOBS.slice(0, 2).map((job) => {
+                    const applied = !!appliedJobs[job.id];
+                    return (
+                      <div
+                        key={job.id}
+                        className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-800/70 p-3 space-y-1.5"
+                      >
+                        <div className="text-xs font-bold">{job.role}</div>
+                        <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                          {job.company} • {job.location}
+                        </div>
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
+                            {job.compensation}
+                          </span>
+                          <button
+                            type="button"
+                            disabled={applied}
+                            onClick={() => {
+                              setAppliedJobs((a) => ({ ...a, [job.id]: true }));
+                              notify(`Applied to ${job.company} with your portfolio!`);
+                            }}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
+                              applied
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : 'bg-[#2563EB] text-white'
+                            }`}
+                          >
+                            {applied ? 'Applied ✓' : 'Apply'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Option 6: Quick Saved */}
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Quick Saved ({Object.values(savedIds).filter(Boolean).length})
+                </h3>
+                {builds.filter((b) => savedIds[b.id]).length === 0 ? (
+                  <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                    Bookmark any project or research paper to pin it here.
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {builds
+                      .filter((b) => savedIds[b.id])
+                      .map((b) => (
+                        <button
+                          key={b.id}
+                          type="button"
+                          onClick={() => setCaseStudyItem(b)}
+                          className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 hover:border-[#2563EB] border border-transparent transition-colors"
+                        >
+                          <div className="text-xs font-semibold truncate">{b.title}</div>
+                          <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                            {b.domain}
+                          </div>
+                        </button>
+                      ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 2. EXPLORE TECH NEWS -> Option 1 (Trending Topics + Alumni Reading Picks) */}
+          {section === 'explore' && (
+            <>
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Compass className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Trending Tech Topics
+                </h3>
+                {[
+                  { tag: '#MultiAgentSystems', sub: '42 discussions this week', q: 'AI' },
+                  { tag: '#EdgePostgres', sub: '28 student builds', q: 'TypeScript' },
+                  { tag: '#FinTechHiring', sub: '19 alumni briefings', q: 'FinTech' },
+                ].map((topic) => (
+                  <div
+                    key={topic.tag}
+                    className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between gap-2"
+                  >
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold truncate">{topic.tag}</div>
+                      <div className="text-[10px] text-[#52525B] truncate">{topic.sub}</div>
                     </div>
-                    <div className="flex items-center justify-between pt-1">
-                      <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
-                        {job.compensation}
-                      </span>
-                      <button
-                        type="button"
-                        disabled={applied}
-                        onClick={() => {
-                          setAppliedJobs((a) => ({ ...a, [job.id]: true }));
-                          notify(`Applied to ${job.company} with your portfolio!`);
-                        }}
-                        className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
+                    <button
+                      type="button"
+                      onClick={() => setSearch(topic.q)}
+                      className="shrink-0 rounded-full bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 px-2.5 py-1 text-[10px] font-semibold"
+                    >
+                      Filter
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400">
+                  Alumni Reading Picks
+                </h3>
+                {[
+                  { title: 'Pragmatic Engineer Dispatch', sub: "Recommended by Vikram '18", badge: '4m' },
+                  { title: 'System Design Primer', sub: "Recommended by Priya '16", badge: '6m' },
+                ].map((pick) => (
+                  <div
+                    key={pick.title}
+                    className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 flex items-center justify-between text-xs"
+                  >
+                    <div className="min-w-0">
+                      <div className="font-semibold truncate">{pick.title}</div>
+                      <div className="text-[10px] text-[#52525B] truncate">{pick.sub}</div>
+                    </div>
+                    <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] px-2 py-0.5 text-[10px] font-bold">
+                      {pick.badge}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* 3. ALUMNI JOBS -> Option 1 (Application Tracker + Referral Readiness) */}
+          {section === 'jobs' && (
+            <>
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Your Application Tracker
+                </h3>
+                {ALUMNI_JOBS.slice(0, 2).map((job) => {
+                  const applied = !!appliedJobs[job.id];
+                  return (
+                    <div
+                      key={job.id}
+                      className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between gap-2"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold truncate">{job.company}</div>
+                        <div className="text-[10px] text-[#52525B] truncate">{job.role}</div>
+                      </div>
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
                           applied
                             ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-[#2563EB] text-white'
+                            : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
                         }`}
                       >
-                        {applied ? 'Applied ✓' : 'Apply'}
-                      </button>
+                        {applied ? 'Applied ✓' : `${job.slotsLeft} slots`}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400">
+                  Referral Readiness
+                </h3>
+                {[
+                  { label: `${myBuilds.length} Live Demos Linked`, sub: 'Meets MNC referral bar', badge: 'Ready' },
+                  { label: '4 Alumni Endorsements', sub: 'Verified credibility', badge: 'Top 5%' },
+                ].map((r) => (
+                  <div
+                    key={r.label}
+                    className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 flex items-center justify-between text-xs"
+                  >
+                    <div className="min-w-0">
+                      <div className="font-semibold truncate">{r.label}</div>
+                      <div className="text-[10px] text-[#52525B] truncate">{r.sub}</div>
+                    </div>
+                    <span className="rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 text-[10px] font-bold">
+                      {r.badge}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* 4. NOTIFICATIONS -> Option 6 (Quick Priority Channels & Saved) */}
+          {section === 'notifications' && (
+            <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                <Bell className="w-3.5 h-3.5 text-[#2563EB]" />
+                Priority Alert Channels
+              </h3>
+              {[
+                { label: 'Alumni Referral Drops', sub: 'Instant push enabled' },
+                { label: 'Research Guidance Replies', sub: 'Instant push enabled' },
+                { label: 'Mentor Office Hours', sub: 'Sunday 9:00 AM digest' },
+              ].map((ch) => (
+                <div
+                  key={ch.label}
+                  className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-3 flex items-center justify-between text-xs"
+                >
+                  <div>
+                    <div className="font-semibold">{ch.label}</div>
+                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                      {ch.sub}
                     </div>
                   </div>
-                );
-              })}
+                  <span className="rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 text-[10px] font-bold">
+                    On
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
+          )}
+
+          {/* 5. MY PROFILE -> Option 1 (Profile Strength + Endorsed By Alumni) */}
+          {section === 'profile' && (
+            <>
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Profile Strength &amp; Reach
+                </h3>
+                <div className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold">92% Complete</div>
+                    <div className="text-[10px] text-[#52525B]">Add 1 preprint for 100%</div>
+                  </div>
+                  <Link
+                    href="/share-project"
+                    className="rounded-full bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 px-2.5 py-1 text-[10px] font-semibold"
+                  >
+                    Boost
+                  </Link>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400">
+                  Endorsed By Alumni
+                </h3>
+                {[
+                  { skill: 'Next.js & TypeScript', sub: 'Endorsed by 6 alumni', badge: 'Top' },
+                  { skill: 'System Architecture', sub: 'Endorsed by 4 alumni', badge: 'Verified' },
+                ].map((e) => (
+                  <div
+                    key={e.skill}
+                    className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 flex items-center justify-between text-xs"
+                  >
+                    <div>
+                      <div className="font-semibold">{e.skill}</div>
+                      <div className="text-[10px] text-[#52525B]">{e.sub}</div>
+                    </div>
+                    <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] px-2 py-0.5 text-[10px] font-bold">
+                      {e.badge}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </aside>
       </div>
 
