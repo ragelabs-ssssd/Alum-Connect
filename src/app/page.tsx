@@ -10,7 +10,6 @@ import {
   GitBranch,
   GraduationCap,
   ShieldCheck,
-  Sparkles,
   Users,
 } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
@@ -73,11 +72,6 @@ export default function HomePage() {
       <main className="max-w-6xl w-full mx-auto px-4 sm:px-6 py-12 sm:py-16 space-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 dark:border-slate-700/80 bg-white dark:bg-[#131A26] px-3 py-1 text-xs font-medium text-stone-700 dark:text-slate-300 shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 text-[#0A66C2] dark:text-sky-400" />
-              <span>LinkedIn Network + GitHub Proof-of-Work</span>
-            </div>
-
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#191919] dark:text-white leading-[1.12]">
               Turn every student build into a{' '}
               <span className="text-[#0A66C2] dark:text-sky-400">verified career signal.</span>
