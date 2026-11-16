@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -41,10 +41,10 @@ export default function HomePage() {
       cta: 'Open Student Feed',
       icon: <Code2 className="w-5 h-5" />,
       badge: 'For Builders',
-      accentText: 'text-[#0A66C2] dark:text-sky-400',
+      accentText: 'text-[#2563EB] dark:text-sky-400',
       accentBg:
         'bg-blue-50 dark:bg-sky-500/10 border-blue-200/80 dark:border-sky-500/25',
-      topBar: 'bg-[#0A66C2]',
+      topBar: 'bg-[#2563EB]',
     },
     {
       href: '/alumni',
@@ -73,12 +73,12 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-[#F4F2EE] dark:bg-[#0B0F17] text-[#191919] dark:text-slate-100 grid grid-rows-[auto_1fr_auto] transition-colors">
+    <div className="h-dvh w-full overflow-hidden bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-slate-100 grid grid-rows-[auto_1fr_auto] transition-colors">
       {/* NAV 4: Brand + Quick Jump Bar + Live Status + ThemeToggle */}
-      <header className="border-b border-stone-200/90 dark:border-slate-800/80 bg-white/95 dark:bg-[#131A26]/95 backdrop-blur-md">
+      <header className="border-b border-[#E4E4E7]/90 dark:border-slate-800/80 bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-white dark:bg-slate-800 border border-stone-200 dark:border-slate-700 flex items-center justify-center p-1 shadow-xs overflow-hidden">
+            <div className="h-9 w-9 rounded-lg bg-white dark:bg-slate-800 border border-[#E4E4E7] dark:border-slate-700 flex items-center justify-center p-1 shadow-xs overflow-hidden">
               <img
                 src="/logo.png"
                 alt="AlmaConnect"
@@ -86,41 +86,41 @@ export default function HomePage() {
               />
             </div>
             <div className="leading-tight">
-              <span className="font-bold text-sm tracking-tight text-[#191919] dark:text-white">
+              <span className="font-bold text-sm tracking-tight text-[#09090B] dark:text-white">
                 AlmaConnect
               </span>
-              <p className="text-[11px] text-stone-500 dark:text-slate-400 hidden lg:block">
+              <p className="text-[11px] text-[#52525B] dark:text-slate-400 hidden lg:block">
                 Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
               </p>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-2.5 rounded-full border border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-900 px-3.5 py-1 text-xs text-stone-500 dark:text-slate-400">
+          <div className="hidden md:flex items-center gap-2.5 rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 px-3.5 py-1 text-xs text-[#52525B] dark:text-slate-400">
             <span>Quick Jump:</span>
             <Link
               href="/student"
-              className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
             >
               /student
             </Link>
             <span>•</span>
             <Link
               href="/alumni"
-              className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
             >
               /alumni
             </Link>
             <span>•</span>
             <Link
               href="/dean"
-              className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
             >
               /dean
             </Link>
             <span>•</span>
             <Link
               href="/login"
-              className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
             >
               /login
             </Link>
@@ -135,7 +135,7 @@ export default function HomePage() {
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
       <main className="min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 grid grid-rows-[minmax(0,1.45fr)_minmax(0,0.9fr)] gap-4">
         {/* HERO 1: Constellation Hero + 2x2 Telemetry */}
-        <section className="relative h-full overflow-hidden rounded-3xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
+        <section className="relative h-full overflow-hidden rounded-3xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
           <svg
             className="pointer-events-none absolute inset-0 w-full h-full opacity-20 dark:opacity-25"
             viewBox="0 0 1200 420"
@@ -148,7 +148,7 @@ export default function HomePage() {
               y1="90"
               x2="560"
               y2="210"
-              stroke="#0A66C2"
+              stroke="#2563EB"
               strokeWidth="1.5"
               strokeDasharray="5 5"
             />
@@ -157,7 +157,7 @@ export default function HomePage() {
               y1="210"
               x2="940"
               y2="95"
-              stroke="#0A66C2"
+              stroke="#2563EB"
               strokeWidth="1.5"
             />
             <line
@@ -191,31 +191,31 @@ export default function HomePage() {
               y1="330"
               x2="560"
               y2="210"
-              stroke="#0A66C2"
+              stroke="#2563EB"
               strokeWidth="1.25"
             />
-            <circle cx="180" cy="90" r="7" fill="#0A66C2" />
+            <circle cx="180" cy="90" r="7" fill="#2563EB" />
             <circle cx="300" cy="330" r="6" fill="#38BDF8" />
-            <circle cx="560" cy="210" r="11" fill="#0A66C2" />
-            <circle cx="560" cy="210" r="26" stroke="#0A66C2" strokeOpacity="0.22" />
+            <circle cx="560" cy="210" r="11" fill="#2563EB" />
+            <circle cx="560" cy="210" r="26" stroke="#2563EB" strokeOpacity="0.22" />
             <circle cx="940" cy="95" r="8" fill="#6366F1" />
             <circle cx="980" cy="310" r="9" fill="#10B981" />
           </svg>
 
           <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
-              <h1 className="text-3xl sm:text-5xl xl:text-[54px] font-bold tracking-tight text-[#191919] dark:text-white leading-[1.08]">
+              <h1 className="text-3xl sm:text-5xl xl:text-[54px] font-bold tracking-tight text-[#09090B] dark:text-white leading-[1.08]">
                 A living graph of campus{' '}
-                <span className="text-[#0A66C2] dark:text-sky-400">engineering talent.</span>
+                <span className="text-[#2563EB] dark:text-sky-400">engineering talent.</span>
               </h1>
 
-              <p className="text-sm sm:text-base text-stone-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base text-[#52525B] dark:text-slate-400 max-w-2xl leading-relaxed">
                 Connecting{' '}
-                <span className="font-semibold text-[#191919] dark:text-white">
+                <span className="font-semibold text-[#09090B] dark:text-white">
                   {projectCount} verified student builds
                 </span>{' '}
                 directly to alumni mentors, 5-minute architecture roasts, and{' '}
-                <span className="font-semibold text-[#0A66C2] dark:text-sky-400">
+                <span className="font-semibold text-[#2563EB] dark:text-sky-400">
                   {dealCount} active hiring deals
                 </span>{' '}
                 across ITER.
@@ -224,13 +224,13 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   href="/student"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white px-6 py-2.5 text-sm font-semibold transition-colors shadow-xs"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 px-6 py-2.5 text-sm font-semibold transition-colors shadow-xs"
                 >
                   Join the Graph <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/alumni"
-                  className="inline-flex items-center gap-2 rounded-full border border-stone-300 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 hover:border-[#0A66C2] px-6 py-2.5 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 hover:border-[#2563EB] px-6 py-2.5 text-sm font-semibold transition-colors"
                 >
                   Explore Talent Nodes
                 </Link>
@@ -238,34 +238,34 @@ export default function HomePage() {
             </div>
 
             <div className="lg:col-span-5 grid grid-cols-2 gap-3 h-full max-h-[250px]">
-              <div className="rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-50/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
                 <span className="text-[11px] font-mono uppercase text-stone-400">
                   Repositories
                 </span>
                 <div>
                   <div className="text-3xl font-bold">{projectCount}</div>
-                  <div className="text-xs text-stone-500 mt-0.5">Live Campus Builds</div>
+                  <div className="text-xs text-[#52525B] mt-0.5">Live Campus Builds</div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-50/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
                 <span className="text-[11px] font-mono uppercase text-stone-400">
                   Marketplace
                 </span>
                 <div>
-                  <div className="text-3xl font-bold text-[#0A66C2] dark:text-sky-400">
+                  <div className="text-3xl font-bold text-[#2563EB] dark:text-sky-400">
                     {dealCount}
                   </div>
-                  <div className="text-xs text-stone-500 mt-0.5">
+                  <div className="text-xs text-[#52525B] mt-0.5">
                     Deals &amp; Paid Bounties
                   </div>
                 </div>
               </div>
-              <div className="col-span-2 rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-50/95 dark:bg-[#0B111D]/95 px-5 py-4 flex items-center justify-between">
+              <div className="col-span-2 rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 px-5 py-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-bold text-[#191919] dark:text-white">
+                  <div className="text-sm font-bold text-[#09090B] dark:text-white">
                     Real-Time Proof-of-Work Sync
                   </div>
-                  <div className="text-xs text-stone-500 dark:text-slate-400">
+                  <div className="text-xs text-[#52525B] dark:text-slate-400">
                     Student ↔ Alumni ↔ Dean Telemetry
                   </div>
                 </div>
@@ -276,11 +276,11 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="relative z-10 pt-4 mt-4 border-t border-stone-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-500 dark:text-slate-400">
+          <div className="relative z-10 pt-4 mt-4 border-t border-stone-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-[#52525B] dark:text-slate-400">
             <span className="font-medium">
               Alumni Engineers Reviewing &amp; Hiring From:
             </span>
-            <div className="flex flex-wrap items-center gap-5 font-semibold text-[#191919] dark:text-slate-200">
+            <div className="flex flex-wrap items-center gap-5 font-semibold text-[#09090B] dark:text-slate-200">
               <span>Razorpay</span>
               <span>Atlassian</span>
               <span>Microsoft</span>
@@ -296,7 +296,7 @@ export default function HomePage() {
             <Link
               key={p.href}
               href={p.href}
-              className="group relative overflow-hidden rounded-2xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] hover:border-[#0A66C2] dark:hover:border-sky-500/60 p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
+              className="group relative overflow-hidden rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] hover:border-[#2563EB] dark:hover:border-sky-500/60 p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
             >
               <div className={`absolute top-0 left-0 right-0 h-1 ${p.topBar}`} />
               <div className="space-y-3">
@@ -306,15 +306,15 @@ export default function HomePage() {
                   >
                     {p.icon}
                   </div>
-                  <span className="rounded-full bg-stone-100 dark:bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-stone-600 dark:text-slate-300">
+                  <span className="rounded-full bg-[#F4F4F5] dark:bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-[#52525B] dark:text-slate-300">
                     {p.badge}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-[#191919] dark:text-white">
+                  <h3 className="text-base sm:text-lg font-bold text-[#09090B] dark:text-white">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-stone-600 dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-[#52525B] dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">
                     {p.desc}
                   </p>
                 </div>
@@ -333,8 +333,8 @@ export default function HomePage() {
 
       {/* FOOT 4: Floating Glass Pill Footer */}
       <div className="px-4 sm:px-6 pb-3">
-        <footer className="max-w-[1440px] mx-auto rounded-full border border-stone-200 dark:border-slate-800 bg-white/95 dark:bg-[#131A26]/95 backdrop-blur px-5 py-2 flex items-center justify-between text-xs text-stone-500 dark:text-slate-400">
-          <span className="font-semibold text-[#191919] dark:text-white">
+        <footer className="max-w-[1440px] mx-auto rounded-full border border-[#E4E4E7] dark:border-slate-800 bg-white/95 dark:bg-[#18181B]/95 backdrop-blur px-5 py-2 flex items-center justify-between text-xs text-[#52525B] dark:text-slate-400">
+          <span className="font-semibold text-[#09090B] dark:text-white">
             AlmaConnect
           </span>
           <span>

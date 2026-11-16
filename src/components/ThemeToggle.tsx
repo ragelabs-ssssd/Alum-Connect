@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { Monitor, Moon, Sun } from 'lucide-react';
@@ -15,7 +15,7 @@ export default function ThemeToggle({ compact = false }: { compact?: boolean }) 
 
   return (
     <div
-      className="inline-flex items-center rounded-full border border-stone-200 dark:border-slate-700/80 bg-stone-100/90 dark:bg-slate-800/80 p-0.5"
+      className="inline-flex items-center rounded-full border border-[#E4E4E7] dark:border-slate-700/80 bg-[#F4F4F5]/90 dark:bg-slate-800/80 p-0.5"
       role="group"
       aria-label="Theme mode"
     >
@@ -29,8 +29,8 @@ export default function ThemeToggle({ compact = false }: { compact?: boolean }) 
             title={`Theme: ${opt.label}`}
             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium transition-all ${
               active
-                ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-xs'
-                : 'text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-slate-200'
+                ? 'bg-white dark:bg-slate-950 text-[#2563EB] dark:text-sky-400 shadow-xs'
+                : 'text-[#52525B] dark:text-slate-400 hover:text-stone-900 dark:hover:text-slate-200'
             }`}
           >
             {opt.icon}

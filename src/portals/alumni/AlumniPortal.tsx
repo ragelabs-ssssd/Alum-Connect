@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
@@ -246,9 +246,9 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
   if (!isSignedIn) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <div className="lg:col-span-6 rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-6 shadow-2xs space-y-4">
+        <div className="lg:col-span-6 rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-6 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-sky-500/10 border border-blue-200 dark:border-sky-500/25 px-3 py-1 text-xs font-semibold text-[#0A66C2] dark:text-sky-400">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-sky-500/10 border border-blue-200 dark:border-sky-500/25 px-3 py-1 text-xs font-semibold text-[#2563EB] dark:text-sky-400">
               <Store className="w-3.5 h-3.5" />
               Alumni Hiring Sign-In
             </span>
@@ -256,7 +256,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
               <button
                 type="button"
                 onClick={onBackToGateway}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-stone-500 dark:text-slate-400 hover:text-[#0A66C2]"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[#52525B] dark:text-slate-400 hover:text-[#2563EB]"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Gateway
@@ -265,10 +265,10 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
           </div>
 
           <div>
-            <h1 className="text-xl font-bold text-[#191919] dark:text-white">
+            <h1 className="text-xl font-bold text-[#09090B] dark:text-white">
               Sign in as an ITER Alumnus / Recruiter
             </h1>
-            <p className="text-xs text-stone-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-[#52525B] dark:text-slate-400 mt-1">
               Review student GitHub builds, commission paid bounties, and fast-track hire squads.
             </p>
           </div>
@@ -284,7 +284,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="vikram@razorpay.com"
-                className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
@@ -296,7 +296,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 <select
                   value={selectedPersona}
                   onChange={(e) => setSelectedPersona(e.target.value as AlumniPersona)}
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 >
                   {PERSONA_OPTIONS.map((p) => (
                     <option key={p.value} value={p.value}>
@@ -313,7 +313,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 <select
                   value={selectedShield}
                   onChange={(e) => setSelectedShield(e.target.value as BandwidthShield)}
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 >
                   {SHIELD_OPTIONS.map((s) => (
                     <option key={s} value={s}>
@@ -333,7 +333,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
             <button
               type="submit"
               disabled={authLoading}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white py-2.5 px-4 text-sm font-semibold transition-colors disabled:opacity-60"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 py-2.5 px-4 text-sm font-semibold transition-colors disabled:opacity-60"
             >
               <LogIn className="w-4 h-4" />
               {authLoading ? 'Signing in...' : 'Enter Hiring Portal'}
@@ -341,8 +341,8 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
           </form>
         </div>
 
-        <div className="lg:col-span-6 rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-6 shadow-2xs space-y-3">
-          <h2 className="text-sm font-bold text-[#191919] dark:text-white">
+        <div className="lg:col-span-6 rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-6 shadow-2xs space-y-3">
+          <h2 className="text-sm font-bold text-[#09090B] dark:text-white">
             Quick Alumni Personas
           </h2>
           <div className="space-y-2.5">
@@ -351,24 +351,24 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 key={alum.id}
                 type="button"
                 onClick={() => handleDemoLogin(alum)}
-                className="w-full text-left rounded-xl border border-stone-200 dark:border-slate-800 bg-stone-50/70 dark:bg-slate-900/60 hover:border-[#0A66C2] p-3 flex items-center justify-between gap-3 transition-colors"
+                className="w-full text-left rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/70 dark:bg-slate-900/60 hover:border-[#2563EB] p-3 flex items-center justify-between gap-3 transition-colors"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <img
                     src={alum.avatar}
                     alt={alum.name}
-                    className="h-10 w-10 rounded-full object-cover border border-stone-200 dark:border-slate-700"
+                    className="h-10 w-10 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700"
                   />
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-[#191919] dark:text-white truncate">
+                    <div className="text-sm font-semibold text-[#09090B] dark:text-white truncate">
                       {alum.name}
                     </div>
-                    <div className="text-xs text-stone-500 dark:text-slate-400 truncate">
+                    <div className="text-xs text-[#52525B] dark:text-slate-400 truncate">
                       {alum.headline} • {alum.company}
                     </div>
                   </div>
                 </div>
-                <span className="shrink-0 text-xs font-semibold text-[#0A66C2] dark:text-sky-400">
+                <span className="shrink-0 text-xs font-semibold text-[#2563EB] dark:text-sky-400">
                   Use →
                 </span>
               </button>
@@ -382,16 +382,16 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* LinkedIn-style Hiring Portal Header */}
-      <div className="rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-4 sm:p-5 shadow-2xs flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-4 sm:p-5 shadow-2xs flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
           <img
             src={activeAlum.avatar}
             alt={activeAlum.name}
-            className="h-12 w-12 rounded-full object-cover border border-stone-200 dark:border-slate-700"
+            className="h-12 w-12 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700"
           />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-base sm:text-lg font-bold text-[#191919] dark:text-white">
+              <h1 className="text-base sm:text-lg font-bold text-[#09090B] dark:text-white">
                 {activeAlum.name} — Hiring Portal
               </h1>
               {activeAlum.bandwidthShield && (
@@ -401,21 +401,21 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 </span>
               )}
             </div>
-            <p className="text-xs text-stone-500 dark:text-slate-400">
+            <p className="text-xs text-[#52525B] dark:text-slate-400">
               {activeAlum.headline} • {activeAlum.company || 'ITER Alumni'}
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 rounded-full bg-stone-100 dark:bg-slate-800/90 p-1 border border-stone-200 dark:border-slate-700/80">
+          <div className="flex items-center gap-1 rounded-full bg-[#F4F4F5] dark:bg-slate-800/90 p-1 border border-[#E4E4E7] dark:border-slate-700/80">
             <button
               type="button"
               onClick={() => setActiveTab('marketplace')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === 'marketplace'
-                  ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-2xs'
-                  : 'text-stone-600 dark:text-slate-400'
+                  ? 'bg-white dark:bg-slate-950 text-[#2563EB] dark:text-sky-400 shadow-2xs'
+                  : 'text-[#52525B] dark:text-slate-400'
               }`}
             >
               Talent Marketplace ({filteredProducts.length})
@@ -425,8 +425,8 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
               onClick={() => setActiveTab('bounties')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === 'bounties'
-                  ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-2xs'
-                  : 'text-stone-600 dark:text-slate-400'
+                  ? 'bg-white dark:bg-slate-950 text-[#2563EB] dark:text-sky-400 shadow-2xs'
+                  : 'text-[#52525B] dark:text-slate-400'
               }`}
             >
               Bounties &amp; Gigs ({bounties.length})
@@ -436,8 +436,8 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
               onClick={() => setActiveTab('deal_rooms')}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
                 activeTab === 'deal_rooms'
-                  ? 'bg-white dark:bg-slate-950 text-[#0A66C2] dark:text-sky-400 shadow-2xs'
-                  : 'text-stone-600 dark:text-slate-400'
+                  ? 'bg-white dark:bg-slate-950 text-[#2563EB] dark:text-sky-400 shadow-2xs'
+                  : 'text-[#52525B] dark:text-slate-400'
               }`}
             >
               Deal Rooms ({dealRooms.length})
@@ -447,7 +447,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
           <button
             type="button"
             onClick={() => setIsSignedIn(false)}
-            className="rounded-full border border-stone-200 dark:border-slate-700 px-3 py-1.5 text-xs font-semibold text-stone-600 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-slate-800 transition-colors"
+            className="rounded-full border border-[#E4E4E7] dark:border-slate-700 px-3 py-1.5 text-xs font-semibold text-[#52525B] dark:text-slate-300 hover:bg-[#F4F4F5] dark:hover:bg-slate-800 transition-colors"
           >
             Switch Alum
           </button>
@@ -458,7 +458,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
       {activeTab === 'marketplace' && (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-4 shadow-2xs flex flex-wrap items-center justify-between gap-3">
+          <div className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-4 shadow-2xs flex flex-wrap items-center justify-between gap-3">
             <div className="relative flex-1 min-w-[220px]">
               <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
@@ -466,7 +466,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search student builds, tech stack, or squad members..."
-                className="w-full rounded-full border border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-900 pl-8 pr-3 py-1.5 text-xs text-[#191919] dark:text-slate-100 focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 pl-8 pr-3 py-1.5 text-xs text-[#09090B] dark:text-slate-100 focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
@@ -478,7 +478,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     e.target.value as 'all' | CampusProduct['hiringStatus']
                   )
                 }
-                className="rounded-full border border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-900 px-3 py-1.5 text-xs text-[#191919] dark:text-slate-200 focus:outline-none"
+                className="rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 px-3 py-1.5 text-xs text-[#09090B] dark:text-slate-200 focus:outline-none"
               >
                 {DEAL_STATUS_FILTERS.map((s) => (
                   <option key={s} value={s}>
@@ -494,7 +494,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     e.target.value as 'all' | CampusProduct['category']
                   )
                 }
-                className="rounded-full border border-stone-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-900 px-3 py-1.5 text-xs text-[#191919] dark:text-slate-200 focus:outline-none"
+                className="rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 px-3 py-1.5 text-xs text-[#09090B] dark:text-slate-200 focus:outline-none"
               >
                 {CATEGORY_FILTERS.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -508,8 +508,8 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 onClick={() => setVouchedOnly((v) => !v)}
                 className={`rounded-full px-3 py-1.5 text-xs font-semibold border transition-colors ${
                   vouchedOnly
-                    ? 'bg-[#0A66C2] text-white border-[#0A66C2]'
-                    : 'bg-white dark:bg-slate-900 text-stone-600 dark:text-slate-300 border-stone-200 dark:border-slate-700'
+                    ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                    : 'bg-white dark:bg-slate-900 text-[#52525B] dark:text-slate-300 border-[#E4E4E7] dark:border-slate-700'
                 }`}
               >
                 Verified Only
@@ -524,7 +524,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
               return (
                 <div
                   key={product.id}
-                  className="rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-4 shadow-2xs flex flex-col justify-between space-y-3"
+                  className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-4 shadow-2xs flex flex-col justify-between space-y-3"
                 >
                   <div className="space-y-2.5">
                     <div className="flex items-start justify-between gap-2">
@@ -532,13 +532,13 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                         <img
                           src={lead?.avatar || activeAlum.avatar}
                           alt={lead?.name || 'Lead'}
-                          className="h-10 w-10 rounded-full object-cover border border-stone-200 dark:border-slate-700 shrink-0"
+                          className="h-10 w-10 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700 shrink-0"
                         />
                         <div className="min-w-0">
-                          <h3 className="text-sm font-bold text-[#191919] dark:text-white truncate">
+                          <h3 className="text-sm font-bold text-[#09090B] dark:text-white truncate">
                             {product.title}
                           </h3>
-                          <p className="text-[11px] text-stone-500 dark:text-slate-400 truncate">
+                          <p className="text-[11px] text-[#52525B] dark:text-slate-400 truncate">
                             {lead?.name || 'Campus Squad'} • {product.hiringStatus}
                           </p>
                         </div>
@@ -546,28 +546,28 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                       <button
                         type="button"
                         onClick={() => openLiveDemoModal(product)}
-                        className="shrink-0 inline-flex items-center gap-1 rounded-full border border-stone-200 dark:border-slate-700 px-2.5 py-1 text-[11px] font-semibold text-stone-700 dark:text-slate-200 hover:bg-stone-100 dark:hover:bg-slate-800"
+                        className="shrink-0 inline-flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-slate-700 px-2.5 py-1 text-[11px] font-semibold text-stone-700 dark:text-slate-200 hover:bg-[#F4F4F5] dark:hover:bg-slate-800"
                       >
                         <Eye className="w-3 h-3" />
                         Inspect
                       </button>
                     </div>
 
-                    <p className="text-xs text-stone-600 dark:text-slate-300 leading-relaxed">
+                    <p className="text-xs text-[#52525B] dark:text-slate-300 leading-relaxed">
                       {product.tagline}
                     </p>
 
                     {/* Compact GitHub Repo Bar */}
-                    <div className="rounded-lg border border-stone-200 dark:border-slate-700/80 bg-[#F8FAFC] dark:bg-[#0D1422] px-3 py-2 flex items-center justify-between gap-2 text-[11px]">
+                    <div className="rounded-lg border border-[#E4E4E7] dark:border-slate-700/80 bg-[#F8FAFC] dark:bg-[#0D1422] px-3 py-2 flex items-center justify-between gap-2 text-[11px]">
                       <span className="inline-flex items-center gap-1.5 font-mono text-stone-700 dark:text-slate-200 truncate">
-                        <GitBranch className="w-3.5 h-3.5 text-[#0A66C2] dark:text-sky-400 shrink-0" />
+                        <GitBranch className="w-3.5 h-3.5 text-[#2563EB] dark:text-sky-400 shrink-0" />
                         {product.commitsCount} commits • {product.vouches.length} vouches
                       </span>
                       <a
                         href={product.githubUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 font-semibold text-[#0A66C2] dark:text-sky-400 hover:underline shrink-0"
+                        className="inline-flex items-center gap-1 font-semibold text-[#2563EB] dark:text-sky-400 hover:underline shrink-0"
                       >
                         <Code2 className="w-3 h-3" />
                         Repo
@@ -580,7 +580,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     <button
                       type="button"
                       onClick={() => openRoastModal(product)}
-                      className="inline-flex items-center justify-center gap-1 rounded-full border border-stone-200 dark:border-slate-700 hover:bg-stone-100 dark:hover:bg-slate-800 py-1.5 text-xs font-semibold text-stone-700 dark:text-slate-200"
+                      className="inline-flex items-center justify-center gap-1 rounded-full border border-[#E4E4E7] dark:border-slate-700 hover:bg-[#F4F4F5] dark:hover:bg-slate-800 py-1.5 text-xs font-semibold text-stone-700 dark:text-slate-200"
                     >
                       <Flame className="w-3.5 h-3.5 text-amber-500" />
                       Roast
@@ -588,7 +588,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     <button
                       type="button"
                       onClick={() => openVouchModal(product)}
-                      className="inline-flex items-center justify-center gap-1 rounded-full border border-[#0A66C2] dark:border-sky-500/60 hover:bg-blue-50 dark:hover:bg-sky-500/10 py-1.5 text-xs font-semibold text-[#0A66C2] dark:text-sky-400"
+                      className="inline-flex items-center justify-center gap-1 rounded-full border border-[#2563EB] dark:border-sky-500/60 hover:bg-blue-50 dark:hover:bg-sky-500/10 py-1.5 text-xs font-semibold text-[#2563EB] dark:text-sky-400"
                     >
                       <Award className="w-3.5 h-3.5" />
                       Vouch
@@ -596,7 +596,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     <button
                       type="button"
                       onClick={() => openDealRoomModal(product, 'fast_track_interview')}
-                      className="inline-flex items-center justify-center gap-1 rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white py-1.5 text-xs font-semibold"
+                      className="inline-flex items-center justify-center gap-1 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 py-1.5 text-xs font-semibold"
                     >
                       <UserCheck className="w-3.5 h-3.5" />
                       Hire
@@ -614,10 +614,10 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <form
             onSubmit={handleCreateBounty}
-            className="lg:col-span-5 rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-5 shadow-2xs space-y-3.5"
+            className="lg:col-span-5 rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-5 shadow-2xs space-y-3.5"
           >
-            <h2 className="text-sm font-bold text-[#191919] dark:text-white flex items-center gap-1.5">
-              <PlusCircle className="w-4 h-4 text-[#0A66C2] dark:text-sky-400" />
+            <h2 className="text-sm font-bold text-[#09090B] dark:text-white flex items-center gap-1.5">
+              <PlusCircle className="w-4 h-4 text-[#2563EB] dark:text-sky-400" />
               Commission Paid Sprint Bounty
             </h2>
 
@@ -638,7 +638,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 value={bountyTitle}
                 onChange={(e) => setBountyTitle(e.target.value)}
                 placeholder="e.g., Build Webhook Retry Queue"
-                className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
@@ -651,7 +651,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                   type="text"
                   value={bountyStipend}
                   onChange={(e) => setBountyStipend(e.target.value)}
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 />
               </div>
               <div>
@@ -663,7 +663,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                   onChange={(e) =>
                     setBountyCohort(e.target.value as StudentCohort | 'All')
                   }
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 >
                   {COHORT_OPTIONS.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -683,7 +683,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                   type="text"
                   value={bountyDuration}
                   onChange={(e) => setBountyDuration(e.target.value)}
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 />
               </div>
               <div>
@@ -694,7 +694,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                   type="text"
                   value={bountyDeadline}
                   onChange={(e) => setBountyDeadline(e.target.value)}
-                  className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                  className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
                 />
               </div>
             </div>
@@ -707,7 +707,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 type="text"
                 value={bountySkills}
                 onChange={(e) => setBountySkills(e.target.value)}
-                className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
@@ -719,7 +719,7 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 type="text"
                 value={bountyDeliverables}
                 onChange={(e) => setBountyDeliverables(e.target.value)}
-                className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
@@ -732,14 +732,14 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                 value={bountyDescription}
                 onChange={(e) => setBountyDescription(e.target.value)}
                 placeholder="Describe acceptance criteria and evaluation rubric..."
-                className="w-full rounded-lg border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#191919] dark:text-white focus:border-[#0A66C2] focus:outline-none"
+                className="w-full rounded-lg border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-[#09090B] dark:text-white focus:border-[#2563EB] focus:outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={bountySubmitting}
-              className="w-full rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white py-2.5 px-4 text-xs font-semibold transition-colors"
+              className="w-full rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 py-2.5 px-4 text-xs font-semibold transition-colors"
             >
               Publish Paid Bounty
             </button>
@@ -749,14 +749,14 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
             {bounties.map((bounty) => (
               <div
                 key={bounty.id}
-                className="rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-4 shadow-2xs space-y-2"
+                className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-4 shadow-2xs space-y-2"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h3 className="text-sm font-bold text-[#191919] dark:text-white">
+                    <h3 className="text-sm font-bold text-[#09090B] dark:text-white">
                       {bounty.title}
                     </h3>
-                    <p className="text-xs text-stone-500 dark:text-slate-400">
+                    <p className="text-xs text-[#52525B] dark:text-slate-400">
                       {bounty.company} • {bounty.duration} • Due {bounty.deadline}
                     </p>
                   </div>
@@ -764,12 +764,12 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
                     {bounty.stipend}
                   </span>
                 </div>
-                <p className="text-xs text-stone-600 dark:text-slate-300">
+                <p className="text-xs text-[#52525B] dark:text-slate-300">
                   {bounty.description}
                 </p>
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-stone-500 dark:text-slate-400">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px] text-[#52525B] dark:text-slate-400">
                   <span>{bounty.appliedSquadsCount} squads applied</span>
-                  <span className="font-semibold text-[#0A66C2] dark:text-sky-400">
+                  <span className="font-semibold text-[#2563EB] dark:text-sky-400">
                     {bounty.status}
                   </span>
                 </div>
@@ -785,21 +785,21 @@ export default function AlumniPortal({ onBackToGateway }: AlumniPortalProps) {
           {dealRooms.map((deal) => (
             <div
               key={deal.id}
-              className="rounded-xl border border-stone-200 dark:border-slate-800 bg-white dark:bg-[#131A26] p-5 shadow-2xs space-y-2.5"
+              className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-5 shadow-2xs space-y-2.5"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-[#0A66C2] dark:text-sky-400" />
-                  <h3 className="text-sm font-bold text-[#191919] dark:text-white">
+                  <Briefcase className="w-4 h-4 text-[#2563EB] dark:text-sky-400" />
+                  <h3 className="text-sm font-bold text-[#09090B] dark:text-white">
                     {deal.productTitle}
                   </h3>
                 </div>
-                <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 border border-blue-200 dark:border-sky-500/25 px-2.5 py-0.5 text-[11px] font-semibold text-[#0A66C2] dark:text-sky-400">
+                <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 border border-blue-200 dark:border-sky-500/25 px-2.5 py-0.5 text-[11px] font-semibold text-[#2563EB] dark:text-sky-400">
                   {deal.status}
                 </span>
               </div>
-              <p className="text-xs text-stone-600 dark:text-slate-300">{deal.message}</p>
-              <div className="pt-2 border-t border-stone-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-stone-500 dark:text-slate-400">
+              <p className="text-xs text-[#52525B] dark:text-slate-300">{deal.message}</p>
+              <div className="pt-2 border-t border-stone-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-[#52525B] dark:text-slate-400">
                 <span>
                   {deal.senderName} • {deal.senderCompany}
                 </span>
