@@ -18,7 +18,6 @@ import {
   MessageSquare,
   Plus,
   Search,
-  Sparkles,
   ThumbsUp,
   Users,
 } from 'lucide-react';
@@ -543,7 +542,6 @@ export default function StudentFeedSection({
           {/* Feed Cards */}
           {visibleProducts.length === 0 ? (
             <div className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-8 text-center space-y-2">
-              <Sparkles className="w-6 h-6 text-[#2563EB] mx-auto" />
               <p className="text-sm font-semibold text-[#09090B] dark:text-white">
                 No matching builds found
               </p>

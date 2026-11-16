@@ -13,7 +13,6 @@ import {
   Lock,
   Mail,
   Rocket,
-  Sparkles,
   Users,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
@@ -436,7 +435,6 @@ export default function LoginPage() {
 
         <div className="relative z-10 space-y-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 px-3 py-1 text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
             ITER Campus-to-Industry Flywheel
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight leading-snug pt-2">

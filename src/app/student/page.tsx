@@ -22,7 +22,6 @@ import {
   Newspaper,
   Plus,
   Search,
-  Sparkles,
   ThumbsUp,
   User,
   UserPlus,
@@ -1253,7 +1252,7 @@ export default function StudentStudioPage() {
           <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+                <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
                 Latest Alumni Jobs
               </h3>
               <button

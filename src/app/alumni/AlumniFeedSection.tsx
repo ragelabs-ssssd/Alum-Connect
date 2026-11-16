@@ -17,7 +17,6 @@ import {
   Plus,
   Search,
   ShieldCheck,
-  Sparkles,
   UserCheck,
 } from 'lucide-react';
 
@@ -402,7 +401,6 @@ export default function AlumniFeedSection({ onOpenPortal }: AlumniFeedSectionPro
 
           {visibleProducts.length === 0 ? (
             <div className="rounded-xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-8 text-center space-y-2">
-              <Sparkles className="w-6 h-6 text-[#2563EB] mx-auto" />
               <p className="text-sm font-semibold text-[#09090B] dark:text-white">
                 {scope === 'for_you'
                   ? 'No reviews or deal rooms under this persona yet'
