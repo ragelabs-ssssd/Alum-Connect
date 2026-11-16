@@ -768,6 +768,16 @@ export default function StudentStudioPage() {
                       }
                     )}
                   </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7] dark:border-zinc-800">
+                    <span className="inline-flex items-center gap-1 font-bold text-[#09090B] dark:text-white">
+                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      4.9 / 5.0
+                    </span>
+                    <span className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                      Rated by 12 Alums
+                    </span>
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
@@ -1710,29 +1720,6 @@ export default function StudentStudioPage() {
                 })}
               </div>
 
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400">
-                  Referral Readiness
-                </h3>
-                {[
-                  { label: `${myBuilds.length} Live Demos Linked`, sub: 'Meets MNC referral bar', badge: 'Ready' },
-                  { label: '4 Alumni Endorsements', sub: 'Verified credibility', badge: 'Top 5%' },
-                ].map((r) => (
-                  <div
-                    key={r.label}
-                    className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 flex items-center justify-between text-xs"
-                  >
-                    <div className="min-w-0">
-                      <div className="font-semibold truncate">{r.label}</div>
-                      <div className="text-[10px] text-[#52525B] truncate">{r.sub}</div>
-                    </div>
-                    <span className="rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 text-[10px] font-bold">
-                      {r.badge}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
               <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
@@ -1760,11 +1747,10 @@ export default function StudentStudioPage() {
                               setBookedChats((b) => ({ ...b, [m.id]: true }));
                               notify(`Booked 15-min chat with ${m.name}!`);
                             }}
-                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                              booked
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                            }`}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${booked
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                              }`}
                           >
                             {booked ? 'Booked ✓' : 'Book 15m'}
                           </button>
