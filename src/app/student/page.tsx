@@ -630,10 +630,6 @@ export default function StudentStudioPage() {
               </div>
 
               <div className="space-y-1">
-                <div className="flex items-center gap-1.5">
-                  <h2 className="text-sm font-bold">Ananya Mohanty</h2>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
-                </div>
                 <h2 className="text-sm font-bold">Ananya Mohanty</h2>
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   3rd Year CSE • ITER Bhubaneswar
@@ -688,6 +684,37 @@ export default function StudentStudioPage() {
                 Open Full Profile
               </button>
             </div>
+          </div>
+
+          {/* Quick Saved under Profile Section */}
+          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+              <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
+              Quick Saved ({Object.values(savedIds).filter(Boolean).length})
+            </h3>
+            {builds.filter((b) => savedIds[b.id]).length === 0 ? (
+              <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                Bookmark any project or research paper to pin it here.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {builds
+                  .filter((b) => savedIds[b.id])
+                  .map((b) => (
+                    <button
+                      key={b.id}
+                      type="button"
+                      onClick={() => setCaseStudyItem(b)}
+                      className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 hover:border-[#2563EB] border border-transparent transition-colors"
+                    >
+                      <div className="text-xs font-semibold truncate">{b.title}</div>
+                      <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                        {b.domain}
+                      </div>
+                    </button>
+                  ))}
+              </div>
+            )}
           </div>
         </aside>
 
@@ -1360,37 +1387,6 @@ export default function StudentStudioPage() {
                     );
                   })}
                 </div>
-              </div>
-
-              {/* Option 6: Quick Saved */}
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                  <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
-                  Quick Saved ({Object.values(savedIds).filter(Boolean).length})
-                </h3>
-                {builds.filter((b) => savedIds[b.id]).length === 0 ? (
-                  <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                    Bookmark any project or research paper to pin it here.
-                  </p>
-                ) : (
-                  <div className="space-y-2">
-                    {builds
-                      .filter((b) => savedIds[b.id])
-                      .map((b) => (
-                        <button
-                          key={b.id}
-                          type="button"
-                          onClick={() => setCaseStudyItem(b)}
-                          className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 hover:border-[#2563EB] border border-transparent transition-colors"
-                        >
-                          <div className="text-xs font-semibold truncate">{b.title}</div>
-                          <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                            {b.domain}
-                          </div>
-                        </button>
-                      ))}
-                  </div>
-                )}
               </div>
             </>
           )}
