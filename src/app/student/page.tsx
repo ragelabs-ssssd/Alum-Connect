@@ -1826,6 +1826,41 @@ export default function StudentStudioPage() {
                   </Link>
                 </div>
               </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-gradient-to-b from-[#09090B] via-[#111827] to-[#1E293B] text-white p-4 space-y-3 shadow-2xs">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-2.5 py-0.5 text-[10px] font-semibold text-sky-300">
+                    <Award className="w-3 h-3" />
+                    Student Story of the Week
+                  </span>
+                  <span className="text-[10px] font-semibold text-emerald-300">Featured</span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h4 className="text-sm font-bold leading-snug">
+                    From a 10-day campus build to a direct Razorpay engineering interview.
+                  </h4>
+                  <p className="text-[11px] text-zinc-300 leading-relaxed">
+                    Share your product story, attach a live walkthrough, and let ITER alumni endorse your real engineering craft.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-2 pt-1">
+                  <Link
+                    href="/share-project"
+                    className="w-full text-center rounded-full bg-[#2563EB] hover:bg-blue-500 text-white py-2 text-xs font-semibold transition-colors"
+                  >
+                    Publish Your Case Study
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setSection('jobs')}
+                    className="w-full rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white py-1.5 text-xs font-semibold transition-colors"
+                  >
+                    Browse Alumni Jobs →
+                  </button>
+                </div>
+              </div>
             </>
           )}
         </aside>
