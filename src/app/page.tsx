@@ -120,10 +120,6 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {projectCount} Active Projects
-            </span>
             <ThemeToggle compact />
           </div>
         </div>
