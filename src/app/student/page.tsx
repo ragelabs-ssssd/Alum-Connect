@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Award,
   Bell,
+  BookOpen,
   Bookmark,
   Briefcase,
   Building2,
@@ -14,10 +15,12 @@ import {
   CheckCircle2,
   Compass,
   ExternalLink,
+  FileCheck2,
   GitBranch,
   Home,
   Layers,
   MapPin,
+  Megaphone,
   MessageSquare,
   Newspaper,
   Plus,
@@ -620,106 +623,331 @@ export default function StudentStudioPage() {
 
       {/* ==================== MAIN 3-COLUMN SHELL ==================== */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT RAIL: Student Identity (Hidden on My Profile tab so main profile expands) */}
+        {/* LEFT RAIL: Per-Page Contextual Rail (Hidden on My Profile tab so main profile expands) */}
         {section !== 'profile' && (
           <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
-          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
-            {/* Back Banner */}
-            <div className="h-16 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
+            {/* 1. HOME FEED -> Mini Profile Card + Quick Saved */}
+            {section === 'home' && (
+              <>
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+                  {/* Back Banner */}
+                  <div className="h-16 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
 
-            <div className="px-5 pb-5 -mt-8 space-y-3.5">
-              <div className="h-14 w-14 rounded-2xl bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 border-4 border-white dark:border-zinc-900 flex items-center justify-center font-bold text-sm shadow-xs">
-                AM
-              </div>
-
-              <div className="space-y-1">
-                <h2 className="text-sm font-bold">Ananya Mohanty</h2>
-                <p className="text-xs text-[#52525B] dark:text-zinc-400">
-                  3rd Year CSE • ITER Bhubaneswar
-                </p>
-                <p className="text-xs text-[#09090B] dark:text-zinc-200 leading-relaxed pt-0.5">
-                  Building FinTech &amp; Next.js products • Open to SDE Internships
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  Secured Internship • Razorpay (PPO Track)
-                </span>
-              </div>
-
-              {/* Working On vs Pushed Live + Alumni Rating */}
-              <div className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-2.5 text-xs">
-                <div className="grid grid-cols-2 gap-2 text-center">
-                  <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
-                    <div className="text-sm font-bold">2</div>
-                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                      Working On
+                  <div className="px-5 pb-5 -mt-8 space-y-3.5">
+                    <div className="h-14 w-14 rounded-2xl bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 border-4 border-white dark:border-zinc-900 flex items-center justify-center font-bold text-sm shadow-xs">
+                      AM
                     </div>
-                  </div>
-                  <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
-                    <div className="text-sm font-bold text-[#2563EB]">
-                      {myBuilds.length}
+
+                    <div className="space-y-1">
+                      <h2 className="text-sm font-bold">Ananya Mohanty</h2>
+                      <p className="text-xs text-[#52525B] dark:text-zinc-400">
+                        3rd Year CSE • ITER Bhubaneswar
+                      </p>
+                      <p className="text-xs text-[#09090B] dark:text-zinc-200 leading-relaxed pt-0.5">
+                        Building FinTech &amp; Next.js products • Open to SDE Internships
+                      </p>
                     </div>
-                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                      Pushed Live
+
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        Secured Internship • Razorpay (PPO Track)
+                      </span>
                     </div>
+
+                    {/* Working On vs Pushed Live + Alumni Rating */}
+                    <div className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-2.5 text-xs">
+                      <div className="grid grid-cols-2 gap-2 text-center">
+                        <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
+                          <div className="text-sm font-bold">2</div>
+                          <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                            Working On
+                          </div>
+                        </div>
+                        <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
+                          <div className="text-sm font-bold text-[#2563EB]">
+                            {myBuilds.length}
+                          </div>
+                          <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                            Pushed Live
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7] dark:border-zinc-800">
+                        <span className="inline-flex items-center gap-1 font-bold text-[#09090B] dark:text-white">
+                          <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                          4.9 / 5.0
+                        </span>
+                        <span className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                          Rated by 12 Alums
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setSection('profile')}
+                      className="w-full rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white py-2 text-xs font-semibold transition-colors"
+                    >
+                      Open Full Profile
+                    </button>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7] dark:border-zinc-800">
-                  <span className="inline-flex items-center gap-1 font-bold text-[#09090B] dark:text-white">
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    4.9 / 5.0
-                  </span>
-                  <span className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                    Rated by 12 Alums
-                  </span>
+                {/* Quick Saved under Profile Section */}
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Quick Saved ({Object.values(savedIds).filter(Boolean).length})
+                  </h3>
+                  {builds.filter((b) => savedIds[b.id]).length === 0 ? (
+                    <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                      Bookmark any project or research paper to pin it here.
+                    </p>
+                  ) : (
+                    <div className="space-y-2">
+                      {builds
+                        .filter((b) => savedIds[b.id])
+                        .map((b) => (
+                          <button
+                            key={b.id}
+                            type="button"
+                            onClick={() => setCaseStudyItem(b)}
+                            className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 hover:border-[#2563EB] border border-transparent transition-colors"
+                          >
+                            <div className="text-xs font-semibold truncate">{b.title}</div>
+                            <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                              {b.domain}
+                            </div>
+                          </button>
+                        ))}
+                    </div>
+                  )}
                 </div>
-              </div>
+              </>
+            )}
 
-              <button
-                type="button"
-                onClick={() => setSection('profile')}
-                className="w-full rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white py-2 text-xs font-semibold transition-colors"
-              >
-                Open Full Profile
-              </button>
-            </div>
-          </div>
+            {/* 2. EXPLORE TECH NOW -> Option 1 (Tech Stack Filter Tree) then Option 4 (Live Hackathons & CFPs) */}
+            {section === 'explore' && (
+              <>
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                      <Compass className="w-3.5 h-3.5 text-[#2563EB]" />
+                      Filter By Stack
+                    </h3>
+                    {search && (
+                      <button
+                        type="button"
+                        onClick={() => setSearch('')}
+                        className="text-[10px] font-semibold text-[#2563EB] hover:underline"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {['Next.js', 'PyTorch', 'Rust', 'System Design', 'Cloud', 'FinTech'].map(
+                      (tag) => {
+                        const active = search.toLowerCase() === tag.toLowerCase();
+                        return (
+                          <button
+                            key={tag}
+                            type="button"
+                            onClick={() => setSearch(active ? '' : tag)}
+                            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                              active
+                                ? 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                                : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                            }`}
+                          >
+                            {tag}
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
 
-          {/* Quick Saved under Profile Section */}
-          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-              <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
-              Quick Saved ({Object.values(savedIds).filter(Boolean).length})
-            </h3>
-            {builds.filter((b) => savedIds[b.id]).length === 0 ? (
-              <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                Bookmark any project or research paper to pin it here.
-              </p>
-            ) : (
-              <div className="space-y-2">
-                {builds
-                  .filter((b) => savedIds[b.id])
-                  .map((b) => (
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Hackathons &amp; CFPs
+                  </h3>
+                  {[
+                    { name: 'SOA FinTech Buildathon', due: '3d left', tag: '₹50k Prize' },
+                    { name: 'IEEE Student Paper CFP', due: '11d left', tag: 'Abstract' },
+                  ].map((h) => (
+                    <button
+                      key={h.name}
+                      type="button"
+                      onClick={() => notify(`Opened details for ${h.name} (${h.due})`)}
+                      className="w-full text-left rounded-xl border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between gap-2 hover:border-[#2563EB] transition-colors"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold truncate">{h.name}</div>
+                        <div className="text-[10px] text-[#52525B] dark:text-zinc-400">{h.tag}</div>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
+                        {h.due}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* 3. ALUMNI JOBS -> Option 2 (Saved Jobs & Shortlist) then Option 6 (Interview Prep Bank) */}
+            {section === 'jobs' && (
+              <>
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Bookmark className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Saved Roles ({ALUMNI_JOBS.slice(0, 2).length})
+                  </h3>
+                  {ALUMNI_JOBS.slice(0, 2).map((job) => {
+                    const applied = !!appliedJobs[job.id];
+                    return (
+                      <div
+                        key={job.id}
+                        className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-2.5 flex items-center justify-between gap-2 text-xs"
+                      >
+                        <div className="min-w-0">
+                          <div className="font-bold truncate">{job.company}</div>
+                          <div className="text-[10px] text-[#52525B] dark:text-zinc-400 truncate">
+                            {job.role}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          disabled={applied}
+                          onClick={() => {
+                            setAppliedJobs((prev) => ({ ...prev, [job.id]: true }));
+                            notify(`Referral request sent for ${job.company}!`);
+                          }}
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
+                            applied
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#2563EB] text-white hover:bg-blue-700'
+                          }`}
+                        >
+                          {applied ? 'Applied ✓' : 'Apply'}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <BookOpen className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Interview Prep Bank
+                  </h3>
+                  {[
+                    { co: 'Razorpay OA', topic: 'Rate Limiter + SQL Joins' },
+                    { co: 'Atlassian LLD', topic: 'Middleware Router Design' },
+                    { co: 'Microsoft SDE', topic: 'Trees, Graphs & Concurrency' },
+                  ].map((p) => (
+                    <button
+                      key={p.co}
+                      type="button"
+                      onClick={() => notify(`Loaded prep notes for ${p.co}: ${p.topic}`)}
+                      className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 text-xs hover:border-[#2563EB] border border-transparent transition-colors"
+                    >
+                      <div className="font-bold">{p.co}</div>
+                      <div className="text-[10px] text-[#52525B] dark:text-zinc-400">{p.topic}</div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* 4. NOTIFICATIONS -> Option 7 (Upcoming Coffee Chats) then Option 9 (Campus Announcements) then Option 8 (Submission Status Feed) */}
+            {section === 'notifications' && (
+              <>
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Booked Chats
+                  </h3>
+                  {MENTOR_CHATS.slice(0, 1).map((m) => {
+                    const booked = !!bookedChats[m.id];
+                    return (
+                      <div
+                        key={m.id}
+                        className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs space-y-1"
+                      >
+                        <div className="font-bold">
+                          {m.name} • {m.time}
+                        </div>
+                        <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                          {m.topic}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!booked) {
+                              setBookedChats((b) => ({ ...b, [m.id]: true }));
+                              notify(`Booked 15-min chat with ${m.name}!`);
+                            } else {
+                              notify(`Joining Google Meet with ${m.name}...`);
+                            }
+                          }}
+                          className="text-[10px] text-[#2563EB] font-semibold hover:underline"
+                        >
+                          {booked ? 'Join Google Meet →' : 'Book 15m Slot →'}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Megaphone className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Campus Notices
+                  </h3>
+                  {[
+                    { title: 'Alumni Townhall • Nov 22', sub: 'ITER Auditorium + Live Stream' },
+                    { title: 'Winter Internship Drive • Nov 25', sub: 'Placement Cell • Pre-register' },
+                  ].map((n) => (
+                    <div
+                      key={n.title}
+                      className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs space-y-0.5"
+                    >
+                      <div className="font-bold">{n.title}</div>
+                      <div className="text-[10px] text-[#52525B] dark:text-zinc-400">{n.sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <FileCheck2 className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Submission Status
+                  </h3>
+                  {myBuilds.slice(0, 2).map((b, idx) => (
                     <button
                       key={b.id}
                       type="button"
                       onClick={() => setCaseStudyItem(b)}
-                      className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 hover:border-[#2563EB] border border-transparent transition-colors"
+                      className="w-full text-left rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-2.5 flex items-center justify-between gap-2 text-xs hover:border-[#2563EB] transition-colors"
                     >
-                      <div className="text-xs font-semibold truncate">{b.title}</div>
-                      <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                        {b.domain}
-                      </div>
+                      <span className="font-semibold truncate">{b.title}</span>
+                      <span
+                        className={`text-[10px] font-bold shrink-0 ${
+                          b.endorsement || idx === 0 ? 'text-emerald-600' : 'text-[#2563EB]'
+                        }`}
+                      >
+                        {b.endorsement || idx === 0 ? 'Endorsed ✓' : 'Under Review'}
+                      </span>
                     </button>
                   ))}
-              </div>
+                </div>
+              </>
             )}
-          </div>
-        </aside>
+          </aside>
         )}
 
         {/* CENTER STAGE: 5-TAB CONTENT */}
