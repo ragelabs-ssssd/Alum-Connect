@@ -581,48 +581,64 @@ export default function StudentStudioPage() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT RAIL: Student Identity */}
         <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
-          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-5 space-y-4">
-            <div className="flex items-center gap-3.5">
-              <div className="h-12 w-12 rounded-2xl bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center font-bold text-sm">
+          <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+            {/* Back Banner */}
+            <div className="h-16 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
+
+            <div className="px-5 pb-5 -mt-8 space-y-3.5">
+              <div className="h-14 w-14 rounded-2xl bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 border-4 border-white dark:border-zinc-900 flex items-center justify-center font-bold text-sm shadow-xs">
                 AM
               </div>
-              <div>
-                <h2 className="text-sm font-bold">Ananya Mohanty</h2>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5">
+                  <h2 className="text-sm font-bold">Ananya Mohanty</h2>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+                </div>
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   3rd Year CSE • ITER Bhubaneswar
                 </p>
+                <p className="text-xs text-[#09090B] dark:text-zinc-200 truncate pt-0.5">
+                  Building FinTech &amp; Next.js products • Open to SDE Internships
+                </p>
               </div>
-            </div>
 
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-3 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Open to Internships &amp; Squads
-            </div>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-3 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Open to Internships &amp; Squads
+              </div>
 
-            <div className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3.5 space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[#52525B] dark:text-zinc-400">Case Studies</span>
-                <span className="font-bold">{myBuilds.length} Published</span>
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#E4E4E7] dark:border-zinc-800 text-center">
+                <div>
+                  <div className="text-sm font-bold">{myBuilds.length}</div>
+                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                    Projects
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-[#2563EB]">4</div>
+                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                    Vouches
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                    {Object.values(appliedJobs).filter(Boolean).length}
+                  </div>
+                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                    Applied
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#52525B] dark:text-zinc-400">Alumni Vouches</span>
-                <span className="font-bold text-[#2563EB]">4 Verified</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#52525B] dark:text-zinc-400">Jobs Applied</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                  {Object.values(appliedJobs).filter(Boolean).length}
-                </span>
-              </div>
-            </div>
 
-            <button
-              type="button"
-              onClick={() => setSection('profile')}
-              className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 hover:border-[#2563EB] py-2 text-xs font-semibold transition-colors"
-            >
-              Open Full Profile
-            </button>
+              <button
+                type="button"
+                onClick={() => setSection('profile')}
+                className="w-full rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white py-2 text-xs font-semibold transition-colors"
+              >
+                Open Full Profile
+              </button>
+            </div>
           </div>
         </aside>
 
