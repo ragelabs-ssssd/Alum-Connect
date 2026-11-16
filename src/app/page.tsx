@@ -204,10 +204,6 @@ export default function HomePage() {
 
           <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-50/80 dark:bg-sky-500/10 border border-blue-200/80 dark:border-sky-500/25 px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-[#0A66C2] dark:text-sky-400 font-bold">
-                Student → GitHub Repo → Alumni Vouch → Offer
-              </div>
-
               <h1 className="text-3xl sm:text-5xl xl:text-[54px] font-bold tracking-tight text-[#191919] dark:text-white leading-[1.08]">
                 A living graph of campus{' '}
                 <span className="text-[#0A66C2] dark:text-sky-400">engineering talent.</span>
