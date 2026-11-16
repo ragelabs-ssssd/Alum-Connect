@@ -32,6 +32,13 @@ import {
   X,
 } from 'lucide-react';
 import ThemeToggle from '../../components/ThemeToggle';
+import {
+  ALUMNI_DATA,
+  INDIAN_GENERAL_IMAGES,
+  OFFERS_DATA,
+  PROJECTS_DATA,
+  RESEARCH_PAPERS_DATA,
+} from '../../data/alumConnectData';
 
 type MainSection = 'home' | 'explore' | 'jobs' | 'notifications' | 'profile';
 
@@ -57,6 +64,7 @@ interface StudentBuildCard {
   batch: string;
   domain: string;
   coverGradient: string;
+  coverImage?: string;
   tags: string[];
   demoUrl: string;
   repoUrl: string;
@@ -95,124 +103,101 @@ interface AlumniJobItem {
   description: string;
 }
 
+const COVER_GRADIENTS = [
+  'from-zinc-900 via-zinc-800 to-blue-900',
+  'from-blue-950 via-indigo-900 to-zinc-900',
+  'from-emerald-950 via-zinc-900 to-zinc-800',
+  'from-zinc-800 via-slate-900 to-blue-950',
+  'from-slate-900 via-blue-950 to-indigo-950',
+];
+
+const inferProjectDomain = (stack: string[], pitch: string): string => {
+  const hay = `${stack.join(' ')} ${pitch}`.toLowerCase();
+  if (hay.includes('fintech') || hay.includes('upi') || hay.includes('equity') || hay.includes('ledger')) {
+    return 'Product & FinTech';
+  }
+  if (hay.includes('langgraph') || hay.includes('whisper') || hay.includes('yolo') || hay.includes('pytorch') || hay.includes('rag') || hay.includes('llm')) {
+    return 'Applied AI';
+  }
+  if (hay.includes('esp') || hay.includes('ebpf') || hay.includes('rust') || hay.includes('arm') || hay.includes('iot') || hay.includes('mqtt')) {
+    return 'IoT & Systems';
+  }
+  return 'Full-Stack & Cloud';
+};
+
 const STUDENT_BUILDS: StudentBuildCard[] = [
-  {
-    id: 'sb-1',
-    isMine: true,
-    title: 'Ragelabs Campus Portfolio & Vouch',
-    subtitle: 'Turning college engineering projects into verified hiring proof.',
-    story:
-      'Designed an interactive case-study flow where alumni leave structured 5-minute architecture notes and verified skill endorsements directly on student builds.',
-    impactMetric: '4 Alumni Endorsements • Live at ITER',
-    author: 'Ananya Mohanty',
-    batch: "3rd Yr CSE '26",
-    domain: 'Product & FinTech',
-    coverGradient: 'from-zinc-900 via-zinc-800 to-blue-900',
-    tags: ['Next.js', 'TypeScript', 'Design Systems'],
-    demoUrl: 'https://alum-connect-soa.vercel.app',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    endorsement: {
-      alumName: 'Vikram Senapati',
-      alumRole: "Staff Engineer @ Razorpay • Batch '18",
-      quote:
-        'Clean product thinking and crisp state architecture. Ready for production engineering teams.',
-    },
-    likes: 64,
-  },
-  {
-    id: 'sb-2',
-    isMine: false,
-    title: 'CampusPulse AI Mock Interviewer',
-    subtitle: 'Voice-first technical interview practice trained on alumni experiences.',
-    story:
-      'Built a low-latency voice mock interviewer that adapts follow-up questions based on your system design answers and gives a structured rubric.',
-    impactMetric: '340+ Weekly Active ITER Students',
-    author: 'Rohan Das & Ritika Jena',
-    batch: "4th Yr CSE '25",
-    domain: 'Applied AI',
-    coverGradient: 'from-blue-950 via-indigo-900 to-zinc-900',
-    tags: ['Python', 'FastAPI', 'React'],
-    demoUrl: 'https://nextjs.org',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    openRole: 'Looking for 1 UI/UX Co-Builder',
-    likes: 89,
-  },
-  {
-    id: 'sb-3',
-    isMine: false,
-    title: 'HostelNet Campus Utility Map',
-    subtitle: 'Real-time hostel Wi-Fi & power uptime status across 8 campus blocks.',
-    story:
-      'Combined lightweight campus sensors with a clean status dashboard so students and wardens can spot outages in seconds instead of hours.',
-    impactMetric: 'Live in 4 Hostel Blocks',
-    author: 'Debasis Nayak',
-    batch: "3rd Yr ECE '26",
-    domain: 'IoT & Systems',
-    coverGradient: 'from-emerald-950 via-zinc-900 to-zinc-800',
-    tags: ['Rust', 'Next.js', 'Tailwind'],
-    demoUrl: 'https://vercel.com',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    openRole: 'Open for 1 Frontend Designer',
-    likes: 51,
-  },
-  {
-    id: 'sb-4',
-    isMine: true,
-    title: 'SplitMate Campus Expense Ledger',
-    subtitle: 'Zero-friction mess & trip expense splitting for ITER hostel squads.',
-    story:
-      'Created an instant UPI deep-link settlement flow with clean monthly spend breakdowns for student clubs and hostel groups.',
-    impactMetric: '120+ Active Hostel Groups',
-    author: 'Ananya Mohanty',
-    batch: "3rd Yr CSE '26",
-    domain: 'Consumer FinTech',
-    coverGradient: 'from-zinc-800 via-slate-900 to-blue-950',
-    tags: ['React', 'PostgreSQL', 'UPI API'],
-    demoUrl: 'https://alum-connect-soa.vercel.app',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    likes: 43,
-  },
-  {
-    id: 'rp-1',
-    isMine: true,
-    title: 'Low-Latency RAG Evaluation for Indian Legal Corpora',
-    subtitle: 'Research Paper • Target Venue: IEEE Access / arXiv Preprint',
-    story:
-      'Proposes a quantized retrieval-reranking pipeline cutting hallucination rates by 31% on multi-lingual Indian court judgments. Seeking alumni methodology & benchmark review.',
-    impactMetric: 'Preprint PDF • 2 Alumni Reviews',
-    author: 'Ananya Mohanty & Rohan Das',
-    batch: "3rd & 4th Yr CSE • ITER",
-    domain: 'Research Papers',
-    coverGradient: 'from-slate-900 via-blue-950 to-indigo-950',
-    tags: ['Research Paper', 'NLP', 'IEEE Preprint'],
-    demoUrl: 'https://arxiv.org',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    endorsement: {
-      alumName: 'Dr. Anirban Panda',
-      alumRole: "Research Scientist @ Google DeepMind • Batch '15",
-      quote:
-        'Strong ablation setup. Add latency-vs-recall Pareto curves in Section 4 before IEEE submission.',
-    },
-    likes: 72,
-  },
-  {
-    id: 'rp-2',
-    isMine: false,
-    title: 'Federated Anomaly Detection on Edge Smart-Grid Nodes',
-    subtitle: 'Research Paper • Target Venue: ACM SenSys Workshop',
-    story:
-      'Lightweight TinyML federated averaging across campus power sensors without sharing raw telemetry. Looking for an alumnus co-author for dataset scaling.',
-    impactMetric: 'Draft PDF • Seeking Co-Author',
-    author: 'Debasis Nayak',
-    batch: "3rd Yr ECE '26",
-    domain: 'Research Papers',
-    coverGradient: 'from-zinc-900 via-emerald-950 to-slate-900',
-    tags: ['Research Paper', 'TinyML', 'ACM'],
-    demoUrl: 'https://arxiv.org',
-    repoUrl: 'https://github.com/ragelabs-ssssd/Alum-Connect',
-    openRole: 'Seeking Alumni Co-Author / Guidance',
-    likes: 58,
-  },
+  ...PROJECTS_DATA.map((p, idx) => {
+    const linkedAlum = ALUMNI_DATA.find((a) => a.linkedProjectIds.includes(p.id));
+    const isMine =
+      p.leadName === 'Ananya Dash' || p.coContributorsNames.includes('Ananya Dash');
+    const contributors = [p.leadName, ...p.coContributorsNames].join(' & ');
+    return {
+      id: p.id,
+      isMine,
+      title: p.name,
+      subtitle: p.pitch,
+      story: p.detailedDesc,
+      impactMetric: p.linkedPaperId
+        ? `${p.hostingPlatform} • Linked ${p.linkedPaperId}`
+        : `${p.collaborationMode} (${p.teamSize}) • ${p.hostingPlatform}`,
+      author: contributors,
+      batch: `${p.academicYears} • ITER`,
+      domain: inferProjectDomain(p.techStack, p.pitch),
+      coverGradient: COVER_GRADIENTS[idx % COVER_GRADIENTS.length],
+      coverImage: p.coverImage || INDIAN_GENERAL_IMAGES[idx % 3],
+      tags: p.techStack.slice(0, 4),
+      demoUrl: p.liveUrl,
+      repoUrl: p.githubUrl,
+      endorsement: linkedAlum
+        ? {
+            alumName: linkedAlum.fullName,
+            alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+            quote: `Verified ${linkedAlum.mentorshipScope.toLowerCase()} review — strong production readiness and architecture.`,
+          }
+        : undefined,
+      openRole:
+        !linkedAlum && p.collaborationMode === 'Solo'
+          ? 'Open for 1 Co-Builder / Alumni Review'
+          : undefined,
+      likes: 42 + ((idx * 13) % 75),
+    };
+  }),
+  ...RESEARCH_PAPERS_DATA.map((rp, idx) => {
+    const linkedAlum = ALUMNI_DATA.find((a) => a.linkedPaperIds.includes(rp.id));
+    const isMine =
+      rp.leadAuthorName === 'Ananya Dash' || rp.coAuthorName === 'Ananya Dash';
+    const authors = rp.coAuthorName
+      ? `${rp.leadAuthorName} & ${rp.coAuthorName}`
+      : rp.leadAuthorName;
+    return {
+      id: rp.id,
+      isMine,
+      title: rp.topic,
+      subtitle: `Research Paper • ${rp.venue} (${rp.status})`,
+      story: rp.abstract,
+      impactMetric: `${rp.status} • ${rp.venue}`,
+      author: authors,
+      batch: `${rp.leadAuthorYearBranch} • ITER`,
+      domain: 'Research Papers',
+      coverGradient: COVER_GRADIENTS[(idx + 2) % COVER_GRADIENTS.length],
+      coverImage: rp.coverImage,
+      tags: ['Research Paper', rp.domain, ...rp.techStack.slice(0, 2)],
+      demoUrl: rp.preprintUrl,
+      repoUrl: rp.codeRepoUrl,
+      endorsement: linkedAlum
+        ? {
+            alumName: linkedAlum.fullName,
+            alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+            quote: `Strong experimental rigor for ${rp.venue}. Ready for alumni benchmark & citation amplification.`,
+          }
+        : undefined,
+      openRole:
+        rp.status === 'Under Peer Review'
+          ? 'Seeking Alumni Peer Review / Co-Author Feedback'
+          : undefined,
+      likes: 68 + idx * 11,
+    };
+  }),
 ];
 
 const TECH_NEWS: TechNewsItem[] = [
@@ -266,89 +251,48 @@ const TECH_NEWS: TechNewsItem[] = [
   },
 ];
 
-const ALUMNI_JOBS: AlumniJobItem[] = [
-  {
-    id: 'job-1',
-    role: 'Product Engineering Intern (Summer/Winter)',
-    company: 'Razorpay',
-    type: 'Internship',
-    location: 'Bangalore (Hybrid)',
-    compensation: '₹45,000 / month',
-    postedBy: 'Vikram Senapati',
-    alumRole: "Staff Engineer • Batch '18",
-    skills: ['TypeScript', 'React', 'Node.js', 'SQL'],
-    slotsLeft: 3,
-    description:
-      'Work directly with the Merchant Checkout squad on high-conversion payment UI flows and webhook observability.',
-  },
-  {
-    id: 'job-2',
-    role: 'SDE-1 — Cloud & Developer Experience',
-    company: 'Atlassian',
-    type: 'Full-Time',
-    location: 'Hyderabad / Remote',
-    compensation: '₹24 – 28 LPA',
-    postedBy: 'Priya Nair',
-    alumRole: "Engineering Manager • Batch '16",
-    skills: ['React', 'Java / Go', 'REST APIs', 'System Design'],
-    slotsLeft: 2,
-    description:
-      'Open to 2025/2026 graduating ITER builders with shipped web apps or open-source tooling.',
-  },
-  {
-    id: 'job-3',
-    role: 'Applied AI Engineering Intern',
-    company: 'Kinetix AI',
-    type: 'Internship',
-    location: 'Bangalore',
-    compensation: '₹35,000 / month + PPO',
-    postedBy: 'Siddharth Mishra',
-    alumRole: "Co-Founder & CTO • Batch '17",
-    skills: ['Python', 'FastAPI', 'LLMs', 'PostgreSQL'],
-    slotsLeft: 2,
-    description:
-      'Build evaluation harnesses and low-latency voice/text agent pipelines alongside the founding engineering team.',
-  },
-  {
-    id: 'job-4',
-    role: 'Webhook Retry Queue Micro-Bounty',
-    company: 'FinEdge HQ',
-    type: 'Paid Bounty',
-    location: 'Remote (10-Day Sprint)',
-    compensation: '₹25,000 Fixed',
-    postedBy: 'Arjun Pattnaik',
-    alumRole: "Principal Engineer • Batch '14",
-    skills: ['TypeScript', 'Redis', 'Docker'],
-    slotsLeft: 1,
-    description:
-      'Deliver an open-source dead-letter queue dashboard with exponential backoff and 1-click event replay.',
-  },
-];
+const ALUMNI_JOBS: AlumniJobItem[] = ALUMNI_DATA.filter((a) => a.canPostJobs).map((alum, idx) => {
+  const matchedOffer = OFFERS_DATA.find((o) => o.referringAlumniId === alum.id);
+  return {
+    id: `job-${alum.id.toLowerCase()}`,
+    role: matchedOffer ? matchedOffer.jobRole : `${alum.mentorshipScope.split(',')[0]} Engineer`,
+    company: alum.company,
+    type:
+      matchedOffer?.offerType === 'Internship'
+        ? 'Internship'
+        : idx % 3 === 2
+          ? 'Paid Bounty'
+          : 'Full-Time',
+    location: idx % 2 === 0 ? 'Bangalore (Hybrid)' : 'Hyderabad / Remote',
+    compensation: matchedOffer
+      ? matchedOffer.packageStr
+      : idx % 2 === 0
+        ? '₹24 – 32 LPA'
+        : '₹60,000 / month',
+    postedBy: alum.fullName,
+    alumRole: `${alum.designation} • Batch '${String(alum.batchYear).slice(-2)}`,
+    skills: alum.techStackExpertise.slice(0, 4),
+    slotsLeft: alum.activeJobOpeningsCount || 2,
+    description: `${alum.personaCategory} opening at ${alum.company} focusing on ${alum.mentorshipScope}.`,
+  };
+});
 
-const MENTOR_CHATS = [
-  {
-    id: 'mc-1',
-    name: 'Vikram Senapati',
-    role: "Staff Engineer @ Razorpay • '18",
-    topic: 'FinTech Backend & Internship Prep',
-    time: 'Sat, 11:00 AM',
-  },
-  {
-    id: 'mc-2',
-    name: 'Priya Nair',
-    role: "Engineering Manager @ Atlassian • '16",
-    topic: 'Portfolio Case Study Review',
-    time: 'Sun, 5:00 PM',
-  },
-];
+const MENTOR_CHATS = ALUMNI_DATA.slice(0, 4).map((alum, idx) => ({
+  id: `mc-${alum.id.toLowerCase()}`,
+  name: alum.fullName,
+  role: `${alum.designation} @ ${alum.company} • '${String(alum.batchYear).slice(-2)}`,
+  topic: alum.mentorshipScope,
+  time: ['Sat, 11:00 AM', 'Sun, 5:00 PM', 'Wed, 7:30 PM', 'Fri, 6:00 PM'][idx % 4],
+  avatar: INDIAN_GENERAL_IMAGES[3],
+}));
 
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-1',
     category: 'Endorsements',
-    title: 'Vikram Senapati endorsed your build',
+    title: 'Debadatta Rath endorsed FinAudit Multi-Agent (PRJ-01)',
     message:
-      'Staff Engineer @ Razorpay (Batch ’18) left a Verified Alumni Endorsement on "Ragelabs Campus Portfolio & Vouch".',
+      "Co-Founder & CTO @ HyperScale Labs (Batch '16) endorsed PRJ-01 & RP-01 for Capstone & Startup Incubation.",
     time: '12m ago',
     unread: true,
     targetSection: 'home',
@@ -357,9 +301,9 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-2',
     category: 'Jobs',
-    title: 'New Alumni Referral Drop at Razorpay',
+    title: '6 Direct Openings at Razorpay via Rajesh Kumar Mohanty',
     message:
-      'Product Engineering Intern (₹45,000/mo, Bangalore) matches your Next.js & TypeScript portfolio.',
+      "Head of Talent Acquisition & HR (Batch '15) opened SDE-1 (₹22 LPA) and internship referral slots.",
     time: '45m ago',
     unread: true,
     targetSection: 'jobs',
@@ -368,9 +312,9 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-3',
     category: 'Mentorship',
-    title: 'Weekend Office Hours Slots Opened',
+    title: 'Anindita Pattnaik opened Deep Learning Office Hours',
     message:
-      'Priya Nair (Engineering Manager @ Atlassian) opened 15-min portfolio review slots for Sunday 5:00 PM.',
+      'Founder & CAIO @ NeuroLink AI is reviewing VaniSetu Odia ASR (PRJ-08) & RP-01/RP-03 preprints.',
     time: '2h ago',
     unread: true,
     targetSection: 'home',
@@ -379,20 +323,20 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 'n-4',
     category: 'Squads',
-    title: 'Rohan Das is looking for a UI/UX Co-Builder',
+    title: 'RP-02 Post-Quantum Cryptography Under Peer Review',
     message:
-      'CampusPulse AI Mock Interviewer (340+ weekly active ITER users) has an open squad role.',
+      'Rohan Patnaik & Sneha Mishra (KyberMed Edge Vault) are mentoring junior ECE/CSIT builders.',
     time: '5h ago',
     unread: false,
-    targetSection: 'home',
-    actionLabel: 'Inspect Squad',
+    targetSection: 'explore',
+    actionLabel: 'Inspect Paper',
   },
   {
     id: 'n-5',
     category: 'Jobs',
-    title: 'Atlassian SDE-1 Referral Deadline Approaching',
+    title: '32 Direct Alumni Openings & 6 Confirmed PPOs Live',
     message:
-      '2 referral slots remaining for 2025/2026 graduating ITER builders. Attach your live demo to apply.',
+      'HyperScale Labs, Google, Microsoft India, AWS & Cisco Systems have active ITER referral tracks.',
     time: '1d ago',
     unread: false,
     targetSection: 'jobs',
@@ -798,11 +742,10 @@ export default function StudentStudioPage() {
                         setRsvpPaperClub(true);
                         notify("RSVP'd for Paper Club: DeepSeek-R1 & Reasoning RL!");
                       }}
-                      className={`mt-1 rounded-full px-3 py-1 text-[10px] font-semibold ${
-                        rsvpPaperClub
-                          ? 'bg-emerald-100 text-emerald-700'
-                          : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 hover:bg-[#27272A]'
-                      }`}
+                      className={`mt-1 rounded-full px-3 py-1 text-[10px] font-semibold ${rsvpPaperClub
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 hover:bg-[#27272A]'
+                        }`}
                     >
                       {rsvpPaperClub ? "RSVP'd ✓" : 'RSVP Seat'}
                     </button>
@@ -1049,9 +992,16 @@ export default function StudentStudioPage() {
                       className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs hover:shadow-md transition-all"
                     >
                       <div
-                        className={`bg-gradient-to-br ${build.coverGradient} p-5 text-white flex flex-col justify-between min-h-[132px]`}
+                        className={`relative overflow-hidden bg-gradient-to-br ${build.coverGradient} p-5 text-white flex flex-col justify-between min-h-[144px]`}
                       >
-                        <div className="flex items-center justify-between gap-2 text-xs">
+                        {build.coverImage && (
+                          <img
+                            src={build.coverImage}
+                            alt={build.title}
+                            className="absolute inset-0 h-full w-full object-cover opacity-30"
+                          />
+                        )}
+                        <div className="relative z-10 flex items-center justify-between gap-2 text-xs">
                           <span className="rounded-full bg-white/15 backdrop-blur px-2.5 py-0.5 font-medium">
                             {build.domain}
                           </span>
@@ -1059,7 +1009,7 @@ export default function StudentStudioPage() {
                             {build.impactMetric}
                           </span>
                         </div>
-                        <div className="pt-4 flex items-end justify-between gap-3">
+                        <div className="relative z-10 pt-4 flex items-end justify-between gap-3">
                           <div>
                             <h2 className="text-lg font-bold leading-tight">{build.title}</h2>
                             <p className="text-xs text-white/80 mt-0.5">{build.subtitle}</p>
