@@ -22,6 +22,7 @@ import {
   Newspaper,
   Plus,
   Search,
+  Star,
   ThumbsUp,
   User,
   UserPlus,
@@ -603,31 +604,40 @@ export default function StudentStudioPage() {
                 </p>
               </div>
 
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-3 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                Open to Internships &amp; Squads
+              <div className="flex flex-wrap gap-1.5">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  Secured Internship • Razorpay (PPO Track)
+                </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#E4E4E7] dark:border-zinc-800 text-center">
-                <div>
-                  <div className="text-sm font-bold">{myBuilds.length}</div>
-                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                    Projects
+              {/* Working On vs Pushed Live + Alumni Rating */}
+              <div className="rounded-xl bg-[#F4F4F5] dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-2.5 text-xs">
+                <div className="grid grid-cols-2 gap-2 text-center">
+                  <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
+                    <div className="text-sm font-bold">2</div>
+                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                      Working On
+                    </div>
+                  </div>
+                  <div className="rounded-lg bg-white dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 p-2">
+                    <div className="text-sm font-bold text-[#2563EB]">
+                      {myBuilds.length}
+                    </div>
+                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                      Pushed Live
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <div className="text-sm font-bold text-[#2563EB]">4</div>
-                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                    Vouches
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                    {Object.values(appliedJobs).filter(Boolean).length}
-                  </div>
-                  <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
-                    Applied
-                  </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7] dark:border-zinc-800">
+                  <span className="inline-flex items-center gap-1 font-bold text-[#09090B] dark:text-white">
+                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    4.9 / 5.0
+                  </span>
+                  <span className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                    Rated by 12 Alums
+                  </span>
                 </div>
               </div>
 
