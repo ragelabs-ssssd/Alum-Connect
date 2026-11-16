@@ -93,6 +93,53 @@ export const INDIAN_GENERAL_IMAGES = [
   '/images/indian-alumni-mentor.jpg',
 ] as const;
 
+export const INDIAN_FEMALE_AVATARS = [
+  '/images/avatar-female-1.jpg',
+  '/images/avatar-female-2.jpg',
+] as const;
+
+export const INDIAN_MALE_AVATARS = [
+  '/images/avatar-male-1.jpg',
+  '/images/avatar-male-2.jpg',
+  '/images/indian-alumni-mentor.jpg',
+] as const;
+
+const FEMALE_FIRST_NAMES = new Set([
+  'ananya',
+  'sneha',
+  'priyanka',
+  'meera',
+  'kabita',
+  'ipsita',
+  'shreya',
+  'divya',
+  'pooja',
+  'nandini',
+  'chinmayee',
+  'ishani',
+  'manaswini',
+  'priyadarshini',
+  'anindita',
+  'smriti',
+  'subhasmita',
+  'rina',
+  'ankita',
+  'priya',
+]);
+
+export function getIndianAvatar(name: string): string {
+  const first = name.trim().toLowerCase().split(/\s+/)[0] || '';
+  const hash = name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  if (FEMALE_FIRST_NAMES.has(first)) {
+    return INDIAN_FEMALE_AVATARS[hash % INDIAN_FEMALE_AVATARS.length];
+  }
+  return INDIAN_MALE_AVATARS[hash % INDIAN_MALE_AVATARS.length];
+}
+
+export function getIndianBanner(seed: number): string {
+  return INDIAN_GENERAL_IMAGES[Math.abs(seed) % 3];
+}
+
 const pickCoverImage = (idx: number) => INDIAN_GENERAL_IMAGES[idx % 3];
 
 const rawProjects: Omit<ProjectRecord, 'coverImage'>[] = [

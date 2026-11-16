@@ -38,6 +38,8 @@ import {
   OFFERS_DATA,
   PROJECTS_DATA,
   RESEARCH_PAPERS_DATA,
+  getIndianAvatar,
+  getIndianBanner,
 } from '../../data/alumConnectData';
 
 type MainSection = 'home' | 'explore' | 'jobs' | 'notifications' | 'profile';
@@ -65,12 +67,14 @@ interface StudentBuildCard {
   domain: string;
   coverGradient: string;
   coverImage?: string;
+  authorAvatar?: string;
   tags: string[];
   demoUrl: string;
   repoUrl: string;
   endorsement?: {
     alumName: string;
     alumRole: string;
+    alumAvatar?: string;
     quote: string;
   };
   openRole?: string;
@@ -145,6 +149,7 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
       domain: inferProjectDomain(p.techStack, p.pitch),
       coverGradient: COVER_GRADIENTS[idx % COVER_GRADIENTS.length],
       coverImage: p.coverImage || INDIAN_GENERAL_IMAGES[idx % 3],
+      authorAvatar: getIndianAvatar(p.leadName),
       tags: p.techStack.slice(0, 4),
       demoUrl: p.liveUrl,
       repoUrl: p.githubUrl,
@@ -152,6 +157,7 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
         ? {
             alumName: linkedAlum.fullName,
             alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+            alumAvatar: getIndianAvatar(linkedAlum.fullName),
             quote: `Verified ${linkedAlum.mentorshipScope.toLowerCase()} review — strong production readiness and architecture.`,
           }
         : undefined,
@@ -181,6 +187,7 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
       domain: 'Research Papers',
       coverGradient: COVER_GRADIENTS[(idx + 2) % COVER_GRADIENTS.length],
       coverImage: rp.coverImage,
+      authorAvatar: getIndianAvatar(rp.leadAuthorName),
       tags: ['Research Paper', rp.domain, ...rp.techStack.slice(0, 2)],
       demoUrl: rp.preprintUrl,
       repoUrl: rp.codeRepoUrl,
@@ -188,6 +195,7 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
         ? {
             alumName: linkedAlum.fullName,
             alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+            alumAvatar: getIndianAvatar(linkedAlum.fullName),
             quote: `Strong experimental rigor for ${rp.venue}. Ready for alumni benchmark & citation amplification.`,
           }
         : undefined,
@@ -576,12 +584,20 @@ export default function StudentStudioPage() {
               <>
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
                   {/* Back Banner */}
-                  <div className="h-16 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
+                  <div className="relative h-16 overflow-hidden bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]">
+                    <img
+                      src={getIndianBanner(2)}
+                      alt="Campus innovation banner"
+                      className="h-full w-full object-cover opacity-45"
+                    />
+                  </div>
 
-                  <div className="px-5 pb-5 -mt-8 space-y-3.5">
-                    <div className="h-14 w-14 rounded-2xl bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 border-4 border-white dark:border-zinc-900 flex items-center justify-center font-bold text-sm shadow-xs">
-                      AM
-                    </div>
+                  <div className="px-5 pb-5 -mt-8 space-y-3.5 relative z-10">
+                    <img
+                      src={getIndianAvatar('Ananya Dash')}
+                      alt="Ananya Mohanty"
+                      className="h-14 w-14 rounded-2xl object-cover border-4 border-white dark:border-zinc-900 shadow-xs bg-[#18181B]"
+                    />
 
                     <div className="space-y-1">
                       <h2 className="text-sm font-bold">Ananya Mohanty</h2>
@@ -977,12 +993,19 @@ export default function StudentStudioPage() {
                       </div>
 
                       <div className="p-5 space-y-4">
-                        <div className="flex items-center justify-between">
-                          <div className="text-xs">
-                            <span className="font-bold">{build.author}</span>{' '}
-                            <span className="text-[#52525B] dark:text-zinc-400">
-                              • {build.batch}
-                            </span>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2.5 text-xs min-w-0">
+                            <img
+                              src={build.authorAvatar || getIndianAvatar(build.author)}
+                              alt={build.author}
+                              className="h-7 w-7 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
+                            />
+                            <div className="truncate">
+                              <span className="font-bold">{build.author}</span>{' '}
+                              <span className="text-[#52525B] dark:text-zinc-400">
+                                • {build.batch}
+                              </span>
+                            </div>
                           </div>
                           {build.openRole && (
                             <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] dark:text-sky-400 px-2.5 py-0.5 text-[11px] font-semibold">
@@ -1388,11 +1411,19 @@ export default function StudentStudioPage() {
           {section === 'profile' && (
             <div className="space-y-5">
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-                <div className="h-24 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
-                <div className="px-6 pb-6 -mt-10 space-y-4">
-                  <div className="h-20 w-20 rounded-2xl bg-[#18181B] text-white border-4 border-white dark:border-zinc-900 flex items-center justify-center text-xl font-bold shadow-sm">
-                    AM
-                  </div>
+                <div className="relative h-28 overflow-hidden bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]">
+                  <img
+                    src={getIndianBanner(2)}
+                    alt="Campus engineering lab banner"
+                    className="h-full w-full object-cover opacity-45"
+                  />
+                </div>
+                <div className="px-6 pb-6 -mt-10 space-y-4 relative z-10">
+                  <img
+                    src={getIndianAvatar('Ananya Dash')}
+                    alt="Ananya Mohanty"
+                    className="h-20 w-20 rounded-2xl object-cover border-4 border-white dark:border-zinc-900 shadow-sm bg-[#18181B]"
+                  />
 
                   <div>
                     <h1 className="text-xl font-bold">Ananya Mohanty</h1>
@@ -1478,9 +1509,18 @@ export default function StudentStudioPage() {
                         key={m.id}
                         className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
                       >
-                        <div className="text-xs font-bold">{m.name}</div>
-                        <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                          {m.role}
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={getIndianAvatar(m.name)}
+                            alt={m.name}
+                            className="h-8 w-8 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
+                          />
+                          <div className="min-w-0">
+                            <div className="text-xs font-bold truncate">{m.name}</div>
+                            <div className="text-[11px] text-[#52525B] dark:text-zinc-400 truncate">
+                              {m.role}
+                            </div>
+                          </div>
                         </div>
                         <div className="text-[11px] font-medium">{m.topic}</div>
                         <div className="flex items-center justify-between pt-1">
@@ -1661,9 +1701,18 @@ export default function StudentStudioPage() {
                         key={m.id}
                         className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
                       >
-                        <div className="text-xs font-bold">{m.name}</div>
-                        <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                          {m.role}
+                        <div className="flex items-center gap-2.5">
+                          <img
+                            src={getIndianAvatar(m.name)}
+                            alt={m.name}
+                            className="h-8 w-8 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
+                          />
+                          <div className="min-w-0">
+                            <div className="text-xs font-bold truncate">{m.name}</div>
+                            <div className="text-[11px] text-[#52525B] dark:text-zinc-400 truncate">
+                              {m.role}
+                            </div>
+                          </div>
                         </div>
                         <div className="text-[11px] font-medium">{m.topic}</div>
                         <div className="flex items-center justify-between pt-1">
