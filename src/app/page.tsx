@@ -81,13 +81,13 @@ export default function HomePage() {
             <div className="h-9 w-9 rounded-lg bg-white dark:bg-slate-800 border border-stone-200 dark:border-slate-700 flex items-center justify-center p-1 shadow-xs overflow-hidden">
               <img
                 src="/logo.png"
-                alt="ITER Alum Connect"
+                alt="AlmaConnect"
                 className="h-full w-full object-contain dark:invert"
               />
             </div>
             <div className="leading-tight">
               <span className="font-bold text-sm tracking-tight text-[#191919] dark:text-white">
-                ITER Alum Connect
+                AlmaConnect
               </span>
               <p className="text-[11px] text-stone-500 dark:text-slate-400 hidden lg:block">
                 Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
@@ -332,7 +332,7 @@ export default function HomePage() {
       <div className="px-4 sm:px-6 pb-3">
         <footer className="max-w-[1440px] mx-auto rounded-full border border-stone-200 dark:border-slate-800 bg-white/95 dark:bg-[#131A26]/95 backdrop-blur px-5 py-2 flex items-center justify-between text-xs text-stone-500 dark:text-slate-400">
           <span className="font-semibold text-[#191919] dark:text-white">
-            ITER Alum Connect
+            AlmaConnect
           </span>
           <span>
             Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan

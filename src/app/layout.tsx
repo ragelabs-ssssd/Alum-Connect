@@ -9,8 +9,8 @@ import DealRoomModal from '../components/DealRoomModal';
 import LiveDemoModal from '../components/LiveDemoModal';
 
 export const metadata: Metadata = {
-  title: "ITER Alum Connect — Professional Proof-of-Work & Talent Network",
-  description: "LinkedIn-style Alumni & Student Proof-of-Work Network with GitHub Repository Showcases, 5-Min Async Roasts, and Verified Vouches for SOA (ITER).",
+  title: "AlmaConnect — Proof-of-Work & Alumni Talent Network",
+  description: "AlmaConnect: LinkedIn-style Alumni & Student Proof-of-Work Network with GitHub Repository Showcases, 5-Min Async Roasts, and Verified Vouches.",
 };
 
 export default function RootLayout({
