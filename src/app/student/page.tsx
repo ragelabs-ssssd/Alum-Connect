@@ -599,7 +599,7 @@ export default function StudentStudioPage() {
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   3rd Year CSE • ITER Bhubaneswar
                 </p>
-                <p className="text-xs text-[#09090B] dark:text-zinc-200 truncate pt-0.5">
+                <p className="text-xs text-[#09090B] dark:text-zinc-200 leading-relaxed pt-0.5">
                   Building FinTech &amp; Next.js products • Open to SDE Internships
                 </p>
               </div>
