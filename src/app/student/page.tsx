@@ -285,13 +285,13 @@ const ALUMNI_JOBS: AlumniJobItem[] = ALUMNI_DATA.filter((a) => a.canPostJobs).ma
   };
 });
 
-const MENTOR_CHATS = ALUMNI_DATA.slice(0, 4).map((alum, idx) => ({
+const MENTOR_CHATS = ALUMNI_DATA.map((alum, idx) => ({
   id: `mc-${alum.id.toLowerCase()}`,
   name: alum.fullName,
   role: `${alum.designation} @ ${alum.company} • '${String(alum.batchYear).slice(-2)}`,
   topic: alum.mentorshipScope,
   time: ['Sat, 11:00 AM', 'Sun, 5:00 PM', 'Wed, 7:30 PM', 'Fri, 6:00 PM'][idx % 4],
-  avatar: INDIAN_GENERAL_IMAGES[3],
+  avatar: getIndianAvatar(alum.fullName),
 }));
 
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
@@ -376,6 +376,7 @@ export default function StudentStudioPage() {
   const [newSubtitle, setNewSubtitle] = useState('');
   const [newStory, setNewStory] = useState('');
   const [newTags, setNewTags] = useState('Next.js, TypeScript, Tailwind');
+  const [showAllMentors, setShowAllMentors] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const notify = (msg: string) => {
@@ -1512,12 +1513,21 @@ export default function StudentStudioPage() {
           {section === 'home' && (
             <>
               <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
-                  Mentor Coffee Chats
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Mentor Coffee Chats
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowAllMentors((prev) => !prev)}
+                    className="text-[11px] font-semibold text-[#2563EB] hover:underline"
+                  >
+                    {showAllMentors ? 'Show less' : 'See all'}
+                  </button>
+                </div>
                 <div className="space-y-2.5">
-                  {MENTOR_CHATS.map((m) => {
+                  {MENTOR_CHATS.slice(0, showAllMentors ? MENTOR_CHATS.length : 2).map((m) => {
                     const booked = !!bookedChats[m.id];
                     return (
                       <div
@@ -1704,12 +1714,21 @@ export default function StudentStudioPage() {
               </div>
 
               <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
-                  Mentor Coffee Chats
-                </h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Mentor Coffee Chats
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowAllMentors((prev) => !prev)}
+                    className="text-[11px] font-semibold text-[#2563EB] hover:underline"
+                  >
+                    {showAllMentors ? 'Show less' : 'See all'}
+                  </button>
+                </div>
                 <div className="space-y-2.5">
-                  {MENTOR_CHATS.map((m) => {
+                  {MENTOR_CHATS.slice(0, showAllMentors ? MENTOR_CHATS.length : 2).map((m) => {
                     const booked = !!bookedChats[m.id];
                     return (
                       <div
