@@ -414,6 +414,7 @@ export default function StudentStudioPage() {
   const [savedIds, setSavedIds] = useState<Record<string, boolean>>({});
   const [bookedChats, setBookedChats] = useState<Record<string, boolean>>({});
   const [appliedJobs, setAppliedJobs] = useState<Record<string, boolean>>({});
+  const [rsvpPaperClub, setRsvpPaperClub] = useState(false);
 
   const [caseStudyItem, setCaseStudyItem] = useState<StudentBuildCard | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
@@ -728,9 +729,37 @@ export default function StudentStudioPage() {
               </>
             )}
 
-            {/* 2. EXPLORE TECH NOW -> Live Hackathons & CFPs */}
+            {/* 2. EXPLORE TECH NOW -> Paper Reading Group + Live Hackathons & CFPs */}
             {section === 'explore' && (
               <>
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <BookOpen className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Paper Club • Thu 8 PM
+                  </h3>
+                  <div className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-950 p-3 space-y-1.5">
+                    <div className="text-xs font-bold">DeepSeek-R1 &amp; Reasoning RL</div>
+                    <div className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                      Hosted by Ankit &apos;19 • {rsvpPaperClub ? 35 : 34} attending
+                    </div>
+                    <button
+                      type="button"
+                      disabled={rsvpPaperClub}
+                      onClick={() => {
+                        setRsvpPaperClub(true);
+                        notify("RSVP'd for Paper Club: DeepSeek-R1 & Reasoning RL!");
+                      }}
+                      className={`mt-1 rounded-full px-3 py-1 text-[10px] font-semibold ${
+                        rsvpPaperClub
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 hover:bg-[#27272A]'
+                      }`}
+                    >
+                      {rsvpPaperClub ? "RSVP'd ✓" : 'RSVP Seat'}
+                    </button>
+                  </div>
+                </div>
+
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
