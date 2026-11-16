@@ -728,58 +728,9 @@ export default function StudentStudioPage() {
               </>
             )}
 
-            {/* 2. EXPLORE TECH NOW -> Option 1 (Tech Stack Filter Tree) then Option 4 (Live Hackathons & CFPs) */}
+            {/* 2. EXPLORE TECH NOW -> Live Hackathons & CFPs */}
             {section === 'explore' && (
               <>
-                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-2xs">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                      <Compass className="w-3.5 h-3.5 text-[#2563EB]" />
-                      Filter By Stack
-                    </h3>
-                    {search && (
-                      <button
-                        type="button"
-                        onClick={() => setSearch('')}
-                        className="text-[10px] font-semibold text-[#2563EB] hover:underline"
-                      >
-                        Reset
-                      </button>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {['Next.js', 'PyTorch', 'Rust', 'System Design', 'Cloud', 'FinTech'].map(
-                      (tag) => {
-                        const active = search.toLowerCase() === tag.toLowerCase();
-                        return (
-                          <button
-                            key={tag}
-                            type="button"
-                            onClick={() => setSearch(active ? '' : tag)}
-                            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
-                              active
-                                ? 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                                : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
-                            }`}
-                          >
-                            {tag}
-                          </button>
-                        );
-                      }
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7] dark:border-zinc-800">
-                    <span className="inline-flex items-center gap-1 font-bold text-[#09090B] dark:text-white">
-                      <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      4.9 / 5.0
-                    </span>
-                    <span className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                      Rated by 12 Alums
-                    </span>
-                  </div>
-                </div>
-
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
