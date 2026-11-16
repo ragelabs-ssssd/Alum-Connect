@@ -27,7 +27,7 @@ export default function HomePage() {
       .then((d: GatewaySummary) => {
         if (d?.status === 'ok') setSummary(d);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const projectCount = summary?.db1Count ?? 18;
@@ -116,6 +116,13 @@ export default function HomePage() {
               className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
             >
               /dean
+            </Link>
+            <span>•</span>
+            <Link
+              href="/login"
+              className="font-mono text-[#0A66C2] dark:text-sky-400 hover:underline"
+            >
+              /login
             </Link>
           </div>
 
