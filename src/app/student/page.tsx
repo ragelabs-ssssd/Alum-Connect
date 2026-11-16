@@ -1160,17 +1160,8 @@ export default function StudentStudioPage() {
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
                 <div className="h-24 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
                 <div className="px-6 pb-6 -mt-10 space-y-4">
-                  <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div className="h-20 w-20 rounded-2xl bg-[#18181B] text-white border-4 border-white dark:border-zinc-900 flex items-center justify-center text-xl font-bold shadow-sm">
-                      AM
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setShareModalOpen(true)}
-                      className="rounded-full bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 px-4 py-2 text-xs font-semibold"
-                    >
-                      + Add New Project
-                    </button>
+                  <div className="h-20 w-20 rounded-2xl bg-[#18181B] text-white border-4 border-white dark:border-zinc-900 flex items-center justify-center text-xl font-bold shadow-sm">
+                    AM
                   </div>
 
                   <div>
@@ -1199,9 +1190,17 @@ export default function StudentStudioPage() {
               </div>
 
               <div className="space-y-3">
-                <h2 className="text-sm font-bold">
-                  My Published Case Studies ({myBuilds.length})
-                </h2>
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-sm font-bold">
+                    My Published Case Studies ({myBuilds.length})
+                  </h2>
+                  <Link
+                    href="/share-project"
+                    className="rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-4 py-1.5 text-xs font-semibold transition-colors"
+                  >
+                    + Add New Project
+                  </Link>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {myBuilds.map((b) => (
                     <div
