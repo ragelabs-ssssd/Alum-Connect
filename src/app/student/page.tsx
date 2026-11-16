@@ -633,10 +633,7 @@ export default function StudentStudioPage() {
               </div>
 
               <div className="space-y-1">
-                <div className="flex items-center gap-1.5">
-                  <h2 className="text-sm font-bold">Ananya Mohanty</h2>
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
-                </div>
+                <h2 className="text-sm font-bold">Ananya Mohanty</h2>
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   3rd Year CSE • ITER Bhubaneswar
                 </p>
