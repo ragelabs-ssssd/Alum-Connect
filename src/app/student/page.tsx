@@ -1507,6 +1507,48 @@ export default function StudentStudioPage() {
                   </div>
                 ))}
               </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Mentor Coffee Chats
+                </h3>
+                <div className="space-y-2.5">
+                  {MENTOR_CHATS.map((m) => {
+                    const booked = !!bookedChats[m.id];
+                    return (
+                      <div
+                        key={m.id}
+                        className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
+                      >
+                        <div className="text-xs font-bold">{m.name}</div>
+                        <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                          {m.role}
+                        </div>
+                        <div className="text-[11px] font-medium">{m.topic}</div>
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[10px] text-[#52525B]">{m.time}</span>
+                          <button
+                            type="button"
+                            disabled={booked}
+                            onClick={() => {
+                              setBookedChats((b) => ({ ...b, [m.id]: true }));
+                              notify(`Booked 15-min chat with ${m.name}!`);
+                            }}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
+                              booked
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                            }`}
+                          >
+                            {booked ? 'Booked ✓' : 'Book 15m'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </>
           )}
 
