@@ -620,8 +620,9 @@ export default function StudentStudioPage() {
 
       {/* ==================== MAIN 3-COLUMN SHELL ==================== */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT RAIL: Student Identity */}
-        <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
+        {/* LEFT RAIL: Student Identity (Hidden on My Profile tab so main profile expands) */}
+        {section !== 'profile' && (
+          <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
           <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
             {/* Back Banner */}
             <div className="h-16 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]" />
@@ -719,9 +720,10 @@ export default function StudentStudioPage() {
             )}
           </div>
         </aside>
+        )}
 
-        {/* CENTER STAGE: 4-TAB CONTENT */}
-        <main className="lg:col-span-6 space-y-5">
+        {/* CENTER STAGE: 5-TAB CONTENT */}
+        <main className={section === 'profile' ? 'lg:col-span-9 space-y-5' : 'lg:col-span-6 space-y-5'}>
           {/* ---------- TAB 1: HOME FEED ---------- */}
           {section === 'home' && (
             <>
@@ -1324,11 +1326,10 @@ export default function StudentStudioPage() {
                               setBookedChats((b) => ({ ...b, [m.id]: true }));
                               notify(`Booked 15-min chat with ${m.name}!`);
                             }}
-                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                              booked
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                            }`}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${booked
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                              }`}
                           >
                             {booked ? 'Booked ✓' : 'Book 15m'}
                           </button>
@@ -1376,11 +1377,10 @@ export default function StudentStudioPage() {
                               setAppliedJobs((a) => ({ ...a, [job.id]: true }));
                               notify(`Applied to ${job.company} with your portfolio!`);
                             }}
-                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                              applied
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-[#2563EB] text-white'
-                            }`}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${applied
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#2563EB] text-white'
+                              }`}
                           >
                             {applied ? 'Applied ✓' : 'Apply'}
                           </button>
@@ -1470,11 +1470,10 @@ export default function StudentStudioPage() {
                         <div className="text-[10px] text-[#52525B] truncate">{job.role}</div>
                       </div>
                       <span
-                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                          applied
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
-                        }`}
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${applied
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
+                          }`}
                       >
                         {applied ? 'Applied ✓' : `${job.slotsLeft} slots`}
                       </span>
