@@ -788,6 +788,36 @@ export default function StudentStudioPage() {
                   })}
                 </div>
 
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Your Application Tracker
+                  </h3>
+                  {ALUMNI_JOBS.slice(0, 2).map((job) => {
+                    const applied = !!appliedJobs[job.id];
+                    return (
+                      <div
+                        key={job.id}
+                        className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between gap-2"
+                      >
+                        <div className="min-w-0">
+                          <div className="text-xs font-bold truncate">{job.company}</div>
+                          <div className="text-[10px] text-[#52525B] truncate">{job.role}</div>
+                        </div>
+                        <span
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
+                            applied
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
+                          }`}
+                        >
+                          {applied ? 'Applied ✓' : `${job.slotsLeft} slots`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-[#2563EB]" />
@@ -1681,38 +1711,9 @@ export default function StudentStudioPage() {
             </>
           )}
 
-          {/* 3. ALUMNI JOBS -> Option 1 (Application Tracker + Referral Readiness) */}
+          {/* 3. ALUMNI JOBS -> Mentor Coffee Chats */}
           {section === 'jobs' && (
             <>
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-2.5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                  <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
-                  Your Application Tracker
-                </h3>
-                {ALUMNI_JOBS.slice(0, 2).map((job) => {
-                  const applied = !!appliedJobs[job.id];
-                  return (
-                    <div
-                      key={job.id}
-                      className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 flex items-center justify-between gap-2"
-                    >
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold truncate">{job.company}</div>
-                        <div className="text-[10px] text-[#52525B] truncate">{job.role}</div>
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${applied
-                          ? 'bg-emerald-100 text-emerald-700'
-                          : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
-                          }`}
-                      >
-                        {applied ? 'Applied ✓' : `${job.slotsLeft} slots`}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
               <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
