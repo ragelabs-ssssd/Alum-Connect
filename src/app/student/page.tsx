@@ -397,29 +397,33 @@ export default function StudentStudioPage() {
       {/* ==================== TOP HEADER WITH 4-TAB BAR ==================== */}
       <header className="sticky top-0 z-40 border-b border-[#E4E4E7] dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-3">
-          {/* Left: Home + Logo */}
-          <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-zinc-800 px-2.5 py-1 text-xs font-semibold hover:bg-[#F4F4F5] dark:hover:bg-zinc-900"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-            </Link>
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
-                <img
-                  src="/logo.png"
-                  alt="Alum Connect"
-                  className="h-full w-full object-contain dark:invert"
-                />
-              </div>
-              <span className="font-bold text-sm tracking-tight hidden sm:inline">
-                Alum Connect
-              </span>
+          {/* 1. Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="h-8 w-8 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="Alum Connect"
+                className="h-full w-full object-contain dark:invert"
+              />
             </div>
+            <span className="font-bold text-sm tracking-tight hidden sm:inline">
+              Alum Connect
+            </span>
+          </Link>
+
+          {/* 2. Search */}
+          <div className="relative hidden md:block w-52 lg:w-64 shrink-0">
+            <Search className="w-3.5 h-3.5 text-[#52525B] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search..."
+              className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
+            />
           </div>
 
-          {/* Center: 4-Tab Bar (Home Feed | Explore Tech News | Alumni Jobs | My Profile) */}
+          {/* 3. 4-Tab Bar (Home Feed | Explore Tech News | Alumni Jobs | My Profile) */}
           <nav
             aria-label="Student workspace sections"
             className="hidden lg:flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-1"
@@ -449,19 +453,8 @@ export default function StudentStudioPage() {
             })}
           </nav>
 
-          {/* Right: Search + Share + Theme */}
+          {/* 4. Share Project + 5. Modes */}
           <div className="flex items-center gap-2 shrink-0">
-            <div className="relative hidden md:block w-52">
-              <Search className="w-3.5 h-3.5 text-[#52525B] absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search..."
-                className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
-              />
-            </div>
-
             <button
               type="button"
               onClick={() => setShareModalOpen(true)}
