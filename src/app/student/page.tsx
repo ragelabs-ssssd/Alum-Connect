@@ -579,7 +579,7 @@ export default function StudentStudioPage() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT RAIL: Per-Page Contextual Rail (Hidden on My Profile tab so main profile expands) */}
         {section !== 'profile' && (
-          <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
+          <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1">
             {/* 1. HOME FEED -> Mini Profile Card + Quick Saved */}
             {section === 'home' && (
               <>
@@ -1538,7 +1538,7 @@ export default function StudentStudioPage() {
         </main>
 
         {/* RIGHT RAIL: Dynamic Per-Page Contextual Rail */}
-        <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20">
+        <aside className="lg:col-span-3 space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-1">
           {/* 1. HOME FEED -> Option 1 (Mentor Chats + Latest Jobs) + Option 6 (Quick Saved) */}
           {section === 'home' && (
             <>
