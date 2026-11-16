@@ -579,15 +579,17 @@ export default function StudentStudioPage() {
             })}
           </nav>
 
-          {/* 4. Share Project + 5. Modes */}
+          {/* 4. Contribute (Home Feed only) + 5. Modes */}
           <div className="flex items-center gap-2 shrink-0 lg:justify-self-end">
-            <Link
-              href="/share-project"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-3.5 py-1.5 text-xs font-semibold transition-colors"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Contribute</span>
-            </Link>
+            {section === 'home' && (
+              <Link
+                href="/share-project"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-3.5 py-1.5 text-xs font-semibold transition-colors"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Contribute</span>
+              </Link>
+            )}
             <ThemeToggle compact />
           </div>
         </div>
