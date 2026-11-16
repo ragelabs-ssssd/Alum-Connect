@@ -1019,11 +1019,21 @@ export default function StudentStudioPage() {
                         </p>
 
                         {build.endorsement && (
-                          <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800/80 border border-[#E4E4E7] dark:border-zinc-700 p-3.5 space-y-1">
-                            <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#2563EB] dark:text-sky-400">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
-                              Alumni Endorsement • {build.endorsement.alumName} (
-                              {build.endorsement.alumRole})
+                          <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800/80 border border-[#E4E4E7] dark:border-zinc-700 p-3.5 space-y-1.5">
+                            <div className="flex items-center gap-2 text-[11px] font-bold text-[#2563EB] dark:text-sky-400">
+                              <img
+                                src={
+                                  build.endorsement.alumAvatar ||
+                                  getIndianAvatar(build.endorsement.alumName)
+                                }
+                                alt={build.endorsement.alumName}
+                                className="h-5 w-5 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
+                              />
+                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate">
+                                Alumni Endorsement • {build.endorsement.alumName} (
+                                {build.endorsement.alumRole})
+                              </span>
                             </div>
                             <p className="text-xs italic text-[#09090B] dark:text-zinc-200">
                               &ldquo;{build.endorsement.quote}&rdquo;
@@ -1269,7 +1279,12 @@ export default function StudentStudioPage() {
                             <MapPin className="w-3.5 h-3.5" /> {job.location}
                           </span>
                           <span>•</span>
-                          <span>
+                          <span className="inline-flex items-center gap-1.5">
+                            <img
+                              src={getIndianAvatar(job.postedBy)}
+                              alt={job.postedBy}
+                              className="h-5 w-5 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
+                            />
                             Posted by <strong>{job.postedBy}</strong> ({job.alumRole})
                           </span>
                         </div>

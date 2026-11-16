@@ -127,9 +127,69 @@ const FEMALE_FIRST_NAMES = new Set([
   'priya',
 ]);
 
+export const PERSON_AVATAR_MAP: Record<string, string> = {
+  // Male Students (18 unique)
+  'aarav mohanty': '/images/avatar-male-1.jpg',
+  'rohan patnaik': '/images/avatar-male-2.jpg',
+  'siddharth nayak': '/images/avatars/male-a-0.jpg',
+  'vikramaditya sen': '/images/avatars/male-a-1.jpg',
+  'debashish panda': '/images/avatars/male-a-2.jpg',
+  'aditya rath': '/images/avatars/male-a-3.jpg',
+  'subham swain': '/images/avatars/male-a-4.jpg',
+  'tanmay das': '/images/avatars/male-a-5.jpg',
+  'ritwik mohapatra': '/images/avatars/male-a-6.jpg',
+  'sourav patra': '/images/avatars/male-a-7.jpg',
+  'pranav kulkarni': '/images/avatars/male-a-8.jpg',
+  'ayushman jena': '/images/avatars/male-b-0.jpg',
+  'harshvardhan sahu': '/images/avatars/male-b-1.jpg',
+  'nikhil parida': '/images/avatars/male-b-2.jpg',
+  'swastik lenka': '/images/avatars/male-b-3.jpg',
+  'kunal barik': '/images/avatars/male-b-4.jpg',
+  'abhishek mahanta': '/images/avatars/male-b-5.jpg',
+  'ankit biswal': '/images/avatars/male-b-6.jpg',
+
+  // Female Students (13 unique)
+  'ananya dash': '/images/avatar-female-1.jpg',
+  'ananya mohanty': '/images/avatar-female-1.jpg',
+  'sneha mishra': '/images/avatar-female-2.jpg',
+  'priyanka sahoo': '/images/avatars/female-a-0.jpg',
+  'meera krishnan': '/images/avatars/female-a-1.jpg',
+  'kabita behera': '/images/avatars/female-a-2.jpg',
+  'ipsita tripathy': '/images/avatars/female-a-3.jpg',
+  'shreya nanda': '/images/avatars/female-a-4.jpg',
+  'divya rout': '/images/avatars/female-a-5.jpg',
+  'pooja samal': '/images/avatars/female-a-6.jpg',
+  'nandini kar': '/images/avatars/female-a-7.jpg',
+  'chinmayee das': '/images/avatars/female-a-8.jpg',
+  'ishani roy': '/images/avatars/female-b-0.jpg',
+  'manaswini sahu': '/images/avatars/female-b-1.jpg',
+
+  // Male Alumni (8 unique)
+  'debadatta rath': '/images/indian-alumni-mentor.jpg',
+  'rajesh kumar mohanty': '/images/avatars/alum-m-0.jpg',
+  'soumya ranjan panigrahi': '/images/avatars/alum-m-1.jpg',
+  'siddharth shekhar das': '/images/avatars/alum-m-2.jpg',
+  'bikash chandra sahoo': '/images/avatars/alum-m-3.jpg',
+  'tapas ranjan nayak': '/images/avatars/alum-m-4.jpg',
+  'manoj kumar behera': '/images/avatars/alum-m-5.jpg',
+  'alok mohapatra': '/images/avatars/alum-m-6.jpg',
+
+  // Female Alumni (6 unique)
+  'priyadarshini tripathy': '/images/avatars/female-b-2.jpg',
+  'anindita pattnaik': '/images/avatars/female-b-3.jpg',
+  'smriti rekha samal': '/images/avatars/female-b-4.jpg',
+  'subhasmita rout': '/images/avatars/female-b-5.jpg',
+  'rina pradhan': '/images/avatars/female-b-6.jpg',
+  'ankita acharya': '/images/avatars/female-b-7.jpg',
+};
+
 export function getIndianAvatar(name: string): string {
-  const first = name.trim().toLowerCase().split(/\s+/)[0] || '';
-  const hash = name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const primary = name.split('&')[0].trim().toLowerCase();
+  if (PERSON_AVATAR_MAP[primary]) {
+    return PERSON_AVATAR_MAP[primary];
+  }
+  const first = primary.split(/\s+/)[0] || '';
+  const hash = primary.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
   if (FEMALE_FIRST_NAMES.has(first)) {
     return INDIAN_FEMALE_AVATARS[hash % INDIAN_FEMALE_AVATARS.length];
   }
