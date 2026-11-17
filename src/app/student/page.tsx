@@ -38,9 +38,16 @@ import {
   OFFERS_DATA,
   PROJECTS_DATA,
   RESEARCH_PAPERS_DATA,
+  STUDENTS_DATA,
   getIndianAvatar,
   getIndianBanner,
 } from '../../data/alumConnectData';
+import {
+  PeopleDirectoryModal,
+  PublicProfileModal,
+  SelectedProfileTarget,
+  findProfileByName,
+} from '../../components/ProfileDirectoryModal';
 
 type MainSection = 'home' | 'explore' | 'jobs' | 'notifications' | 'profile';
 
@@ -377,12 +384,56 @@ export default function StudentStudioPage() {
   const [newStory, setNewStory] = useState('');
   const [newTags, setNewTags] = useState('Next.js, TypeScript, Tailwind');
   const [showAllMentors, setShowAllMentors] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<SelectedProfileTarget | null>(null);
+  const [directoryOpen, setDirectoryOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [followedIds, setFollowedIds] = useState<Record<string, boolean>>({});
   const [toast, setToast] = useState<string | null>(null);
 
   const notify = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
   };
+
+  const toggleFollow = (id: string, name: string) => {
+    setFollowedIds((prev) => {
+      const next = !prev[id];
+      notify(next ? `Following ${name}` : `Unfollowed ${name}`);
+      return { ...prev, [id]: next };
+    });
+  };
+
+  const openProfileByName = (name: string) => {
+    const found = findProfileByName(name);
+    if (found) {
+      setSelectedProfile(found);
+    } else {
+      notify(`Profile for ${name} is not in the directory yet.`);
+    }
+  };
+
+  const quickPeopleMatches = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    const students = STUDENTS_DATA.filter((s) =>
+      !q
+        ? true
+        : `${s.fullName} ${s.branch} ${s.academicYear} ${s.regNo} ${s.techStack.join(' ')}`
+            .toLowerCase()
+            .includes(q)
+    )
+      .slice(0, 3)
+      .map((student) => ({ kind: 'student' as const, student }));
+    const alumni = ALUMNI_DATA.filter((a) =>
+      !q
+        ? true
+        : `${a.fullName} ${a.company} ${a.designation} ${a.techStackExpertise.join(' ')}`
+            .toLowerCase()
+            .includes(q)
+    )
+      .slice(0, 3)
+      .map((alumni) => ({ kind: 'alumni' as const, alumni }));
+    return [...alumni, ...students];
+  }, [search]);
 
   const domains = ['All', 'Research Papers', 'Product & FinTech', 'Applied AI', 'IoT & Systems', 'Consumer FinTech'];
   const newsCategories = ['All', 'AI & LLMs', 'Engineering', 'Indian Startups', 'Career & Hiring'];
@@ -479,15 +530,77 @@ export default function StudentStudioPage() {
               </div>
             </Link>
 
-            <div className="relative hidden md:block w-52 lg:w-64">
+            <div className="relative hidden md:block w-56 lg:w-64">
               <Search className="w-3.5 h-3.5 text-[#52525B] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={search}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setTimeout(() => setSearchFocused(false), 180)}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search..."
+                placeholder="Search people, projects, skills..."
                 className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
               />
+              {searchFocused && (
+                <div className="absolute left-0 right-0 mt-2 rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-2 z-50 space-y-1">
+                  <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400">
+                    {search.trim() ? 'Matching People' : 'Suggested Students & Alumni'}
+                  </div>
+                  {quickPeopleMatches.length === 0 ? (
+                    <div className="px-2 py-2 text-xs text-[#52525B]">
+                      No people matched &ldquo;{search}&rdquo;
+                    </div>
+                  ) : (
+                    quickPeopleMatches.map((item) => {
+                      const name =
+                        item.kind === 'student' ? item.student.fullName : item.alumni.fullName;
+                      const sub =
+                        item.kind === 'student'
+                          ? `${item.student.academicYear} ${item.student.branch} • ${item.student.totalProjectsCount} Projects`
+                          : `${item.alumni.designation} @ ${item.alumni.company}`;
+                      const key = item.kind === 'student' ? item.student.id : item.alumni.id;
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setSelectedProfile(item);
+                            setSearchFocused(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 rounded-xl px-2 py-1.5 text-left hover:bg-[#F4F4F5] dark:hover:bg-zinc-800 transition-colors"
+                        >
+                          <img
+                            src={getIndianAvatar(name)}
+                            alt={name}
+                            className="h-7 w-7 rounded-full object-cover shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-bold truncate">{name}</div>
+                            <div className="text-[10px] text-[#52525B] dark:text-zinc-400 truncate">
+                              {sub}
+                            </div>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] px-1.5 py-0.5 text-[9px] font-bold">
+                            {item.kind === 'alumni' ? 'Alum' : 'Student'}
+                          </span>
+                        </button>
+                      );
+                    })
+                  )}
+                  <button
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      setSearchFocused(false);
+                      setDirectoryOpen(true);
+                    }}
+                    className="w-full mt-1 rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 py-1.5 text-[11px] font-semibold text-[#2563EB] text-center"
+                  >
+                    Browse All People ({STUDENTS_DATA.length} Students • {ALUMNI_DATA.length} Alumni) →
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -536,8 +649,17 @@ export default function StudentStudioPage() {
             })}
           </nav>
 
-          {/* 4. Contribute (Home Feed only) + 5. Modes */}
+          {/* 4. Network Directory + Contribute (Home Feed only) + 5. Modes */}
           <div className="flex items-center gap-2 shrink-0 lg:justify-self-end">
+            <button
+              type="button"
+              onClick={() => setDirectoryOpen(true)}
+              title="Browse Students & Alumni Profiles"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-[#2563EB] px-3 py-1.5 text-xs font-semibold transition-colors"
+            >
+              <UserPlus className="w-3.5 h-3.5 text-[#2563EB]" />
+              <span className="hidden sm:inline">People</span>
+            </button>
             {section === 'home' && (
               <Link
                 href="/share-project"
@@ -1025,19 +1147,23 @@ export default function StudentStudioPage() {
 
                       <div className="p-5 space-y-4">
                         <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2.5 text-xs min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => openProfileByName(build.author)}
+                            className="flex items-center gap-2.5 text-xs min-w-0 text-left hover:text-[#2563EB] transition-colors"
+                          >
                             <img
                               src={build.authorAvatar || getIndianAvatar(build.author)}
                               alt={build.author}
                               className="h-7 w-7 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
                             />
                             <div className="truncate">
-                              <span className="font-bold">{build.author}</span>{' '}
+                              <span className="font-bold hover:underline">{build.author}</span>{' '}
                               <span className="text-[#52525B] dark:text-zinc-400">
                                 • {build.batch}
                               </span>
                             </div>
-                          </div>
+                          </button>
                           {build.openRole && (
                             <span className="rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] dark:text-sky-400 px-2.5 py-0.5 text-[11px] font-semibold">
                               {build.openRole}
@@ -1051,7 +1177,11 @@ export default function StudentStudioPage() {
 
                         {build.endorsement && (
                           <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800/80 border border-[#E4E4E7] dark:border-zinc-700 p-3.5 space-y-1.5">
-                            <div className="flex items-center gap-2 text-[11px] font-bold text-[#2563EB] dark:text-sky-400">
+                            <button
+                              type="button"
+                              onClick={() => openProfileByName(build.endorsement!.alumName)}
+                              className="flex items-center gap-2 text-[11px] font-bold text-[#2563EB] dark:text-sky-400 hover:underline text-left w-full"
+                            >
                               <img
                                 src={
                                   build.endorsement.alumAvatar ||
@@ -1065,7 +1195,7 @@ export default function StudentStudioPage() {
                                 Alumni Endorsement • {build.endorsement.alumName} (
                                 {build.endorsement.alumRole})
                               </span>
-                            </div>
+                            </button>
                             <p className="text-xs italic text-[#09090B] dark:text-zinc-200">
                               &ldquo;{build.endorsement.quote}&rdquo;
                             </p>
@@ -1310,14 +1440,20 @@ export default function StudentStudioPage() {
                             <MapPin className="w-3.5 h-3.5" /> {job.location}
                           </span>
                           <span>•</span>
-                          <span className="inline-flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => openProfileByName(job.postedBy)}
+                            className="inline-flex items-center gap-1.5 hover:text-[#2563EB] transition-colors text-left"
+                          >
                             <img
                               src={getIndianAvatar(job.postedBy)}
                               alt={job.postedBy}
                               className="h-5 w-5 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
                             />
-                            Posted by <strong>{job.postedBy}</strong> ({job.alumRole})
-                          </span>
+                            <span>
+                              Posted by <strong className="hover:underline">{job.postedBy}</strong> ({job.alumRole})
+                            </span>
+                          </button>
                         </div>
 
                         <button
@@ -1564,19 +1700,23 @@ export default function StudentStudioPage() {
                         key={m.id}
                         className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
                       >
-                        <div className="flex items-center gap-2.5">
+                        <button
+                          type="button"
+                          onClick={() => openProfileByName(m.name)}
+                          className="flex items-center gap-2.5 w-full text-left hover:text-[#2563EB] transition-colors"
+                        >
                           <img
                             src={getIndianAvatar(m.name)}
                             alt={m.name}
                             className="h-8 w-8 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
                           />
                           <div className="min-w-0">
-                            <div className="text-xs font-bold truncate">{m.name}</div>
+                            <div className="text-xs font-bold truncate hover:underline">{m.name}</div>
                             <div className="text-[11px] text-[#52525B] dark:text-zinc-400 truncate">
                               {m.role}
                             </div>
                           </div>
-                        </div>
+                        </button>
                         <div className="text-[11px] font-medium">{m.topic}</div>
                         <div className="flex items-center justify-between pt-1">
                           <span className="text-[10px] text-[#52525B]">{m.time}</span>
@@ -1736,19 +1876,23 @@ export default function StudentStudioPage() {
                         key={m.id}
                         className="rounded-xl bg-white dark:bg-zinc-950 border border-[#E4E4E7] dark:border-zinc-800 p-3 space-y-1.5"
                       >
-                        <div className="flex items-center gap-2.5">
+                        <button
+                          type="button"
+                          onClick={() => openProfileByName(m.name)}
+                          className="flex items-center gap-2.5 w-full text-left hover:text-[#2563EB] transition-colors"
+                        >
                           <img
                             src={getIndianAvatar(m.name)}
                             alt={m.name}
                             className="h-8 w-8 rounded-full object-cover border border-[#E4E4E7] dark:border-zinc-700 shrink-0"
                           />
                           <div className="min-w-0">
-                            <div className="text-xs font-bold truncate">{m.name}</div>
+                            <div className="text-xs font-bold truncate hover:underline">{m.name}</div>
                             <div className="text-[11px] text-[#52525B] dark:text-zinc-400 truncate">
                               {m.role}
                             </div>
                           </div>
-                        </div>
+                        </button>
                         <div className="text-[11px] font-medium">{m.topic}</div>
                         <div className="flex items-center justify-between pt-1">
                           <span className="text-[10px] text-[#52525B]">{m.time}</span>
@@ -1977,6 +2121,34 @@ export default function StudentStudioPage() {
             </div>
           </form>
         </div>
+      )}
+
+      {/* PUBLIC PROFILE MODAL */}
+      {selectedProfile && (
+        <PublicProfileModal
+          target={selectedProfile}
+          followedIds={followedIds}
+          onToggleFollow={toggleFollow}
+          onSelectProfile={(next) => setSelectedProfile(next)}
+          onOpenProject={(projectId) => {
+            const match = builds.find((b) => b.id === projectId);
+            if (match) setCaseStudyItem(match);
+          }}
+          onGoToJobs={() => setSection('jobs')}
+          onNotify={notify}
+          onClose={() => setSelectedProfile(null)}
+        />
+      )}
+
+      {/* NETWORK DIRECTORY MODAL */}
+      {directoryOpen && (
+        <PeopleDirectoryModal
+          initialQuery={search}
+          followedIds={followedIds}
+          onToggleFollow={toggleFollow}
+          onSelectProfile={(next) => setSelectedProfile(next)}
+          onClose={() => setDirectoryOpen(false)}
+        />
       )}
 
       {/* TOAST */}
