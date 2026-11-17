@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -614,7 +614,7 @@ export default function AlumniFeedPage() {
             })}
           </nav>
 
-          {/* 4. People + Post Opening + Student Feed link + ThemeToggle */}
+          {/* 4. People + Post Opening + ThemeToggle */}
           <div className="flex items-center gap-2 shrink-0 lg:justify-self-end">
             <button
               type="button"
@@ -624,12 +624,6 @@ export default function AlumniFeedPage() {
               <UserPlus className="w-3.5 h-3.5 text-[#2563EB]" />
               <span className="hidden sm:inline">People</span>
             </button>
-            <Link
-              href="/student"
-              className="hidden xl:inline-flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-zinc-800 px-3 py-1.5 text-xs font-semibold hover:border-[#2563EB] transition-colors"
-            >
-              Student Feed ↗
-            </Link>
             {section === 'feed' && (
               <button
                 type="button"
