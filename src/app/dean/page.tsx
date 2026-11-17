@@ -18,6 +18,7 @@ import {
   Layers,
   Search,
   ShieldCheck,
+  TrendingUp,
   User,
   UserPlus,
   Users,
@@ -654,17 +655,22 @@ export default function DeanDashboardPage() {
         <main className={section === 'profile' ? 'lg:col-span-9 space-y-5' : 'lg:col-span-6 space-y-5'}>
           {section === 'overview' && (
             <>
-              {/* Executive Hero */}
+              {/* Executive Hero — Option 1: Placement & Package Executive Brief */}
               <div className="rounded-3xl bg-[#111318] text-white p-6 sm:p-7 space-y-4 shadow-md border border-zinc-800">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-semibold text-sky-300">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  Executive Institutional Telemetry
-                </span>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-semibold text-emerald-300">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                    Placement &amp; Referral Velocity • 2026
+                  </span>
+                  <span className="text-xs font-semibold text-zinc-400">
+                    {ppoCount} PPOs (₹22–36 LPA) • {internCount} Internships
+                  </span>
+                </div>
                 <h1 className="text-xl sm:text-2xl font-bold leading-snug">
-                  {PROJECTS_DATA.length} Student Builds, {RESEARCH_PAPERS_DATA.length} Research Papers &amp; {OFFERS_DATA.length} Verified Offers.
+                  {OFFERS_DATA.length} Verified Offers &amp; {totalOpenings} Active Alumni Openings Driven by Live Student Builds.
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed">
-                  High-level campus visibility across every student project, research publication, alumni mentorship thread, and placement outcome. Click any tab or person to drill down.
+                  Every placement and internship offer is backed by verified GitHub codebases, live deployments, and alumni endorsements across HyperScale Labs, Google, Microsoft, Razorpay, AWS &amp; Cisco.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
