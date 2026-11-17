@@ -832,7 +832,18 @@ export default function StudentStudioPage() {
             {/* 1. HOME FEED -> Mini Profile Card + Quick Saved */}
             {section === 'home' && (
               <>
-                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSection('profile')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSection('profile');
+                    }
+                  }}
+                  className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-2xs cursor-pointer hover:border-[#2563EB] transition-colors"
+                >
                   {/* Back Banner */}
                   <div className="relative h-16 overflow-hidden bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]">
                     <img
