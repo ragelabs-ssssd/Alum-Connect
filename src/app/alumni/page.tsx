@@ -82,6 +82,8 @@ interface AlumJobPost {
   location: string;
   compensation: string;
   slots: number;
+  lastDate?: string;
+  eligibility?: string;
   skills: string[];
   description: string;
 }
@@ -238,11 +240,17 @@ export default function AlumniFeedPage() {
   const [showAllRequests, setShowAllRequests] = useState(false);
 
   const [jobs, setJobs] = useState<AlumJobPost[]>(INITIAL_ALUM_JOBS);
+  const [jobModalOpen, setJobModalOpen] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
   const [jobCompany, setJobCompany] = useState(CURRENT_ALUM.company);
+  const [jobLocation, setJobLocation] = useState('Bangalore (Hybrid)');
   const [jobComp, setJobComp] = useState('₹24 – 30 LPA');
   const [jobType, setJobType] = useState<'Full-Time' | 'Internship' | 'Paid Bounty'>('Full-Time');
+  const [jobLastDate, setJobLastDate] = useState('2026-12-10');
+  const [jobSlots, setJobSlots] = useState('3');
+  const [jobEligibility, setJobEligibility] = useState('2025 / 2026 Batch • 7.5+ CGPA');
   const [jobSkills, setJobSkills] = useState('Python, Rust, Distributed Systems');
+  const [jobJD, setJobJD] = useState('');
 
   const [notifications, setNotifications] = useState(INITIAL_ALUM_NOTIFICATIONS);
   const [caseStudyItem, setCaseStudyItem] = useState<TalentCard | null>(null);
@@ -301,17 +309,24 @@ export default function AlumniFeedPage() {
       role: jobTitle.trim(),
       company: jobCompany.trim() || CURRENT_ALUM.company,
       type: jobType,
-      location: 'Bangalore (Hybrid)',
+      location: jobLocation.trim() || 'Bangalore (Hybrid)',
       compensation: jobComp.trim() || 'Competitive',
-      slots: 3,
+      slots: Math.max(1, parseInt(jobSlots, 10) || 3),
+      lastDate: jobLastDate || undefined,
+      eligibility: jobEligibility.trim() || undefined,
       skills: jobSkills
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
-      description: `Posted by ${CURRENT_ALUM.fullName} (${CURRENT_ALUM.designation}). Direct ITER referral track.`,
+      description:
+        jobJD.trim() ||
+        `Posted by ${CURRENT_ALUM.fullName} (${CURRENT_ALUM.designation}). Direct ITER referral track.`,
     };
     setJobs((prev) => [created, ...prev]);
     setJobTitle('');
+    setJobJD('');
+    setJobModalOpen(false);
+    setSection('post-job');
     notify(`Published "${created.role}" at ${created.company} to Student Jobs!`);
   };
 
@@ -619,7 +634,7 @@ export default function AlumniFeedPage() {
             {section === 'feed' && (
               <button
                 type="button"
-                onClick={() => setSection('post-job')}
+                onClick={() => setJobModalOpen(true)}
                 className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white px-3.5 py-1.5 text-xs font-semibold transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -1047,60 +1062,22 @@ export default function AlumniFeedPage() {
 
           {section === 'post-job' && (
             <div className="space-y-4">
-              <form
-                onSubmit={handlePostJob}
-                className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 space-y-3"
-              >
-                <h1 className="text-base font-bold">Post a Direct Alumni Job / Referral</h1>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input
-                    type="text"
-                    required
-                    value={jobTitle}
-                    onChange={(e) => setJobTitle(e.target.value)}
-                    placeholder="Role Title (e.g. Backend Engineer Intern)"
-                    className="rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                  />
-                  <input
-                    type="text"
-                    value={jobCompany}
-                    onChange={(e) => setJobCompany(e.target.value)}
-                    placeholder="Company"
-                    className="rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                  />
-                  <input
-                    type="text"
-                    value={jobComp}
-                    onChange={(e) => setJobComp(e.target.value)}
-                    placeholder="Compensation (e.g. ₹24 LPA or ₹60k/mo)"
-                    className="rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                  />
-                  <select
-                    value={jobType}
-                    onChange={(e) => setJobType(e.target.value as 'Full-Time' | 'Internship' | 'Paid Bounty')}
-                    className="rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                  >
-                    <option value="Full-Time">Full-Time</option>
-                    <option value="Internship">Internship</option>
-                    <option value="Paid Bounty">Paid Bounty</option>
-                  </select>
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h1 className="text-sm font-bold">Post a Detailed Alumni Opening</h1>
+                  <p className="text-xs text-[#52525B] dark:text-zinc-400">
+                    Add Job Title, full JD, Last Date to apply, CGPA/Batch eligibility &amp; Referral Slots.
+                  </p>
                 </div>
-                <input
-                  type="text"
-                  value={jobSkills}
-                  onChange={(e) => setJobSkills(e.target.value)}
-                  placeholder="Required skills (comma-separated)"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-5 py-2 text-xs font-semibold"
-                  >
-                    Publish Opening
-                  </button>
-                </div>
-              </form>
+                <button
+                  type="button"
+                  onClick={() => setJobModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-4 py-2 text-xs font-semibold shrink-0 transition-colors"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Create Opening
+                </button>
+              </div>
 
               <div className="space-y-3">
                 {jobs.map((job) => (
@@ -1116,6 +1093,14 @@ export default function AlumniFeedPage() {
                       <span className="text-xs font-bold text-emerald-600">{job.compensation}</span>
                     </div>
                     <p className="text-xs text-[#52525B] dark:text-zinc-400">{job.description}</p>
+                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#52525B] dark:text-zinc-400">
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin className="w-3 h-3" /> {job.location}
+                      </span>
+                      <span>• {job.slots} referral slots</span>
+                      {job.lastDate && <span>• Last Date: <strong>{job.lastDate}</strong></span>}
+                      {job.eligibility && <span>• {job.eligibility}</span>}
+                    </div>
                     <div className="flex flex-wrap gap-1.5">
                       {job.skills.map((s) => (
                         <span key={s} className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 px-2.5 py-0.5 text-[10px] font-medium">
@@ -1444,6 +1429,157 @@ export default function AlumniFeedPage() {
           onSelectProfile={(next) => setSelectedProfile(next)}
           onClose={() => setDirectoryOpen(false)}
         />
+      )}
+
+      {/* CREATE DETAILED JOB OPENING MODAL (OPTION 7) */}
+      {jobModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <form
+            onSubmit={handlePostJob}
+            className="w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 space-y-4 shadow-2xl"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-base font-bold">Create Detailed Alumni Opening</h3>
+                <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                  Published directly to ITER Student Jobs &amp; Referral Tracker
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setJobModalOpen(false)}
+                className="rounded-lg border border-[#E4E4E7] dark:border-zinc-700 p-1.5"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Job Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  placeholder="e.g. Backend Systems Engineer"
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Company *</label>
+                <input
+                  type="text"
+                  required
+                  value={jobCompany}
+                  onChange={(e) => setJobCompany(e.target.value)}
+                  placeholder="Company Name"
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Role Type</label>
+                <select
+                  value={jobType}
+                  onChange={(e) => setJobType(e.target.value as 'Full-Time' | 'Internship' | 'Paid Bounty')}
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                >
+                  <option value="Full-Time">Full-Time</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Paid Bounty">Paid Bounty</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Location / Work Mode</label>
+                <input
+                  type="text"
+                  value={jobLocation}
+                  onChange={(e) => setJobLocation(e.target.value)}
+                  placeholder="e.g. Bangalore (Hybrid) / Remote"
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Compensation / Stipend</label>
+                <input
+                  type="text"
+                  value={jobComp}
+                  onChange={(e) => setJobComp(e.target.value)}
+                  placeholder="e.g. ₹24 – 30 LPA or ₹65k/mo"
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Last Date to Apply</label>
+                <input
+                  type="date"
+                  value={jobLastDate}
+                  onChange={(e) => setJobLastDate(e.target.value)}
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Eligible Batch &amp; Min CGPA</label>
+                <input
+                  type="text"
+                  value={jobEligibility}
+                  onChange={(e) => setJobEligibility(e.target.value)}
+                  placeholder="e.g. 2025 / 2026 • 7.5+ CGPA"
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-[#52525B]">Referral Slots</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={25}
+                  value={jobSlots}
+                  onChange={(e) => setJobSlots(e.target.value)}
+                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-[#52525B]">Required Tech Stack (comma-separated)</label>
+              <input
+                type="text"
+                value={jobSkills}
+                onChange={(e) => setJobSkills(e.target.value)}
+                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-semibold text-[#52525B]">Full Job Description (JD) &amp; Interview Rounds *</label>
+              <textarea
+                rows={4}
+                required
+                value={jobJD}
+                onChange={(e) => setJobJD(e.target.value)}
+                placeholder="Describe responsibilities, tech stack expectations, and interview rounds (e.g. OA + 2 Technical + HM)..."
+                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => setJobModalOpen(false)}
+                className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-4 py-1.5 text-xs font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-5 py-1.5 text-xs font-semibold"
+              >
+                Publish Opening
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
       {/* TOAST */}
