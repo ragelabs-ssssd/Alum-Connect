@@ -49,8 +49,9 @@ import {
   SelectedProfileTarget,
   findProfileByName,
 } from '../../components/ProfileDirectoryModal';
+import AlumStudentChatSection from '../../components/AlumStudentChatSection';
 
-type AlumSection = 'feed' | 'endorsements' | 'post-job' | 'notifications' | 'profile';
+type AlumSection = 'feed' | 'endorsements' | 'post-job' | 'chat' | 'notifications' | 'profile';
 
 interface TalentCard {
   id: string;
@@ -295,12 +296,12 @@ export default function AlumniFeedPage() {
       prev.map((c) =>
         c.id === card.id
           ? {
-              ...c,
-              endorsedByMe: !c.endorsedByMe,
-              endorsementNote: !c.endorsedByMe
-                ? `Endorsed by ${CURRENT_ALUM.fullName} (${CURRENT_ALUM.company}) for production readiness.`
-                : undefined,
-            }
+            ...c,
+            endorsedByMe: !c.endorsedByMe,
+            endorsementNote: !c.endorsedByMe
+              ? `Endorsed by ${CURRENT_ALUM.fullName} (${CURRENT_ALUM.company}) for production readiness.`
+              : undefined,
+          }
           : c
       )
     );
@@ -353,28 +354,28 @@ export default function AlumniFeedPage() {
       searchScope === 'alumni'
         ? []
         : STUDENTS_DATA.filter((s) =>
-            !q
-              ? true
-              : `${s.fullName} ${s.branch} ${s.academicYear} ${s.regNo} ${s.techStack.join(' ')}`
-                  .toLowerCase()
-                  .includes(q)
-          )
-            .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
-            .slice(0, searchScope === 'students' ? 6 : 4)
-            .map((student) => ({ kind: 'student' as const, student }));
+          !q
+            ? true
+            : `${s.fullName} ${s.branch} ${s.academicYear} ${s.regNo} ${s.techStack.join(' ')}`
+              .toLowerCase()
+              .includes(q)
+        )
+          .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
+          .slice(0, searchScope === 'students' ? 6 : 4)
+          .map((student) => ({ kind: 'student' as const, student }));
     const alumni =
       searchScope === 'students'
         ? []
         : ALUMNI_DATA.filter((a) =>
-            !q
-              ? true
-              : `${a.fullName} ${a.company} ${a.designation} ${a.techStackExpertise.join(' ')}`
-                  .toLowerCase()
-                  .includes(q)
-          )
-            .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
-            .slice(0, searchScope === 'alumni' ? 6 : 4)
-            .map((alumni) => ({ kind: 'alumni' as const, alumni }));
+          !q
+            ? true
+            : `${a.fullName} ${a.company} ${a.designation} ${a.techStackExpertise.join(' ')}`
+              .toLowerCase()
+              .includes(q)
+        )
+          .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
+          .slice(0, searchScope === 'alumni' ? 6 : 4)
+          .map((alumni) => ({ kind: 'alumni' as const, alumni }));
     return [...students, ...alumni].slice(0, 6);
   }, [search, searchScope]);
 
@@ -479,11 +480,10 @@ export default function AlumniFeedPage() {
                             e.preventDefault();
                             setSearchScope(chip.id);
                           }}
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${
-                            searchScope === chip.id
-                              ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
-                              : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300'
-                          }`}
+                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${searchScope === chip.id
+                            ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                            : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300'
+                            }`}
                         >
                           {chip.label}
                         </button>
@@ -599,6 +599,7 @@ export default function AlumniFeedPage() {
               { id: 'feed' as AlumSection, label: 'Talent Feed', icon: <Compass className="w-3.5 h-3.5" /> },
               { id: 'endorsements' as AlumSection, label: 'My Endorsements', icon: <Award className="w-3.5 h-3.5" /> },
               { id: 'post-job' as AlumSection, label: 'Post Job & Offers', icon: <Briefcase className="w-3.5 h-3.5" /> },
+              { id: 'chat' as AlumSection, label: 'Chat', icon: <MessageSquare className="w-3.5 h-3.5" /> },
               {
                 id: 'notifications' as AlumSection,
                 label: 'Notifications',
@@ -613,11 +614,10 @@ export default function AlumniFeedPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => setSection(tab.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
-                    active
-                      ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
-                      : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
-                  }`}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${active
+                    ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-2xs'
+                    : 'text-[#52525B] dark:text-zinc-400 hover:text-[#09090B] dark:hover:text-white'
+                    }`}
                 >
                   {tab.icon}
                   <span>{tab.label}</span>
@@ -661,6 +661,7 @@ export default function AlumniFeedPage() {
             { id: 'feed' as AlumSection, label: 'Talent Feed' },
             { id: 'endorsements' as AlumSection, label: 'My Endorsements' },
             { id: 'post-job' as AlumSection, label: 'Post Job & Offers' },
+            { id: 'chat' as AlumSection, label: 'Chat' },
             { id: 'notifications' as AlumSection, label: `Notifications (${notifications.filter((n) => n.unread).length})` },
             { id: 'profile' as AlumSection, label: 'My Profile' },
           ].map((tab) => (
@@ -668,11 +669,10 @@ export default function AlumniFeedPage() {
               key={tab.id}
               type="button"
               onClick={() => setSection(tab.id)}
-              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-                section === tab.id
-                  ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
-                  : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-400'
-              }`}
+              className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${section === tab.id
+                ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                : 'bg-[#F4F4F5] dark:bg-zinc-900 text-[#52525B] dark:text-zinc-400'
+                }`}
             >
               {tab.label}
             </button>
@@ -829,6 +829,18 @@ export default function AlumniFeedPage() {
               </>
             )}
 
+            {section === 'chat' && (
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2 shadow-2xs">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <MessageSquare className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Direct Chat Tips
+                </h3>
+                <p className="text-xs text-[#52525B] dark:text-zinc-400">
+                  Messages sync live with the Student Portal inbox. Use quick chips to request demos or offer referrals.
+                </p>
+              </div>
+            )}
+
             {section === 'notifications' && (
               <>
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5 shadow-2xs">
@@ -887,11 +899,10 @@ export default function AlumniFeedPage() {
                     key={dom}
                     type="button"
                     onClick={() => setSelectedDomain(dom)}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
-                      selectedDomain === dom
-                        ? 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                        : 'bg-[#F4F4F5] dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 text-[#52525B] dark:text-zinc-400'
-                    }`}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${selectedDomain === dom
+                      ? 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                      : 'bg-[#F4F4F5] dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 text-[#52525B] dark:text-zinc-400'
+                      }`}
                   >
                     {dom}
                   </button>
@@ -1000,11 +1011,10 @@ export default function AlumniFeedPage() {
                             <button
                               type="button"
                               onClick={() => toggleEndorse(card)}
-                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${
-                                card.endorsedByMe
-                                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
-                                  : 'border-[#E4E4E7] dark:border-zinc-700 bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
-                              }`}
+                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${card.endorsedByMe
+                                ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300'
+                                : 'border-[#E4E4E7] dark:border-zinc-700 bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                                }`}
                             >
                               <ThumbsUp className="w-3.5 h-3.5" />
                               {card.endorsedByMe ? 'Endorsed ✓' : 'Endorse Build'}
@@ -1012,11 +1022,10 @@ export default function AlumniFeedPage() {
                             <button
                               type="button"
                               onClick={() => setSavedIds((p) => ({ ...p, [card.id]: !p[card.id] }))}
-                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${
-                                isSaved
-                                  ? 'border-[#2563EB] bg-blue-50 dark:bg-sky-500/10 text-[#2563EB]'
-                                  : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
-                              }`}
+                              className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 font-semibold transition-colors ${isSaved
+                                ? 'border-[#2563EB] bg-blue-50 dark:bg-sky-500/10 text-[#2563EB]'
+                                : 'border-[#E4E4E7] dark:border-zinc-700 text-[#52525B]'
+                                }`}
                             >
                               <Bookmark className="w-3.5 h-3.5" />
                               {isSaved ? 'Shortlisted' : 'Shortlist'}
@@ -1124,6 +1133,13 @@ export default function AlumniFeedPage() {
             </div>
           )}
 
+          {section === 'chat' && (
+            <AlumStudentChatSection
+              viewerRole="alumni"
+              viewerName={CURRENT_ALUM.fullName}
+            />
+          )}
+
           {section === 'notifications' && (
             <div className="space-y-3">
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-5 flex items-center justify-between">
@@ -1142,11 +1158,10 @@ export default function AlumniFeedPage() {
               {notifications.map((n) => (
                 <div
                   key={n.id}
-                  className={`rounded-2xl border p-4 space-y-1.5 ${
-                    n.unread
-                      ? 'border-[#2563EB]/40 bg-blue-50/40 dark:bg-sky-500/5'
-                      : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
-                  }`}
+                  className={`rounded-2xl border p-4 space-y-1.5 ${n.unread
+                    ? 'border-[#2563EB]/40 bg-blue-50/40 dark:bg-sky-500/5'
+                    : 'border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900'
+                    }`}
                 >
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="font-bold text-[#2563EB]">{n.category}</span>
@@ -1505,11 +1520,10 @@ export default function AlumniFeedPage() {
                               setAcceptedChats((p) => ({ ...p, [st.id]: true }));
                               notify(`Accepted 15-min coffee chat with ${st.fullName}!`);
                             }}
-                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                              accepted
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
-                            }`}
+                            className={`rounded-full px-3 py-1 text-[11px] font-semibold ${accepted
+                              ? 'bg-emerald-100 text-emerald-700'
+                              : 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                              }`}
                           >
                             {accepted ? 'Accepted ✓' : 'Accept 15m'}
                           </button>
@@ -1729,114 +1743,114 @@ export default function AlumniFeedPage() {
               </div>
             ) : (
               <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Job Title *</label>
-                <input
-                  type="text"
-                  required
-                  value={jobTitle}
-                  onChange={(e) => setJobTitle(e.target.value)}
-                  placeholder="e.g. Backend Systems Engineer"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Company *</label>
-                <input
-                  type="text"
-                  required
-                  value={jobCompany}
-                  onChange={(e) => setJobCompany(e.target.value)}
-                  placeholder="Company Name"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Role Type</label>
-                <select
-                  value={jobType}
-                  onChange={(e) => setJobType(e.target.value as 'Full-Time' | 'Internship' | 'Paid Bounty')}
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                >
-                  <option value="Full-Time">Full-Time</option>
-                  <option value="Internship">Internship</option>
-                  <option value="Paid Bounty">Paid Bounty</option>
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Location / Work Mode</label>
-                <input
-                  type="text"
-                  value={jobLocation}
-                  onChange={(e) => setJobLocation(e.target.value)}
-                  placeholder="e.g. Bangalore (Hybrid) / Remote"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Compensation / Stipend</label>
-                <input
-                  type="text"
-                  value={jobComp}
-                  onChange={(e) => setJobComp(e.target.value)}
-                  placeholder="e.g. ₹24 – 30 LPA or ₹65k/mo"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Last Date to Apply</label>
-                <input
-                  type="date"
-                  value={jobLastDate}
-                  onChange={(e) => setJobLastDate(e.target.value)}
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Eligible Batch &amp; Min CGPA</label>
-                <input
-                  type="text"
-                  value={jobEligibility}
-                  onChange={(e) => setJobEligibility(e.target.value)}
-                  placeholder="e.g. 2025 / 2026 • 7.5+ CGPA"
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#52525B]">Referral Slots</label>
-                <input
-                  type="number"
-                  min={1}
-                  max={25}
-                  value={jobSlots}
-                  onChange={(e) => setJobSlots(e.target.value)}
-                  className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-                />
-              </div>
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Job Title *</label>
+                    <input
+                      type="text"
+                      required
+                      value={jobTitle}
+                      onChange={(e) => setJobTitle(e.target.value)}
+                      placeholder="e.g. Backend Systems Engineer"
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Company *</label>
+                    <input
+                      type="text"
+                      required
+                      value={jobCompany}
+                      onChange={(e) => setJobCompany(e.target.value)}
+                      placeholder="Company Name"
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Role Type</label>
+                    <select
+                      value={jobType}
+                      onChange={(e) => setJobType(e.target.value as 'Full-Time' | 'Internship' | 'Paid Bounty')}
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    >
+                      <option value="Full-Time">Full-Time</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Paid Bounty">Paid Bounty</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Location / Work Mode</label>
+                    <input
+                      type="text"
+                      value={jobLocation}
+                      onChange={(e) => setJobLocation(e.target.value)}
+                      placeholder="e.g. Bangalore (Hybrid) / Remote"
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Compensation / Stipend</label>
+                    <input
+                      type="text"
+                      value={jobComp}
+                      onChange={(e) => setJobComp(e.target.value)}
+                      placeholder="e.g. ₹24 – 30 LPA or ₹65k/mo"
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Last Date to Apply</label>
+                    <input
+                      type="date"
+                      value={jobLastDate}
+                      onChange={(e) => setJobLastDate(e.target.value)}
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Eligible Batch &amp; Min CGPA</label>
+                    <input
+                      type="text"
+                      value={jobEligibility}
+                      onChange={(e) => setJobEligibility(e.target.value)}
+                      placeholder="e.g. 2025 / 2026 • 7.5+ CGPA"
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#52525B]">Referral Slots</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={25}
+                      value={jobSlots}
+                      onChange={(e) => setJobSlots(e.target.value)}
+                      className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                    />
+                  </div>
+                </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-[#52525B]">Required Tech Stack (comma-separated)</label>
-              <input
-                type="text"
-                value={jobSkills}
-                onChange={(e) => setJobSkills(e.target.value)}
-                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
-              />
-            </div>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-[#52525B]">Required Tech Stack (comma-separated)</label>
+                  <input
+                    type="text"
+                    value={jobSkills}
+                    onChange={(e) => setJobSkills(e.target.value)}
+                    className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-2 text-xs"
+                  />
+                </div>
 
-            <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-[#52525B]">Full Job Description (JD) &amp; Interview Rounds *</label>
-              <textarea
-                rows={4}
-                required
-                value={jobJD}
-                onChange={(e) => setJobJD(e.target.value)}
-                placeholder="Describe responsibilities, tech stack expectations, and interview rounds (e.g. OA + 2 Technical + HM)..."
-                className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs"
-              />
-            </div>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-[#52525B]">Full Job Description (JD) &amp; Interview Rounds *</label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={jobJD}
+                    onChange={(e) => setJobJD(e.target.value)}
+                    placeholder="Describe responsibilities, tech stack expectations, and interview rounds (e.g. OA + 2 Technical + HM)..."
+                    className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs"
+                  />
+                </div>
               </>
             )}
 

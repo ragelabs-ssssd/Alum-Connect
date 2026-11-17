@@ -48,8 +48,9 @@ import {
   SelectedProfileTarget,
   findProfileByName,
 } from '../../components/ProfileDirectoryModal';
+import AlumStudentChatSection from '../../components/AlumStudentChatSection';
 
-type MainSection = 'home' | 'explore' | 'jobs' | 'notifications' | 'profile';
+type MainSection = 'home' | 'explore' | 'jobs' | 'chat' | 'notifications' | 'profile';
 
 interface NotificationItem {
   id: string;
@@ -749,6 +750,7 @@ export default function StudentStudioPage() {
               { id: 'home' as MainSection, label: 'Home Feed', icon: <Home className="w-3.5 h-3.5" /> },
               { id: 'explore' as MainSection, label: 'Explore Tech News', icon: <Newspaper className="w-3.5 h-3.5" /> },
               { id: 'jobs' as MainSection, label: 'Alumni Jobs', icon: <Briefcase className="w-3.5 h-3.5" /> },
+              { id: 'chat' as MainSection, label: 'Chat', icon: <MessageSquare className="w-3.5 h-3.5" /> },
               {
                 id: 'notifications' as MainSection,
                 label: 'Notifications',
@@ -815,6 +817,7 @@ export default function StudentStudioPage() {
             { id: 'home' as MainSection, label: 'Home Feed' },
             { id: 'explore' as MainSection, label: 'Explore Tech News' },
             { id: 'jobs' as MainSection, label: 'Alumni Jobs' },
+            { id: 'chat' as MainSection, label: 'Chat' },
             { id: 'notifications' as MainSection, label: `Notifications (${notifications.filter((n) => n.unread).length})` },
             { id: 'profile' as MainSection, label: 'My Profile' },
           ].map((tab) => (
@@ -1616,6 +1619,13 @@ export default function StudentStudioPage() {
                 })}
               </div>
             </div>
+          )}
+
+          {section === 'chat' && (
+            <AlumStudentChatSection
+              viewerRole="student"
+              viewerName={STUDENTS_DATA[0]?.fullName || 'Aarav Mohanty'}
+            />
           )}
 
           {/* ---------- TAB 4: NOTIFICATIONS ---------- */}
