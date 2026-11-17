@@ -213,12 +213,6 @@ export default function HomePage() {
 
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
-                  href="/command-center"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 py-2.5 text-sm font-semibold transition-colors shadow-xs"
-                >
-                  Launch 100vh Command Center (⌘K) <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
                   href="/student"
                   className="inline-flex items-center gap-2 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 px-6 py-2.5 text-sm font-semibold transition-colors shadow-xs"
                 >
