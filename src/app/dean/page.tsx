@@ -145,6 +145,7 @@ export default function DeanDashboardPage() {
   const [caseStudyItem, setCaseStudyItem] = useState<FeedItem | null>(null);
   const [selectedProfile, setSelectedProfile] = useState<SelectedProfileTarget | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
   const notify = (msg: string) => {
@@ -152,7 +153,7 @@ export default function DeanDashboardPage() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const anyModalOpen = !!(caseStudyItem || selectedProfile || directoryOpen);
+  const anyModalOpen = !!(caseStudyItem || selectedProfile || directoryOpen || reportModalOpen);
   useEffect(() => {
     if (!anyModalOpen) return;
     const prev = document.body.style.overflow;
@@ -191,6 +192,78 @@ export default function DeanDashboardPage() {
     });
     return Object.entries(counts).sort((a, b) => b[1] - a[1]);
   }, []);
+
+  const topPerformingStudents = useMemo(() => {
+    return STUDENTS_DATA.map((s) => {
+      const extra = STUDENT_ACADEMICS[s.id];
+      const offer = OFFERS_DATA.find((o) => o.studentId === s.id);
+      const cgpa = extra?.cgpa ?? 8.8;
+      const score = Math.round(
+        cgpa * 7 + s.totalProjectsCount * 6 + s.researchPaperIds.length * 8 + (offer ? 12 : 0)
+      );
+      return { student: s, cgpa, offer, extra, score };
+    })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+  }, []);
+
+  const topContributingAlumni = useMemo(() => {
+    return ALUMNI_DATA.map((a) => {
+      const career = ALUMNI_CAREER[a.id];
+      const impactScore =
+        a.activeJobOpeningsCount * 10 +
+        a.linkedStudentIds.length * 8 +
+        a.linkedProjectIds.length * 6 +
+        a.linkedPaperIds.length * 8 +
+        (career?.totalYears ?? 6);
+      return { alumni: a, career, impactScore };
+    })
+      .sort((a, b) => b.impactScore - a.impactScore)
+      .slice(0, 6);
+  }, []);
+
+  const projectDomainChart = useMemo(() => {
+    const counts: Record<string, number> = {};
+    ALL_STUDENT_BUILDS.forEach((b) => {
+      counts[b.domain] = (counts[b.domain] || 0) + 1;
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }, []);
+
+  const downloadCsvReport = () => {
+    const rows = [
+      ['Type', 'ID', 'Name', 'Department/Company', 'Metric/Package', 'Projects/Openings'],
+      ...STUDENTS_DATA.map((s) => {
+        const extra = STUDENT_ACADEMICS[s.id];
+        const offer = OFFERS_DATA.find((o) => o.studentId === s.id);
+        return [
+          'Student',
+          s.id,
+          s.fullName,
+          `${s.academicYear} ${s.branch}`,
+          `CGPA ${extra?.cgpa ?? ''} | ${offer ? `${offer.offerType} ${offer.company} (${offer.packageStr})` : 'Active Builder'}`,
+          s.projectIds.join(' '),
+        ];
+      }),
+      ...ALUMNI_DATA.map((a) => [
+        'Alumni',
+        a.id,
+        a.fullName,
+        `${a.designation} @ ${a.company}`,
+        `Batch ${a.batchYear} | ${ALUMNI_CAREER[a.id]?.totalYears ?? 8} yrs`,
+        `${a.activeJobOpeningsCount} openings | Mentoring ${a.linkedStudentIds.join(' ')}`,
+      ]),
+    ];
+    const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'ITER-AlumConnect-Executive-Report.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+    notify('Downloaded ITER-AlumConnect-Executive-Report.csv');
+  };
 
   const quickPeopleMatches = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -597,6 +670,14 @@ export default function DeanDashboardPage() {
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
                     type="button"
+                    onClick={() => setReportModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 px-4 py-2 text-xs font-bold transition-colors"
+                  >
+                    <FileCheck2 className="w-3.5 h-3.5" />
+                    Check Proper Report
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => setSection('student-feed')}
                     className="rounded-full bg-[#2563EB] hover:bg-blue-500 text-white px-4 py-2 text-xs font-semibold"
                   >
@@ -651,20 +732,20 @@ export default function DeanDashboardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                    <GraduationCap className="w-3.5 h-3.5 text-[#2563EB]" />
-                    Student Cohort by Branch
+                    <BarChart3 className="w-3.5 h-3.5 text-[#2563EB]" />
+                    What Students Are Building (50 Builds)
                   </h2>
-                  <div className="space-y-2">
-                    {branchBreakdown.map(([branch, count]) => {
-                      const pct = Math.round((count / STUDENTS_DATA.length) * 100);
+                  <div className="space-y-2.5">
+                    {projectDomainChart.map(([domain, count]) => {
+                      const pct = Math.round((count / ALL_STUDENT_BUILDS.length) * 100);
                       return (
-                        <div key={branch} className="space-y-1 text-xs">
+                        <div key={domain} className="space-y-1 text-xs">
                           <div className="flex justify-between font-semibold">
-                            <span>{branch}</span>
-                            <span className="text-[#2563EB]">{count} students ({pct}%)</span>
+                            <span>{domain}</span>
+                            <span className="text-[#2563EB]">{count} ({pct}%)</span>
                           </div>
-                          <div className="h-1.5 rounded-full bg-[#F4F4F5] dark:bg-zinc-800">
-                            <div className="h-1.5 rounded-full bg-[#2563EB]" style={{ width: `${pct}%` }} />
+                          <div className="h-2 rounded-full bg-[#F4F4F5] dark:bg-zinc-800 overflow-hidden">
+                            <div className="h-2 rounded-full bg-[#2563EB]" style={{ width: `${pct}%` }} />
                           </div>
                         </div>
                       );
@@ -672,11 +753,126 @@ export default function DeanDashboardPage() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-[#2563EB]" />
-                    Research Publications ({RESEARCH_PAPERS_DATA.length})
+                    <GraduationCap className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Student Cohort by Branch ({STUDENTS_DATA.length})
                   </h2>
+                  <div className="space-y-2.5">
+                    {branchBreakdown.map(([branch, count]) => {
+                      const pct = Math.round((count / STUDENTS_DATA.length) * 100);
+                      return (
+                        <div key={branch} className="space-y-1 text-xs">
+                          <div className="flex justify-between font-semibold">
+                            <span>{branch}</span>
+                            <span className="text-emerald-600">{count} students ({pct}%)</span>
+                          </div>
+                          <div className="h-2 rounded-full bg-[#F4F4F5] dark:bg-zinc-800 overflow-hidden">
+                            <div className="h-2 rounded-full bg-emerald-500" style={{ width: `${pct}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* CHART MODE: TOP-PERFORMING STUDENTS & TOP-CONTRIBUTING ALUMNI */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                      <Award className="w-3.5 h-3.5 text-[#2563EB]" />
+                      Top-Performing Students
+                    </h2>
+                    <span className="text-[10px] font-semibold text-[#52525B]">CGPA + Builds + Offers</span>
+                  </div>
+                  <div className="space-y-2.5">
+                    {topPerformingStudents.map(({ student, cgpa, offer, score }) => {
+                      const maxScore = topPerformingStudents[0]?.score || 100;
+                      const pct = Math.round((score / maxScore) * 100);
+                      return (
+                        <button
+                          key={student.id}
+                          type="button"
+                          onClick={() => setSelectedProfile({ kind: 'student', student })}
+                          className="w-full text-left space-y-1 group"
+                        >
+                          <div className="flex items-center justify-between gap-2 text-xs">
+                            <span className="flex items-center gap-2 min-w-0">
+                              <img
+                                src={getIndianAvatar(student.fullName)}
+                                alt={student.fullName}
+                                className="h-6 w-6 rounded-full object-cover shrink-0"
+                              />
+                              <span className="font-bold truncate group-hover:text-[#2563EB]">
+                                {student.fullName}
+                              </span>
+                            </span>
+                            <span className="shrink-0 text-[10px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-500/15 dark:text-emerald-300 px-2 py-0.5 rounded-full">
+                              {cgpa} • {offer ? `${offer.company} ${offer.offerType}` : `${student.totalProjectsCount} Builds`}
+                            </span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-[#F4F4F5] dark:bg-zinc-800 overflow-hidden">
+                            <div className="h-1.5 rounded-full bg-[#2563EB]" style={{ width: `${pct}%` }} />
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                      Top-Contributing Alumni
+                    </h2>
+                    <span className="text-[10px] font-semibold text-[#52525B]">Mentoring + Openings</span>
+                  </div>
+                  <div className="space-y-2.5">
+                    {topContributingAlumni.map(({ alumni, impactScore }) => {
+                      const maxImpact = topContributingAlumni[0]?.impactScore || 100;
+                      const pct = Math.round((impactScore / maxImpact) * 100);
+                      return (
+                        <button
+                          key={alumni.id}
+                          type="button"
+                          onClick={() => setSelectedProfile({ kind: 'alumni', alumni })}
+                          className="w-full text-left space-y-1 group"
+                        >
+                          <div className="flex items-center justify-between gap-2 text-xs">
+                            <span className="flex items-center gap-2 min-w-0">
+                              <img
+                                src={getIndianAvatar(alumni.fullName)}
+                                alt={alumni.fullName}
+                                className="h-6 w-6 rounded-full object-cover shrink-0"
+                              />
+                              <span className="font-bold truncate group-hover:text-[#2563EB]">
+                                {alumni.fullName}
+                              </span>
+                            </span>
+                            <span className="shrink-0 text-[10px] font-bold text-indigo-700 bg-indigo-50 dark:bg-indigo-500/15 dark:text-indigo-300 px-2 py-0.5 rounded-full">
+                              {alumni.company} • {alumni.activeJobOpeningsCount} roles
+                            </span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-[#F4F4F5] dark:bg-zinc-800 overflow-hidden">
+                            <div className="h-1.5 rounded-full bg-indigo-600" style={{ width: `${pct}%` }} />
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Research Tracker */}
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2.5">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Research Publications ({RESEARCH_PAPERS_DATA.length})
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {RESEARCH_PAPERS_DATA.map((rp) => (
                     <button
                       key={rp.id}
@@ -1202,6 +1398,135 @@ export default function DeanDashboardPage() {
           onSelectProfile={(next) => setSelectedProfile(next)}
           onClose={() => setDirectoryOpen(false)}
         />
+      )}
+
+      {/* PROPER EXECUTIVE REPORT MODAL */}
+      {reportModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl space-y-6">
+            <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#E4E4E7] dark:border-zinc-800 pb-4">
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2.5 py-0.5 text-[10px] font-bold">
+                  <ShieldCheck className="w-3 h-3" />
+                  Verified Institutional Report • ITER, SOA
+                </span>
+                <h2 className="text-xl font-bold mt-1">
+                  Dean &amp; T&amp;P Cell — Cohort Performance &amp; Placement Report
+                </h2>
+                <p className="text-xs text-[#52525B] dark:text-zinc-400">
+                  Live audit across {STUDENTS_DATA.length} students, {PROJECTS_DATA.length} projects, {RESEARCH_PAPERS_DATA.length} papers, {ALUMNI_DATA.length} alumni &amp; {OFFERS_DATA.length} verified offers.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={downloadCsvReport}
+                  className="rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-4 py-1.5 text-xs font-semibold"
+                >
+                  Download CSV Report
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-4 py-1.5 text-xs font-semibold"
+                >
+                  Print / PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setReportModalOpen(false)}
+                  className="rounded-lg border border-[#E4E4E7] dark:border-zinc-700 p-1.5"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Summary KPIs */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+              <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800 p-3">
+                <div className="text-lg font-bold">{STUDENTS_DATA.length} Students</div>
+                <div className="text-[11px] text-[#52525B]">Avg CGPA {avgCgpa}</div>
+              </div>
+              <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800 p-3">
+                <div className="text-lg font-bold text-[#2563EB]">{PROJECTS_DATA.length + RESEARCH_PAPERS_DATA.length} Builds</div>
+                <div className="text-[11px] text-[#52525B]">{PROJECTS_DATA.length} Projects + {RESEARCH_PAPERS_DATA.length} Papers</div>
+              </div>
+              <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800 p-3">
+                <div className="text-lg font-bold text-indigo-600">{ALUMNI_DATA.length} Alumni</div>
+                <div className="text-[11px] text-[#52525B]">{totalAlumExp} Yrs Exp • {totalOpenings} Openings</div>
+              </div>
+              <div className="rounded-2xl bg-[#F4F4F5] dark:bg-zinc-800 p-3">
+                <div className="text-lg font-bold text-emerald-600">{OFFERS_DATA.length} Offers</div>
+                <div className="text-[11px] text-[#52525B]">{ppoCount} PPOs • {internCount} Interns</div>
+              </div>
+            </div>
+
+            {/* Top Students Table */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B]">
+                Top-Performing Students (CGPA, Builds &amp; Placements)
+              </h3>
+              <div className="overflow-x-auto rounded-2xl border border-[#E4E4E7] dark:border-zinc-800">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#F4F4F5] dark:bg-zinc-800 text-[11px]">
+                    <tr>
+                      <th className="px-3 py-2">Student</th>
+                      <th className="px-3 py-2">Year / Branch</th>
+                      <th className="px-3 py-2">CGPA</th>
+                      <th className="px-3 py-2">Builds &amp; Honors</th>
+                      <th className="px-3 py-2">Placement Outcome</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E4E4E7] dark:divide-zinc-800">
+                    {topPerformingStudents.map(({ student, cgpa, offer, extra }) => (
+                      <tr key={student.id}>
+                        <td className="px-3 py-2 font-bold">{student.fullName}</td>
+                        <td className="px-3 py-2">{student.academicYear} {student.branch}</td>
+                        <td className="px-3 py-2 font-semibold text-[#2563EB]">{cgpa.toFixed(2)}</td>
+                        <td className="px-3 py-2">{student.totalProjectsCount} Projects • {extra?.achievement}</td>
+                        <td className="px-3 py-2 font-semibold text-emerald-700">
+                          {offer ? `${offer.offerType} • ${offer.company} (${offer.packageStr})` : 'In Pipeline'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Top Contributing Alumni Table */}
+            <div className="space-y-2">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B]">
+                Top-Contributing Alumni (Time, Mentorship &amp; Hiring)
+              </h3>
+              <div className="overflow-x-auto rounded-2xl border border-[#E4E4E7] dark:border-zinc-800">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-[#F4F4F5] dark:bg-zinc-800 text-[11px]">
+                    <tr>
+                      <th className="px-3 py-2">Alumnus</th>
+                      <th className="px-3 py-2">Company &amp; Role</th>
+                      <th className="px-3 py-2">Batch / Exp</th>
+                      <th className="px-3 py-2">Mentorship Scope</th>
+                      <th className="px-3 py-2">Openings</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E4E4E7] dark:divide-zinc-800">
+                    {topContributingAlumni.map(({ alumni, career }) => (
+                      <tr key={alumni.id}>
+                        <td className="px-3 py-2 font-bold">{alumni.fullName}</td>
+                        <td className="px-3 py-2">{alumni.designation} @ {alumni.company}</td>
+                        <td className="px-3 py-2">&apos;{String(alumni.batchYear).slice(-2)} ({career?.totalYears} yrs)</td>
+                        <td className="px-3 py-2">{alumni.mentorshipScope}</td>
+                        <td className="px-3 py-2 font-bold text-[#2563EB]">{alumni.activeJobOpeningsCount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* TOAST */}
