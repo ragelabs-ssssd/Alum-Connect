@@ -12,7 +12,6 @@ import {
   GraduationCap,
   Mail,
   Search,
-  Sparkles,
   UserCheck,
   UserPlus,
   Users,
@@ -400,7 +399,6 @@ export function PublicProfileModal({
                 onClick={() => onNotify(`Sent 15-min coffee chat request to ${a.fullName}!`)}
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-3.5 py-1.5 text-xs font-semibold hover:border-[#2563EB]"
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
                 Request Chat
               </button>
               <button

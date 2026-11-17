@@ -18,7 +18,6 @@ import {
   Layers,
   Search,
   ShieldCheck,
-  Sparkles,
   User,
   UserPlus,
   Users,
@@ -658,7 +657,7 @@ export default function DeanDashboardPage() {
               {/* Executive Hero */}
               <div className="rounded-3xl bg-[#111318] text-white p-6 sm:p-7 space-y-4 shadow-md border border-zinc-800">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-semibold text-sky-300">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <ShieldCheck className="w-3.5 h-3.5" />
                   Executive Institutional Telemetry
                 </span>
                 <h1 className="text-xl sm:text-2xl font-bold leading-snug">

@@ -24,7 +24,6 @@ import {
   MessageSquare,
   Plus,
   Search,
-  Sparkles,
   Star,
   ThumbsUp,
   User,
@@ -854,7 +853,7 @@ export default function AlumniFeedPage() {
               {/* Hero Card */}
               <div className="rounded-3xl bg-[#111318] text-white p-6 sm:p-7 space-y-4 shadow-md border border-zinc-800">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-semibold text-sky-300">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Compass className="w-3.5 h-3.5" />
                   Alumni Talent &amp; Proof-of-Work Feed
                 </span>
                 <h1 className="text-xl sm:text-2xl font-bold leading-snug">
@@ -1235,7 +1234,7 @@ export default function AlumniFeedPage() {
               {/* ALUMNI ACTIVITIES & CONTRIBUTIONS */}
               <div className="space-y-4">
                 <h2 className="text-sm font-bold flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#2563EB]" />
+                  <Award className="w-4 h-4 text-[#2563EB]" />
                   My Alumni Activities &amp; Contributions
                 </h2>
 
