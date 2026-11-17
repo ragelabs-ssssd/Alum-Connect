@@ -27,8 +27,12 @@ import {
   RESEARCH_PAPERS_DATA,
   STUDENTS_DATA,
   StudentRecord,
+  getAlumniEducation,
+  getAlumniExperience,
   getIndianAvatar,
   getIndianBanner,
+  getStudentEducation,
+  getStudentExperience,
 } from '../data/alumConnectData';
 
 export type SelectedProfileTarget =
@@ -72,6 +76,8 @@ export function PublicProfileModal({
     const papers = RESEARCH_PAPERS_DATA.filter((rp) => s.researchPaperIds.includes(rp.id));
     const offer = OFFERS_DATA.find((o) => o.studentId === s.id);
     const mentors = ALUMNI_DATA.filter((a) => a.linkedStudentIds.includes(s.id));
+    const experiences = getStudentExperience(s, offer);
+    const educations = getStudentEducation(s);
     const seed = parseInt(s.id.replace(/\D/g, ''), 10) || 1;
 
     return (
@@ -172,6 +178,41 @@ export function PublicProfileModal({
                   {tech}
                 </span>
               ))}
+            </div>
+
+            {/* Work Experience & Education */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3.5 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Work Experience
+                </h3>
+                {experiences.map((exp) => (
+                  <div key={`${exp.company}-${exp.role}`} className="space-y-0.5 text-xs border-l-2 border-[#2563EB]/40 pl-2.5">
+                    <div className="font-bold">{exp.role}</div>
+                    <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                      {exp.company} • {exp.period}
+                    </div>
+                    <p className="text-[11px] text-[#52525B] dark:text-zinc-400">{exp.summary}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3.5 space-y-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                  <GraduationCap className="w-3.5 h-3.5 text-[#2563EB]" />
+                  Education Qualifications
+                </h3>
+                {educations.map((edu) => (
+                  <div key={edu.degree} className="space-y-0.5 text-xs border-l-2 border-emerald-500/40 pl-2.5">
+                    <div className="font-bold">{edu.degree}</div>
+                    <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                      {edu.institution} • {edu.period}
+                    </div>
+                    <p className="text-[11px] text-[#52525B] dark:text-zinc-400">{edu.detail}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Mentors */}
@@ -323,6 +364,8 @@ export function PublicProfileModal({
   const mentoredStudents = STUDENTS_DATA.filter((s) => a.linkedStudentIds.includes(s.id));
   const linkedProjects = PROJECTS_DATA.filter((p) => a.linkedProjectIds.includes(p.id));
   const linkedPapers = RESEARCH_PAPERS_DATA.filter((rp) => a.linkedPaperIds.includes(rp.id));
+  const experiences = getAlumniExperience(a);
+  const educations = getAlumniEducation(a);
   const seed = parseInt(a.id.replace(/\D/g, ''), 10) || 1;
 
   return (
@@ -425,6 +468,41 @@ export function PublicProfileModal({
                 {skill}
               </span>
             ))}
+          </div>
+
+          {/* Work Experience & Education */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3.5 space-y-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                Work Experience
+              </h3>
+              {experiences.map((exp) => (
+                <div key={`${exp.company}-${exp.role}`} className="space-y-0.5 text-xs border-l-2 border-[#2563EB]/40 pl-2.5">
+                  <div className="font-bold">{exp.role}</div>
+                  <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                    {exp.company} • {exp.period}
+                  </div>
+                  <p className="text-[11px] text-[#52525B] dark:text-zinc-400">{exp.summary}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3.5 space-y-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                <GraduationCap className="w-3.5 h-3.5 text-[#2563EB]" />
+                Education Qualifications
+              </h3>
+              {educations.map((edu) => (
+                <div key={edu.degree} className="space-y-0.5 text-xs border-l-2 border-emerald-500/40 pl-2.5">
+                  <div className="font-bold">{edu.degree}</div>
+                  <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                    {edu.institution} • {edu.period}
+                  </div>
+                  <p className="text-[11px] text-[#52525B] dark:text-zinc-400">{edu.detail}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {mentoredStudents.length > 0 && (

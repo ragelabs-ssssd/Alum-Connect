@@ -1632,6 +1632,62 @@ export default function StudentStudioPage() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Work Experience
+                  </h2>
+                  <div className="space-y-3">
+                    <div className="border-l-2 border-[#2563EB]/40 pl-3 space-y-0.5 text-xs">
+                      <div className="font-bold">Software Engineering Intern (PPO Track)</div>
+                      <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                        Razorpay • Summer 2026 • Bangalore
+                      </div>
+                      <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                        Building checkout observability &amp; FinTech payment flows with React, TypeScript &amp; Go.
+                      </p>
+                    </div>
+                    <div className="border-l-2 border-[#2563EB]/40 pl-3 space-y-0.5 text-xs">
+                      <div className="font-bold">Undergraduate AI &amp; Full-Stack Builder</div>
+                      <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                        ITER Innovation Lab • 2024 – Present
+                      </div>
+                      <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                        Shipped FinAudit Multi-Agent, VaniSetu Odia ASR &amp; IEEE Access legal RAG research.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-[#2563EB]" />
+                    Education Qualifications
+                  </h2>
+                  <div className="space-y-3">
+                    <div className="border-l-2 border-emerald-500/40 pl-3 space-y-0.5 text-xs">
+                      <div className="font-bold">B.Tech in Computer Science &amp; Engineering</div>
+                      <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                        ITER, Siksha &apos;O&apos; Anusandhan • 2023 – 2027
+                      </div>
+                      <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                        9.2 CGPA • Published IEEE Research Author • FinTech &amp; Systems Track
+                      </p>
+                    </div>
+                    <div className="border-l-2 border-emerald-500/40 pl-3 space-y-0.5 text-xs">
+                      <div className="font-bold">Senior Secondary (Class XII, CBSE)</div>
+                      <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
+                        Bhubaneswar, Odisha • 2021 – 2023
+                      </div>
+                      <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                        95.4% Aggregate • Physics, Chemistry, Mathematics &amp; Computer Science
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-sm font-bold">

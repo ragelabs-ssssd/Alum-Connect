@@ -200,6 +200,102 @@ export function getIndianBanner(seed: number): string {
   return INDIAN_GENERAL_IMAGES[Math.abs(seed) % 3];
 }
 
+export interface WorkExperienceItem {
+  role: string;
+  company: string;
+  period: string;
+  location: string;
+  summary: string;
+}
+
+export interface EducationItem {
+  degree: string;
+  institution: string;
+  period: string;
+  detail: string;
+}
+
+export function getStudentExperience(
+  student: StudentRecord,
+  offer?: OfferRecord
+): WorkExperienceItem[] {
+  const items: WorkExperienceItem[] = [];
+  if (offer) {
+    items.push({
+      role: offer.jobRole,
+      company: offer.company,
+      period: offer.offerType === 'PPO' ? 'Incoming 2026 • PPO Accepted' : '2026 • Active Intern',
+      location: 'Bangalore / Hybrid',
+      summary: `${offer.offerType} offer (${offer.packageStr}) via ITER Alumni Referral.`,
+    });
+  }
+  const topStack = student.techStack.slice(0, 3).join(', ');
+  items.push({
+    role: student.isResearchAuthor ? 'Undergraduate Research & Engineering Lead' : 'Student Software Builder',
+    company: 'ITER Innovation & Coding Lab',
+    period: student.academicYear === '4th Year' ? '2024 – Present' : '2025 – Present',
+    location: 'Bhubaneswar, Odisha',
+    summary: `Built ${student.totalProjectsCount} shipped campus/production projects using ${topStack}.`,
+  });
+  return items;
+}
+
+export function getStudentEducation(student: StudentRecord): EducationItem[] {
+  const gradYear =
+    student.academicYear === '4th Year'
+      ? 2026
+      : student.academicYear === '3rd Year'
+        ? 2027
+        : 2028;
+  const startYear = gradYear - 4;
+  return [
+    {
+      degree: `B.Tech in ${student.branch}`,
+      institution: "Institute of Technical Education & Research (ITER), Siksha 'O' Anusandhan",
+      period: `${startYear} – ${gradYear}`,
+      detail: `Reg No: ${student.regNo} • ${student.academicYear}${student.isResearchAuthor ? ' • Published/Peer-Reviewed Research Author' : ''}`,
+    },
+    {
+      degree: 'Senior Secondary (Class XII, Science)',
+      institution: 'CBSE / CHSE Board, Odisha',
+      period: `${startYear - 2} – ${startYear}`,
+      detail: 'Physics, Chemistry & Mathematics • Computer Science Track',
+    },
+  ];
+}
+
+export function getAlumniExperience(alumni: AlumniRecord): WorkExperienceItem[] {
+  const grad = alumni.batchYear;
+  const currentStart = Math.max(grad + 2, 2021);
+  return [
+    {
+      role: alumni.designation,
+      company: alumni.company,
+      period: `${currentStart} – Present`,
+      location: 'Bangalore / Hyderabad',
+      summary: `Leading ${alumni.mentorshipScope.toLowerCase()} with expertise in ${alumni.techStackExpertise.slice(0, 4).join(', ')}.`,
+    },
+    {
+      role: alumni.personaCategory.includes('HR') ? 'Technical Talent Partner' : 'Senior Software Engineer',
+      company: grad <= 2015 ? 'Flipkart / Enterprise Tech' : 'Early-Stage Product Engineering',
+      period: `${grad} – ${currentStart}`,
+      location: 'Bangalore, India',
+      summary: 'Scaled core engineering teams, mentored junior hires, and shipped production systems.',
+    },
+  ];
+}
+
+export function getAlumniEducation(alumni: AlumniRecord): EducationItem[] {
+  return [
+    {
+      degree: 'B.Tech in Computer Science & Engineering',
+      institution: "Institute of Technical Education & Research (ITER), Siksha 'O' Anusandhan",
+      period: `${alumni.batchYear - 4} – ${alumni.batchYear}`,
+      detail: `Alumni Batch '${String(alumni.batchYear).slice(-2)} • Verified ITER Mentor`,
+    },
+  ];
+}
+
 const pickCoverImage = (idx: number) => INDIAN_GENERAL_IMAGES[idx % 3];
 
 const rawProjects: Omit<ProjectRecord, 'coverImage'>[] = [
