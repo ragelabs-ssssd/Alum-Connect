@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -162,11 +162,11 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
       repoUrl: p.githubUrl,
       endorsement: linkedAlum
         ? {
-            alumName: linkedAlum.fullName,
-            alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
-            alumAvatar: getIndianAvatar(linkedAlum.fullName),
-            quote: `Verified ${linkedAlum.mentorshipScope.toLowerCase()} review — strong production readiness and architecture.`,
-          }
+          alumName: linkedAlum.fullName,
+          alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+          alumAvatar: getIndianAvatar(linkedAlum.fullName),
+          quote: `Verified ${linkedAlum.mentorshipScope.toLowerCase()} review — strong production readiness and architecture.`,
+        }
         : undefined,
       openRole:
         !linkedAlum && p.collaborationMode === 'Solo'
@@ -200,11 +200,11 @@ const STUDENT_BUILDS: StudentBuildCard[] = [
       repoUrl: rp.codeRepoUrl,
       endorsement: linkedAlum
         ? {
-            alumName: linkedAlum.fullName,
-            alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
-            alumAvatar: getIndianAvatar(linkedAlum.fullName),
-            quote: `Strong experimental rigor for ${rp.venue}. Ready for alumni benchmark & citation amplification.`,
-          }
+          alumName: linkedAlum.fullName,
+          alumRole: `${linkedAlum.designation} @ ${linkedAlum.company} • Batch '${String(linkedAlum.batchYear).slice(-2)}`,
+          alumAvatar: getIndianAvatar(linkedAlum.fullName),
+          quote: `Strong experimental rigor for ${rp.venue}. Ready for alumni benchmark & citation amplification.`,
+        }
         : undefined,
       openRole:
         rp.status === 'Under Peer Review'
@@ -391,6 +391,16 @@ export default function StudentStudioPage() {
   const [followedIds, setFollowedIds] = useState<Record<string, boolean>>({});
   const [toast, setToast] = useState<string | null>(null);
 
+  const anyModalOpen = !!(caseStudyItem || selectedProfile || directoryOpen || shareModalOpen);
+  useEffect(() => {
+    if (!anyModalOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [anyModalOpen]);
+
   const notify = (msg: string) => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
@@ -426,28 +436,28 @@ export default function StudentStudioPage() {
       searchScope === 'alumni'
         ? []
         : STUDENTS_DATA.filter((s) =>
-            !q
-              ? true
-              : `${s.fullName} ${s.branch} ${s.academicYear} ${s.regNo} ${s.techStack.join(' ')}`
-                  .toLowerCase()
-                  .includes(q)
-          )
-            .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
-            .slice(0, searchScope === 'students' ? 6 : 4)
-            .map((student) => ({ kind: 'student' as const, student }));
+          !q
+            ? true
+            : `${s.fullName} ${s.branch} ${s.academicYear} ${s.regNo} ${s.techStack.join(' ')}`
+              .toLowerCase()
+              .includes(q)
+        )
+          .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
+          .slice(0, searchScope === 'students' ? 6 : 4)
+          .map((student) => ({ kind: 'student' as const, student }));
     const alumni =
       searchScope === 'students'
         ? []
         : ALUMNI_DATA.filter((a) =>
-            !q
-              ? true
-              : `${a.fullName} ${a.company} ${a.designation} ${a.techStackExpertise.join(' ')}`
-                  .toLowerCase()
-                  .includes(q)
-          )
-            .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
-            .slice(0, searchScope === 'alumni' ? 6 : 4)
-            .map((alumni) => ({ kind: 'alumni' as const, alumni }));
+          !q
+            ? true
+            : `${a.fullName} ${a.company} ${a.designation} ${a.techStackExpertise.join(' ')}`
+              .toLowerCase()
+              .includes(q)
+        )
+          .sort((a, b) => rankName(a.fullName) - rankName(b.fullName))
+          .slice(0, searchScope === 'alumni' ? 6 : 4)
+          .map((alumni) => ({ kind: 'alumni' as const, alumni }));
     return [...alumni, ...students].slice(0, 6);
   }, [search, searchScope]);
 
@@ -618,11 +628,10 @@ export default function StudentStudioPage() {
                             e.preventDefault();
                             setSearchScope(chip.id);
                           }}
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${
-                            searchScope === chip.id
-                              ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
-                              : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300'
-                          }`}
+                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-colors ${searchScope === chip.id
+                            ? 'bg-[#18181B] text-white dark:bg-zinc-100 dark:text-zinc-950'
+                            : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B] dark:text-zinc-300'
+                            }`}
                         >
                           {chip.label}
                         </button>
@@ -1057,11 +1066,10 @@ export default function StudentStudioPage() {
                           <div className="text-[10px] text-[#52525B] truncate">{job.role}</div>
                         </div>
                         <span
-                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                            applied
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
-                          }`}
+                          className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${applied
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-[#F4F4F5] dark:bg-zinc-800 text-[#52525B]'
+                            }`}
                         >
                           {applied ? 'Applied ✓' : `${job.slotsLeft} slots`}
                         </span>

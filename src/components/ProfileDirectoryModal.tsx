@@ -82,7 +82,7 @@ export function PublicProfileModal({
 
     return (
       <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl">
+        <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl">
           {/* Banner */}
           <div className="relative h-32 bg-gradient-to-r from-[#18181B] via-zinc-800 to-[#2563EB]">
             <img
@@ -370,7 +370,7 @@ export function PublicProfileModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl">
         <div className="relative h-32 bg-gradient-to-r from-[#09090B] via-slate-800 to-[#2563EB]">
           <img
             src={getIndianBanner(seed + 1)}

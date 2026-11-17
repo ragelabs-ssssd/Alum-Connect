@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -258,6 +258,16 @@ export default function AlumniFeedPage() {
   const [selectedProfile, setSelectedProfile] = useState<SelectedProfileTarget | null>(null);
   const [directoryOpen, setDirectoryOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  const anyModalOpen = !!(caseStudyItem || selectedProfile || directoryOpen || jobModalOpen);
+  useEffect(() => {
+    if (!anyModalOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [anyModalOpen]);
 
   const notify = (msg: string) => {
     setToast(msg);
@@ -1437,7 +1447,7 @@ export default function AlumniFeedPage() {
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
           <form
             onSubmit={handlePostJob}
-            className="w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 space-y-4 shadow-2xl"
+            className="w-full max-w-xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 space-y-4 shadow-2xl"
           >
             <div className="flex items-center justify-between">
               <div>
