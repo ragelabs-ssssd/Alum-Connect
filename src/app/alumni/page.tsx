@@ -241,6 +241,7 @@ export default function AlumniFeedPage() {
 
   const [jobs, setJobs] = useState<AlumJobPost[]>(INITIAL_ALUM_JOBS);
   const [jobModalOpen, setJobModalOpen] = useState(false);
+  const [jobPreviewMode, setJobPreviewMode] = useState(false);
   const [jobTitle, setJobTitle] = useState('');
   const [jobCompany, setJobCompany] = useState(CURRENT_ALUM.company);
   const [jobLocation, setJobLocation] = useState('Bangalore (Hybrid)');
@@ -1447,13 +1448,86 @@ export default function AlumniFeedPage() {
               </div>
               <button
                 type="button"
-                onClick={() => setJobModalOpen(false)}
+                onClick={() => {
+                  setJobModalOpen(false);
+                  setJobPreviewMode(false);
+                }}
                 className="rounded-lg border border-[#E4E4E7] dark:border-zinc-700 p-1.5"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
+            {jobPreviewMode ? (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-[#2563EB]/30 bg-[#F4F4F5] dark:bg-zinc-950 p-4 space-y-3">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">
+                    Live Student Job Card Preview
+                  </div>
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-[#2563EB]">
+                          <span>{jobCompany || CURRENT_ALUM.company}</span>
+                          <span className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 text-[#18181B] dark:text-zinc-200 px-2 py-0.5 text-[10px]">
+                            {jobType}
+                          </span>
+                        </div>
+                        <h4 className="text-base font-bold mt-1">
+                          {jobTitle.trim() || 'Untitled Role Title'}
+                        </h4>
+                      </div>
+                      <span className="text-xs font-bold text-emerald-600">
+                        {jobComp || 'Competitive'}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-[#52525B] dark:text-zinc-300 leading-relaxed">
+                      {jobJD.trim() || 'No job description entered yet — switch back to Edit to add responsibilities and interview rounds.'}
+                    </p>
+
+                    <div className="flex flex-wrap items-center gap-3 text-[11px] text-[#52525B] dark:text-zinc-400">
+                      <span className="inline-flex items-center gap-1">
+                        <MapPin className="w-3 h-3" /> {jobLocation || 'Bangalore (Hybrid)'}
+                      </span>
+                      <span>• {jobSlots || 3} referral slots</span>
+                      {jobLastDate && <span>• Last Date: <strong>{jobLastDate}</strong></span>}
+                      {jobEligibility && <span>• {jobEligibility}</span>}
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5">
+                      {jobSkills
+                        .split(',')
+                        .map((s) => s.trim())
+                        .filter(Boolean)
+                        .map((s) => (
+                          <span
+                            key={s}
+                            className="rounded-full bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 px-2.5 py-0.5 text-[10px] font-medium"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                    </div>
+
+                    <div className="pt-2.5 border-t border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-between gap-2 text-xs">
+                      <span className="inline-flex items-center gap-1.5 text-[#52525B] dark:text-zinc-400">
+                        <img
+                          src={getIndianAvatar(CURRENT_ALUM.fullName)}
+                          alt={CURRENT_ALUM.fullName}
+                          className="h-5 w-5 rounded-full object-cover"
+                        />
+                        Posted by <strong>{CURRENT_ALUM.fullName}</strong>
+                      </span>
+                      <span className="rounded-full bg-[#2563EB] text-white px-3 py-1 text-[11px] font-semibold">
+                        Apply with Portfolio
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
                 <label className="text-[11px] font-semibold text-[#52525B]">Job Title *</label>
@@ -1562,21 +1636,36 @@ export default function AlumniFeedPage() {
                 className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 p-3 text-xs"
               />
             </div>
+              </>
+            )}
 
-            <div className="flex justify-end gap-2 pt-1">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => setJobModalOpen(false)}
-                className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-4 py-1.5 text-xs font-semibold"
+                onClick={() => setJobPreviewMode((p) => !p)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#2563EB] text-[#2563EB] hover:bg-blue-50 dark:hover:bg-sky-500/10 px-4 py-1.5 text-xs font-semibold transition-colors"
               >
-                Cancel
+                <ExternalLink className="w-3.5 h-3.5" />
+                {jobPreviewMode ? 'Back to Edit' : 'Preview Card'}
               </button>
-              <button
-                type="submit"
-                className="rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-5 py-1.5 text-xs font-semibold"
-              >
-                Publish Opening
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setJobModalOpen(false);
+                    setJobPreviewMode(false);
+                  }}
+                  className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-4 py-1.5 text-xs font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-full bg-[#2563EB] hover:bg-blue-700 text-white px-5 py-1.5 text-xs font-semibold"
+                >
+                  Publish Opening
+                </button>
+              </div>
             </div>
           </form>
         </div>
