@@ -677,20 +677,6 @@ export default function DeanDashboardPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setSection('student-feed')}
-                    className="rounded-full bg-[#2563EB] hover:bg-blue-500 text-white px-4 py-2 text-xs font-semibold"
-                  >
-                    Inspect Student Feed
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSection('alumni-feed')}
-                    className="rounded-full border border-white/25 hover:bg-white/10 text-white px-4 py-2 text-xs font-semibold"
-                  >
-                    Inspect Alumni Activity
-                  </button>
-                  <button
-                    type="button"
                     onClick={() => setSection('placements')}
                     className="rounded-full border border-white/25 hover:bg-white/10 text-white px-4 py-2 text-xs font-semibold"
                   >
