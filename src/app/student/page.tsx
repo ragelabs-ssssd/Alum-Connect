@@ -906,14 +906,6 @@ export default function StudentStudioPage() {
                         </span>
                       </div>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => setSection('profile')}
-                      className="w-full rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 text-white py-2 text-xs font-semibold transition-colors"
-                    >
-                      Open Full Profile
-                    </button>
                   </div>
                 </div>
 
