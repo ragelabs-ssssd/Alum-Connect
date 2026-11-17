@@ -1521,3 +1521,237 @@ export const OFFERS_DATA: OfferRecord[] = [
   { id: 'OFF-09', studentId: 'STU-08', studentName: 'Meera Krishnan', academicYearBranch: '3rd Year EEE', company: 'GreenVolt Mobility', jobRole: 'IoT Energy Systems Intern', packageStr: '₹50,000 / month', offerType: 'Internship', referringAlumniId: 'ALUM-09', status: 'Joined' },
   { id: 'OFF-10', studentId: 'STU-18', studentName: 'Shreya Nanda', academicYearBranch: '2nd Year CSE', company: 'Adobe', jobRole: 'Computer Vision & WebXR Research Intern', packageStr: '₹75,000 / month', offerType: 'Internship', referringAlumniId: 'ALUM-14', status: 'Joined' },
 ];
+
+
+// ==================== PHASE 1: NORMALIZED & SYNTHESIZED RELATIONAL TABLES ====================
+
+export interface UnifiedStudent extends StudentRecord {
+  avatarUrl: string;
+  academics: StudentAcademicExtra;
+}
+
+export interface UnifiedAlumni extends AlumniRecord {
+  avatarUrl: string;
+  linkedinUrl: string;
+  career: AlumniCareerExtra;
+}
+
+export interface UnifiedOffer extends OfferRecord {
+  triggeredByProjectId: string;
+}
+
+export interface JobReferralRecord {
+  id: string;
+  alumniId: string;
+  postedBy: string;
+  company: string;
+  designation: string;
+  roleTitle: string;
+  roleType: 'Full-Time' | 'Internship' | 'Paid Bounty';
+  compensation: string;
+  location: string;
+  skills: string[];
+  lastDate: string;
+}
+
+export interface SquadOpeningRecord {
+  id: string;
+  projectId: string;
+  projectName: string;
+  leadStudentId: string;
+  leadName: string;
+  roleNeeded: string;
+  skillsRequired: string[];
+  teamSize: number;
+}
+
+export interface AlumniCritiqueRecord {
+  id: string;
+  projectId: string;
+  alumniId: string;
+  alumniName: string;
+  alumniRole: string;
+  comment: string;
+  timestamp: string;
+  endorsed: boolean;
+}
+
+export interface OfficeHourSlot {
+  id: string;
+  alumniId: string;
+  alumniName: string;
+  company: string;
+  topic: string;
+  dayTime: string;
+  durationMin: number;
+}
+
+export interface AcquiHireInquiry {
+  id: string;
+  founderAlumniId: string;
+  founderName: string;
+  company: string;
+  targetProjectId: string;
+  targetProjectName: string;
+  squadSize: number;
+  offerType: string;
+  status: 'Active Discussion' | 'Due Diligence' | 'Term Sheet Sent';
+}
+
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+export const UNIFIED_STUDENTS: UnifiedStudent[] = STUDENTS_DATA.map((s) => ({
+  ...s,
+  avatarUrl: getIndianAvatar(s.fullName),
+  academics: STUDENT_ACADEMICS[s.id],
+}));
+
+const OFFER_ISSUING_ALUM_IDS = new Set(OFFERS_DATA.map((o) => o.referringAlumniId));
+
+export const UNIFIED_ALUMNI: UnifiedAlumni[] = ALUMNI_DATA.map((a) => {
+  const issuedOffer = OFFER_ISSUING_ALUM_IDS.has(a.id);
+  const canPostJobs = a.canPostJobs || issuedOffer;
+  const activeJobOpeningsCount =
+    a.activeJobOpeningsCount > 0 ? a.activeJobOpeningsCount : issuedOffer ? 1 : 0;
+  return {
+    ...a,
+    canPostJobs,
+    activeJobOpeningsCount,
+    avatarUrl: getIndianAvatar(a.fullName),
+    linkedinUrl: `https://linkedin.com/in/${slugify(a.fullName)}-iter`,
+    career: ALUMNI_CAREER[a.id],
+  };
+});
+
+const OFFER_TRIGGER_PROJECT_MAP: Record<string, string> = {
+  'OFF-01': 'PRJ-01',
+  'OFF-02': 'PRJ-08',
+  'OFF-03': 'PRJ-02',
+  'OFF-04': 'PRJ-04',
+  'OFF-05': 'PRJ-06',
+  'OFF-06': 'PRJ-09',
+  'OFF-07': 'PRJ-21',
+  'OFF-08': 'PRJ-03',
+  'OFF-09': 'PRJ-05',
+  'OFF-10': 'PRJ-10',
+};
+
+export const UNIFIED_OFFERS: UnifiedOffer[] = OFFERS_DATA.map((o) => ({
+  ...o,
+  triggeredByProjectId: OFFER_TRIGGER_PROJECT_MAP[o.id] || 'PRJ-01',
+}));
+
+export const JOB_REFERRALS_32: JobReferralRecord[] = (() => {
+  const list: JobReferralRecord[] = [];
+  let counter = 1;
+  ALUMNI_DATA.filter((a) => a.canPostJobs && a.activeJobOpeningsCount > 0).forEach((alum) => {
+    for (let i = 0; i < alum.activeJobOpeningsCount; i++) {
+      if (list.length >= 32) break;
+      const skill = alum.techStackExpertise[i % alum.techStackExpertise.length] || 'Systems';
+      const isIntern = i % 3 === 1;
+      list.push({
+        id: `REF-${String(counter).padStart(2, '0')}`,
+        alumniId: alum.id,
+        postedBy: alum.fullName,
+        company: alum.company,
+        designation: alum.designation,
+        roleTitle: isIntern
+          ? `${skill} Engineering Intern`
+          : `${skill} Software Engineer (SDE-${(i % 2) + 1})`,
+        roleType: isIntern ? 'Internship' : 'Full-Time',
+        compensation: isIntern ? '₹55,000 – ₹80,000 / mo' : '₹22 – 36 LPA',
+        location: i % 2 === 0 ? 'Bangalore (Hybrid)' : 'Hyderabad / Remote',
+        skills: alum.techStackExpertise.slice(0, 4),
+        lastDate: `2026-12-${String(10 + ((counter * 2) % 18)).padStart(2, '0')}`,
+      });
+      counter++;
+    }
+  });
+  return list;
+})();
+
+export const SQUAD_OPENINGS: SquadOpeningRecord[] = PROJECTS_DATA.filter(
+  (p) => p.collaborationMode === 'Group'
+)
+  .slice(0, 10)
+  .map((p, idx) => {
+    const stu = STUDENTS_DATA.find((s) => s.fullName === p.leadName);
+    return {
+      id: `SQD-${String(idx + 1).padStart(2, '0')}`,
+      projectId: p.id,
+      projectName: p.name,
+      leadStudentId: stu?.id || 'STU-01',
+      leadName: p.leadName,
+      roleNeeded: idx % 2 === 0 ? 'Backend / Systems Co-Builder' : 'Frontend / UI Engineer',
+      skillsRequired: p.techStack.slice(0, 3),
+      teamSize: p.teamSize,
+    };
+  });
+
+export const ALUMNI_CRITIQUES: AlumniCritiqueRecord[] = PROJECTS_DATA.slice(0, 16).map(
+  (p, idx) => {
+    const alum =
+      ALUMNI_DATA.find((a) => a.linkedProjectIds.includes(p.id)) ||
+      ALUMNI_DATA[idx % ALUMNI_DATA.length];
+    return {
+      id: `CRT-${String(idx + 1).padStart(2, '0')}`,
+      projectId: p.id,
+      alumniId: alum.id,
+      alumniName: alum.fullName,
+      alumniRole: `${alum.designation} @ ${alum.company} • '${String(alum.batchYear).slice(-2)}`,
+      comment: `Strong ${p.techStack[0]} architecture on ${p.name}. Clean separation of concerns and verified ${p.hostingPlatform} deployment.`,
+      timestamp: `${idx + 1}h ago`,
+      endorsed: true,
+    };
+  }
+);
+
+export const OFFICE_HOURS: OfficeHourSlot[] = ALUMNI_DATA.map((a, idx) => ({
+  id: `OH-${String(idx + 1).padStart(2, '0')}`,
+  alumniId: a.id,
+  alumniName: a.fullName,
+  company: a.company,
+  topic: a.mentorshipScope,
+  dayTime: ['Sat, 11:00 AM', 'Sun, 5:00 PM', 'Wed, 7:30 PM', 'Fri, 6:00 PM'][idx % 4],
+  durationMin: 15,
+}));
+
+export const ACQUI_HIRE_INQUIRIES: AcquiHireInquiry[] = [
+  {
+    id: 'ACQ-01',
+    founderAlumniId: 'ALUM-01',
+    founderName: 'Debadatta Rath',
+    company: 'HyperScale Labs',
+    targetProjectId: 'PRJ-01',
+    targetProjectName: 'FinAudit Multi-Agent',
+    squadSize: 3,
+    offerType: 'Full Squad PPO / IP Licensing',
+    status: 'Term Sheet Sent',
+  },
+  {
+    id: 'ACQ-02',
+    founderAlumniId: 'ALUM-05',
+    founderName: 'Anindita Pattnaik',
+    company: 'NeuroLink AI',
+    targetProjectId: 'PRJ-08',
+    targetProjectName: 'VaniSetu Odia ASR',
+    squadSize: 2,
+    offerType: 'Speech AI Squad Acqui-Hire',
+    status: 'Active Discussion',
+  },
+  {
+    id: 'ACQ-03',
+    founderAlumniId: 'ALUM-09',
+    founderName: 'Tapas Ranjan Nayak',
+    company: 'GreenVolt Mobility',
+    targetProjectId: 'PRJ-05',
+    targetProjectName: 'GridPulse Bhubaneswar',
+    squadSize: 1,
+    offerType: 'CleanTech R&D Residency',
+    status: 'Due Diligence',
+  },
+];
