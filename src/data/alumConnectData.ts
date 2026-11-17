@@ -200,6 +200,80 @@ export function getIndianBanner(seed: number): string {
   return INDIAN_GENERAL_IMAGES[Math.abs(seed) % 3];
 }
 
+export interface StudentAcademicExtra {
+  cgpa: number;
+  class10School: string;
+  class10Board: string;
+  class10Pct: string;
+  class12School: string;
+  class12Board: string;
+  class12Pct: string;
+  primaryClub: string;
+  secondaryClub: string;
+  clubRole: string;
+  achievement: string;
+}
+
+export const STUDENT_ACADEMICS: Record<string, StudentAcademicExtra> = {
+  'STU-01': { cgpa: 9.42, class10School: 'DAV Public School Chandrasekharpur', class10Board: 'CBSE', class10Pct: '95.4%', class12School: 'SAI International School Bhubaneswar', class12Board: 'CBSE', class12Pct: '94.2%', primaryClub: 'ACM Student Chapter', secondaryClub: 'Coding Club - CDPC', clubRole: 'Chair & Lead Systems Architect', achievement: 'SIH 2024 Grand Winner & Best Systems Paper' },
+  'STU-02': { cgpa: 9.28, class10School: 'DPS Kalinga Cuttack', class10Board: 'CBSE', class10Pct: '96.2%', class12School: 'DPS Kalinga Cuttack', class12Board: 'CBSE', class12Pct: '93.8%', primaryClub: 'AI/ML Society', secondaryClub: 'Toastmasters ITER', clubRole: 'Research Lead & VP Education', achievement: 'Published in Interspeech Workshop 2024' },
+  'STU-03': { cgpa: 9.55, class10School: 'Loyola School Bhubaneswar', class10Board: 'ICSE', class10Pct: '94.8%', class12School: 'Loyola School Bhubaneswar', class12Board: 'ISC', class12Pct: '92.6%', primaryClub: 'IoT & Embedded Lab', secondaryClub: 'GDSC ITER', clubRole: 'Embedded Systems Lead', achievement: 'Google Summer of Code (GSoC) 2024 Contributor' },
+  'STU-04': { cgpa: 8.95, class10School: "Mother's Public School Bhubaneswar", class10Board: 'CBSE', class10Pct: '93.5%', class12School: "Mother's Public School Bhubaneswar", class12Board: 'CBSE', class12Pct: '91.2%', primaryClub: 'IEEE Student Branch', secondaryClub: 'Robotics Club - Robocon', clubRole: 'Hardware Security Lead', achievement: 'Intel Hardware Security Hackathon 1st Runner-Up' },
+  'STU-05': { cgpa: 9.35, class10School: "St. Xavier's High School Khandagiri", class10Board: 'ICSE', class10Pct: '92.0%', class12School: 'DAV Public School Unit-8', class12Board: 'CBSE', class12Pct: '90.5%', primaryClub: 'GDSC ITER', secondaryClub: 'Coding Club - CDPC', clubRole: 'Cloud Architecture Lead', achievement: 'AWS Certified Solutions Architect Associate' },
+  'STU-06': { cgpa: 8.88, class10School: 'Kendriya Vidyalaya No. 1 Bhubaneswar', class10Board: 'CBSE', class10Pct: '91.5%', class12School: 'BJB Junior College Bhubaneswar', class12Board: 'CHSE', class12Pct: '89.5%', primaryClub: 'Web Development Club', secondaryClub: 'Design & Media Club', clubRole: 'Frontend Core Coordinator', achievement: 'Smart Odisha Hackathon 2nd Place' },
+  'STU-07': { cgpa: 9.68, class10School: 'Stewart School Cuttack', class10Board: 'ICSE', class10Pct: '97.0%', class12School: 'Stewart School Cuttack', class12Board: 'ISC', class12Pct: '95.2%', primaryClub: 'Coding Club - CDPC', secondaryClub: 'ACM Student Chapter', clubRole: 'Competitive Programming Lead', achievement: 'ICPC Amritapuri Regionalist & Codeforces Master' },
+  'STU-08': { cgpa: 8.92, class10School: 'Chinmaya Vidyalaya Rourkela', class10Board: 'CBSE', class10Pct: '92.8%', class12School: 'Chinmaya Vidyalaya Rourkela', class12Board: 'CBSE', class12Pct: '91.0%', primaryClub: 'Robotics Club - Robocon', secondaryClub: 'IEEE Student Branch', clubRole: 'EV Powertrain Lead', achievement: 'National E-Mobility Challenge 2024 Finalist' },
+  'STU-09': { cgpa: 9.15, class10School: 'DAV Public School Pokhariput', class10Board: 'CBSE', class10Pct: '94.0%', class12School: 'DAV Public School Pokhariput', class12Board: 'CBSE', class12Pct: '92.5%', primaryClub: 'AI/ML Society', secondaryClub: 'GDSC ITER', clubRole: 'Data Analytics Lead', achievement: 'IEEE Student Research Colloquium Best Poster' },
+  'STU-10': { cgpa: 8.74, class10School: "St. Joseph's High School Bhubaneswar", class10Board: 'ICSE', class10Pct: '89.5%', class12School: 'Ravenshaw Junior College Cuttack', class12Board: 'CHSE', class12Pct: '88.0%', primaryClub: 'Cyber Security Club', secondaryClub: 'Coding Club - CDPC', clubRole: 'Network Security Analyst', achievement: 'Capture The Flag (CTF) National Top 10' },
+  'STU-11': { cgpa: 9.1, class10School: 'DPS Kalinga Cuttack', class10Board: 'CBSE', class10Pct: '93.2%', class12School: 'SAI International School Bhubaneswar', class12Board: 'CBSE', class12Pct: '91.8%', primaryClub: 'Coding Club - CDPC', secondaryClub: 'Literary Society', clubRole: 'Full-Stack Project Head', achievement: 'Razorpay Hackathon Winner 2024' },
+  'STU-12': { cgpa: 9.05, class10School: "Mother's Public School Bhubaneswar", class10Board: 'CBSE', class10Pct: '92.5%', class12School: "Mother's Public School Bhubaneswar", class12Board: 'CBSE', class12Pct: '90.2%', primaryClub: 'GDSC ITER', secondaryClub: 'Toastmasters ITER', clubRole: 'Community Outreach Lead', achievement: 'Grace Hopper Celebration India Scholar' },
+  'STU-13': { cgpa: 8.85, class10School: 'Kendriya Vidyalaya No. 2 CRPF', class10Board: 'CBSE', class10Pct: '88.5%', class12School: 'BJB Junior College Bhubaneswar', class12Board: 'CHSE', class12Pct: '87.2%', primaryClub: 'Web Development Club', secondaryClub: 'Social Service Guild', clubRole: 'DevOps Specialist', achievement: 'SOA Community Tech Outreach Award' },
+  'STU-14': { cgpa: 8.9, class10School: 'DAV Public School CDA Cuttack', class10Board: 'CBSE', class10Pct: '91.0%', class12School: 'Ravenshaw Junior College Cuttack', class12Board: 'CHSE', class12Pct: '89.0%', primaryClub: 'IoT & Embedded Lab', secondaryClub: 'Robotics Club - Robocon', clubRole: 'Sensor Fusion Lead', achievement: 'National IoT Expo Innovation Award' },
+  'STU-15': { cgpa: 9.22, class10School: 'SAI International School Bhubaneswar', class10Board: 'CBSE', class10Pct: '95.0%', class12School: 'SAI International School Bhubaneswar', class12Board: 'CBSE', class12Pct: '93.0%', primaryClub: 'AI/ML Society', secondaryClub: 'Coding Club - CDPC', clubRole: 'NLP Research Lead', achievement: 'SIH 2023 Hardware Edition Finalist' },
+  'STU-16': { cgpa: 8.65, class10School: 'Stewart School Bhubaneswar', class10Board: 'ICSE', class10Pct: '88.0%', class12School: 'Stewart School Bhubaneswar', class12Board: 'ISC', class12Pct: '86.5%', primaryClub: 'IEEE Student Branch', secondaryClub: 'Robotics Club - Robocon', clubRole: 'Circuit Design Lead', achievement: 'Texas Instruments Innovation Challenge Semi-Finalist' },
+  'STU-17': { cgpa: 9.45, class10School: "St. Paul's School Rourkela", class10Board: 'ICSE', class10Pct: '96.0%', class12School: 'DPS R.K. Puram New Delhi', class12Board: 'CBSE', class12Pct: '94.0%', primaryClub: 'Coding Club - CDPC', secondaryClub: 'ACM Student Chapter', clubRole: 'Systems & Kernel Lead', achievement: 'Linux Foundation Kernel Mentorship Fellow' },
+  'STU-18': { cgpa: 9.38, class10School: 'DAV Public School Chandrasekharpur', class10Board: 'CBSE', class10Pct: '96.5%', class12School: 'SAI International School Bhubaneswar', class12Board: 'CBSE', class12Pct: '94.5%', primaryClub: 'GDSC ITER', secondaryClub: 'Design & Media Club', clubRole: 'AR/VR & XR Lead', achievement: 'Adobe GenSolve National Runner-Up' },
+  'STU-19': { cgpa: 8.98, class10School: 'DPS Kalinga Cuttack', class10Board: 'CBSE', class10Pct: '91.5%', class12School: 'DPS Kalinga Cuttack', class12Board: 'CBSE', class12Pct: '90.0%', primaryClub: 'Web Development Club', secondaryClub: 'Coding Club - CDPC', clubRole: 'Backend Core Member', achievement: 'HackOdisha 3.0 Top 5 Team' },
+  'STU-20': { cgpa: 8.8, class10School: "Mother's Public School Bhubaneswar", class10Board: 'CBSE', class10Pct: '90.5%', class12School: "Mother's Public School Bhubaneswar", class12Board: 'CBSE', class12Pct: '88.5%', primaryClub: 'IEEE Student Branch', secondaryClub: 'Toastmasters ITER', clubRole: 'Microelectronics Member', achievement: 'Women In Tech Early Explorer Grant' },
+  'STU-21': { cgpa: 9.02, class10School: 'Kendriya Vidyalaya No. 1 Sambalpur', class10Board: 'CBSE', class10Pct: '92.0%', class12School: 'Gangadhar Meher Junior College', class12Board: 'CHSE', class12Pct: '89.8%', primaryClub: 'Cyber Security Club', secondaryClub: 'ACM Student Chapter', clubRole: 'Cloud Security Lead', achievement: 'Nullcon Bug Bounty Top 20 Contributor' },
+  'STU-22': { cgpa: 8.78, class10School: 'DAV Public School Kalinga Nagar', class10Board: 'CBSE', class10Pct: '89.5%', class12School: 'BJB Junior College Bhubaneswar', class12Board: 'CHSE', class12Pct: '87.5%', primaryClub: 'Coding Club - CDPC', secondaryClub: 'Web Development Club', clubRole: 'Database Architecture Member', achievement: 'SOA Internal Hackathon 1st Position' },
+  'STU-23': { cgpa: 8.84, class10School: "St. Xavier's High School Cuttack", class10Board: 'ICSE', class10Pct: '91.2%', class12School: 'Ravenshaw Junior College Cuttack', class12Board: 'CHSE', class12Pct: '88.8%', primaryClub: 'Robotics Club - Robocon', secondaryClub: 'SAE Collegiate Club', clubRole: 'Power Electronics Lead', achievement: 'E-Baja Formula Student Electrical Team Lead' },
+  'STU-24': { cgpa: 8.9, class10School: 'Loyola School Bhubaneswar', class10Board: 'ICSE', class10Pct: '93.0%', class12School: 'Loyola School Bhubaneswar', class12Board: 'ISC', class12Pct: '91.5%', primaryClub: 'IEEE Student Branch', secondaryClub: 'AI/ML Society', clubRole: 'Smart Grid Researcher', achievement: 'IEEE PES Student Paper Presenter' },
+  'STU-25': { cgpa: 8.7, class10School: 'DAV Public School Unit-8 Bhubaneswar', class10Board: 'CBSE', class10Pct: '88.5%', class12School: 'DAV Public School Unit-8 Bhubaneswar', class12Board: 'CBSE', class12Pct: '87.0%', primaryClub: 'IoT & Embedded Lab', secondaryClub: 'Cyber Security Club', clubRole: 'Firmware Tester', achievement: 'Embedded Linux Conference Attendee & Speaker' },
+  'STU-26': { cgpa: 9.12, class10School: 'SAI International School Bhubaneswar', class10Board: 'CBSE', class10Pct: '94.5%', class12School: 'SAI International School Bhubaneswar', class12Board: 'CBSE', class12Pct: '92.2%', primaryClub: 'GDSC ITER', secondaryClub: 'Literary Society', clubRole: 'Technical Content Head & SWE', achievement: 'Flipkart GRiD 5.0 Semi-Finalist' },
+  'STU-27': { cgpa: 8.85, class10School: 'Stewart School Cuttack', class10Board: 'ICSE', class10Pct: '90.0%', class12School: 'Stewart School Cuttack', class12Board: 'ISC', class12Pct: '88.0%', primaryClub: 'Coding Club - CDPC', secondaryClub: 'Design & Media Club', clubRole: 'UI/UX Lead & Full Stack Developer', achievement: 'Devfolio Community Builder Fellow' },
+  'STU-28': { cgpa: 9.05, class10School: "Mother's Public School Bhubaneswar", class10Board: 'CBSE', class10Pct: '93.8%', class12School: "Mother's Public School Bhubaneswar", class12Board: 'CBSE', class12Pct: '91.5%', primaryClub: 'Web Development Club', secondaryClub: 'AI/ML Society', clubRole: 'Mobile App Developer', achievement: 'Flutter International Hackathon Special Mention' },
+  'STU-29': { cgpa: 9.5, class10School: 'DPS Kalinga Cuttack', class10Board: 'CBSE', class10Pct: '97.5%', class12School: 'DPS Kalinga Cuttack', class12Board: 'CBSE', class12Pct: '95.8%', primaryClub: 'ACM Student Chapter', secondaryClub: 'Coding Club - CDPC', clubRole: 'President & Lead Researcher', achievement: 'Published in IEEE Transactions on Big Data' },
+  'STU-30': { cgpa: 8.92, class10School: 'DAV Public School Chandrasekharpur', class10Board: 'CBSE', class10Pct: '92.2%', class12School: 'DAV Public School Chandrasekharpur', class12Board: 'CBSE', class12Pct: '90.5%', primaryClub: 'GDSC ITER', secondaryClub: 'Robotics Club - Robocon', clubRole: 'AI Vision Member', achievement: 'Smart India Hackathon Junior Winner' },
+  'STU-31': { cgpa: 8.82, class10School: 'Kendriya Vidyalaya No. 1 Bhubaneswar', class10Board: 'CBSE', class10Pct: '91.0%', class12School: 'BJB Junior College Bhubaneswar', class12Board: 'CHSE', class12Pct: '89.0%', primaryClub: 'IEEE Student Branch', secondaryClub: 'IoT & Embedded Lab', clubRole: 'Signal Processing Associate', achievement: 'IEEE Women in Engineering Star Award' },
+};
+
+export interface AlumniCareerExtra {
+  schooling: string;
+  totalYears: number;
+  careerStage: string;
+  earlyCareer: string;
+  midCareer: string;
+  founderStatus: string;
+}
+
+export const ALUMNI_CAREER: Record<string, AlumniCareerExtra> = {
+  'ALUM-01': { schooling: 'DAV Public School Chandrasekharpur (10th: 95.2%, 12th: 93.6%)', totalYears: 10, careerStage: 'Founder / C-Suite', earlyCareer: 'Mindtree (Junior SWE, 2016-2018)', midCareer: 'Hasura (Lead Platform Architect, 2018-2021)', founderStatus: 'Founder (AI & Systems Infrastructure)' },
+  'ALUM-02': { schooling: "Mother's Public School Bhubaneswar (10th: 96.0%, 12th: 94.4%)", totalYears: 12, careerStage: 'Executive Director', earlyCareer: 'Oracle India (Systems Software Engineer, 2014-2017)', midCareer: 'InMobi (Principal Architect, 2017-2020)', founderStatus: 'Corporate Executive' },
+  'ALUM-03': { schooling: 'BJB Collegiate School & Ravenshaw (10th: 91.8%, 12th: 89.5%)', totalYears: 11, careerStage: 'Corporate Leadership', earlyCareer: 'Wipro Technologies (Talent Analyst, 2015-2017)', midCareer: 'Swiggy (Senior Talent Acquisition Manager, 2017-2021)', founderStatus: 'Corporate Leadership' },
+  'ALUM-04': { schooling: 'Loyola School Bhubaneswar (10th: 97.4%, 12th: 96.2%)', totalYears: 9, careerStage: 'Staff Engineer', earlyCareer: 'Texas Instruments (Embedded SWE, 2017-2019)', midCareer: 'Postman (Senior Systems Engineer, 2019-2022)', founderStatus: 'Staff Technical Specialist' },
+  'ALUM-05': { schooling: 'DPS Kalinga Cuttack (10th: 95.8%, 12th: 94.0%)', totalYears: 10, careerStage: 'Founder / C-Suite', earlyCareer: 'Mu Sigma (Decision Scientist, 2016-2018)', midCareer: 'Fractal Analytics (Lead AI Researcher, 2018-2021)', founderStatus: 'Founder (Generative & Speech AI)' },
+  'ALUM-06': { schooling: 'Stewart School Cuttack (10th: 94.6%, 12th: 93.0%)', totalYears: 13, careerStage: 'Executive Leadership (VP)', earlyCareer: 'Cognizant (Cloud Infrastructure Engineer, 2013-2016)', midCareer: 'Flipkart (Director of Cloud Infrastructure, 2016-2020)', founderStatus: 'Corporate Executive' },
+  'ALUM-07': { schooling: 'SAI International School Bhubaneswar (10th: 93.5%, 12th: 91.8%)', totalYears: 8, careerStage: 'Corporate Specialist', earlyCareer: 'Infosys (Campus Recruitment Lead, 2018-2020)', midCareer: 'Urban Company (Talent Acquisition Specialist, 2020-2022)', founderStatus: 'Corporate Specialist' },
+  'ALUM-08': { schooling: 'Kendriya Vidyalaya No. 1 BBSR (10th: 92.4%, 12th: 90.5%)', totalYears: 7, careerStage: 'Senior Research Specialist', earlyCareer: 'Qualcomm India (Hardware Security Intern to SWE, 2019-2021)', midCareer: 'CryptoQuant Tech (Security Firmware Engineer, 2021-2023)', founderStatus: 'Senior Research Specialist' },
+  'ALUM-09': { schooling: 'Chinmaya Vidyalaya Rourkela (10th: 93.0%, 12th: 91.2%)', totalYears: 9, careerStage: 'Founder / CEO', earlyCareer: 'Tata Motors (EV Powertrain Engineer, 2017-2019)', midCareer: 'Ather Energy (Lead BMS Architect, 2019-2022)', founderStatus: 'Founder (CleanTech & EV Mobility)' },
+  'ALUM-10': { schooling: "St. Joseph's High School BBSR (10th: 96.5%, 12th: 95.0%)", totalYears: 12, careerStage: 'Senior Director', earlyCareer: 'Juniper Networks (Network Protocols SWE, 2014-2017)', midCareer: 'Arista Networks (Director of Engineering, 2017-2021)', founderStatus: 'Corporate Executive' },
+  'ALUM-11': { schooling: 'DAV Public School CDA Cuttack (10th: 91.5%, 12th: 89.2%)', totalYears: 7, careerStage: 'Staff Engineer', earlyCareer: 'Capgemini (Backend Associate, 2019-2021)', midCareer: 'Zeta Suite (Senior Distributed Systems SWE, 2021-2023)', founderStatus: 'Staff Technical Specialist' },
+  'ALUM-12': { schooling: "Mother's Public School Bhubaneswar (10th: 92.8%, 12th: 90.4%)", totalYears: 9, careerStage: 'Corporate Leadership', earlyCareer: 'Tech Mahindra (HR Executive, 2017-2019)', midCareer: 'Cleartrip (HR Manager - Tech Hiring, 2019-2022)', founderStatus: 'Corporate Leadership' },
+  'ALUM-13': { schooling: 'Stewart School Bhubaneswar (10th: 94.0%, 12th: 92.5%)', totalYears: 6, careerStage: 'Senior Protocol Engineer', earlyCareer: 'Infosys Finacle (Blockchain Associate, 2020-2021)', midCareer: 'Biconomy (Protocol SWE & ZK Researcher, 2021-2023)', founderStatus: 'Senior Technical Specialist' },
+  'ALUM-14': { schooling: 'DAV Public School Pokhariput (10th: 95.0%, 12th: 93.8%)', totalYears: 8, careerStage: 'Senior Computer Vision Specialist', earlyCareer: 'Samsung R&D Bangalore (Computer Vision Engineer, 2018-2021)', midCareer: 'Glance / InMobi (Senior Graphics & AR SWE, 2021-2023)', founderStatus: 'Senior Technical Specialist' },
+};
+
 export interface WorkExperienceItem {
   role: string;
   company: string;
@@ -219,28 +293,31 @@ export function getStudentExperience(
   student: StudentRecord,
   offer?: OfferRecord
 ): WorkExperienceItem[] {
+  const extra = STUDENT_ACADEMICS[student.id];
   const items: WorkExperienceItem[] = [];
   if (offer) {
     items.push({
       role: offer.jobRole,
       company: offer.company,
-      period: offer.offerType === 'PPO' ? 'Incoming 2026 • PPO Accepted' : '2026 • Active Intern',
-      location: 'Bangalore / Hybrid',
-      summary: `${offer.offerType} offer (${offer.packageStr}) via ITER Alumni Referral.`,
+      period: offer.offerType === 'PPO' ? 'Accepted PPO • 2026' : 'Joined Intern • 2026',
+      location: 'India',
+      summary: `${offer.offerType} (${offer.packageStr}) via ITER Alumni Referral.`,
     });
   }
-  const topStack = student.techStack.slice(0, 3).join(', ');
-  items.push({
-    role: student.isResearchAuthor ? 'Undergraduate Research & Engineering Lead' : 'Student Software Builder',
-    company: 'ITER Innovation & Coding Lab',
-    period: student.academicYear === '4th Year' ? '2024 – Present' : '2025 – Present',
-    location: 'Bhubaneswar, Odisha',
-    summary: `Built ${student.totalProjectsCount} shipped campus/production projects using ${topStack}.`,
-  });
+  if (extra) {
+    items.push({
+      role: extra.clubRole,
+      company: `${extra.primaryClub} & ${extra.secondaryClub}`,
+      period: student.academicYear === '4th Year' ? '2024 – Present' : '2025 – Present',
+      location: 'ITER, Bhubaneswar',
+      summary: `${extra.achievement}. Shipped ${student.totalProjectsCount} projects (${student.techStack.slice(0, 3).join(', ')}).`,
+    });
+  }
   return items;
 }
 
 export function getStudentEducation(student: StudentRecord): EducationItem[] {
+  const extra = STUDENT_ACADEMICS[student.id];
   const gradYear =
     student.academicYear === '4th Year'
       ? 2026
@@ -248,51 +325,78 @@ export function getStudentEducation(student: StudentRecord): EducationItem[] {
         ? 2027
         : 2028;
   const startYear = gradYear - 4;
-  return [
+  const items: EducationItem[] = [
     {
       degree: `B.Tech in ${student.branch}`,
-      institution: "Institute of Technical Education & Research (ITER), Siksha 'O' Anusandhan",
+      institution: "ITER, Siksha 'O' Anusandhan",
       period: `${startYear} – ${gradYear}`,
-      detail: `Reg No: ${student.regNo} • ${student.academicYear}${student.isResearchAuthor ? ' • Published/Peer-Reviewed Research Author' : ''}`,
-    },
-    {
-      degree: 'Senior Secondary (Class XII, Science)',
-      institution: 'CBSE / CHSE Board, Odisha',
-      period: `${startYear - 2} – ${startYear}`,
-      detail: 'Physics, Chemistry & Mathematics • Computer Science Track',
+      detail: `CGPA: ${extra ? extra.cgpa.toFixed(2) : '9.00'} • Reg: ${student.regNo}`,
     },
   ];
+  if (extra) {
+    items.push({
+      degree: `Class XII (${extra.class12Board})`,
+      institution: extra.class12School,
+      period: `${startYear - 2} – ${startYear}`,
+      detail: `Score: ${extra.class12Pct}`,
+    });
+    items.push({
+      degree: `Class X (${extra.class10Board})`,
+      institution: extra.class10School,
+      period: `${startYear - 4} – ${startYear - 2}`,
+      detail: `Score: ${extra.class10Pct}`,
+    });
+  }
+  return items;
 }
 
 export function getAlumniExperience(alumni: AlumniRecord): WorkExperienceItem[] {
-  const grad = alumni.batchYear;
-  const currentStart = Math.max(grad + 2, 2021);
+  const career = ALUMNI_CAREER[alumni.id];
+  if (!career) return [];
   return [
     {
       role: alumni.designation,
       company: alumni.company,
-      period: `${currentStart} – Present`,
-      location: 'Bangalore / Hyderabad',
-      summary: `Leading ${alumni.mentorshipScope.toLowerCase()} with expertise in ${alumni.techStackExpertise.slice(0, 4).join(', ')}.`,
+      period: `${career.totalYears} yrs total exp • Current`,
+      location: career.careerStage,
+      summary: `${career.founderStatus} • Mentors on ${alumni.mentorshipScope}.`,
     },
     {
-      role: alumni.personaCategory.includes('HR') ? 'Technical Talent Partner' : 'Senior Software Engineer',
-      company: grad <= 2015 ? 'Flipkart / Enterprise Tech' : 'Early-Stage Product Engineering',
-      period: `${grad} – ${currentStart}`,
-      location: 'Bangalore, India',
-      summary: 'Scaled core engineering teams, mentored junior hires, and shipped production systems.',
+      role: 'Mid-Career Role',
+      company: career.midCareer,
+      period: 'Mid-Career',
+      location: 'India',
+      summary: `Expertise: ${alumni.techStackExpertise.slice(0, 4).join(', ')}.`,
+    },
+    {
+      role: 'Early Career Role',
+      company: career.earlyCareer,
+      period: `Post-Batch '${String(alumni.batchYear).slice(-2)}`,
+      location: 'India',
+      summary: 'Foundation engineering & product delivery.',
     },
   ];
 }
 
 export function getAlumniEducation(alumni: AlumniRecord): EducationItem[] {
+  const career = ALUMNI_CAREER[alumni.id];
   return [
     {
-      degree: 'B.Tech in Computer Science & Engineering',
-      institution: "Institute of Technical Education & Research (ITER), Siksha 'O' Anusandhan",
+      degree: 'B.Tech • Undergraduate Engineering',
+      institution: "ITER, Siksha 'O' Anusandhan",
       period: `${alumni.batchYear - 4} – ${alumni.batchYear}`,
-      detail: `Alumni Batch '${String(alumni.batchYear).slice(-2)} • Verified ITER Mentor`,
+      detail: `Graduation Batch ${alumni.batchYear} • Verified ITER Alum`,
     },
+    ...(career
+      ? [
+          {
+            degree: 'Schooling (Class X & Class XII)',
+            institution: career.schooling,
+            period: `Pre-${alumni.batchYear - 4}`,
+            detail: 'Secondary & Senior Secondary Qualification',
+          },
+        ]
+      : []),
   ];
 }
 

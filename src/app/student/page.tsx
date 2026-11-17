@@ -1767,21 +1767,21 @@ export default function StudentStudioPage() {
                   </h2>
                   <div className="space-y-3">
                     <div className="border-l-2 border-[#2563EB]/40 pl-3 space-y-0.5 text-xs">
-                      <div className="font-bold">Software Engineering Intern (PPO Track)</div>
+                      <div className="font-bold">Speech AI Research Engineer (PPO Accepted)</div>
                       <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                        Razorpay • Summer 2026 • Bangalore
+                        NeuroLink AI • ₹24 LPA • Referred by Anindita Pattnaik (&apos;16)
                       </div>
                       <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                        Building checkout observability &amp; FinTech payment flows with React, TypeScript &amp; Go.
+                        Acoustic speech recognition &amp; multi-agent RAG systems (VaniSetu Odia ASR &amp; FinAudit).
                       </p>
                     </div>
                     <div className="border-l-2 border-[#2563EB]/40 pl-3 space-y-0.5 text-xs">
-                      <div className="font-bold">Undergraduate AI &amp; Full-Stack Builder</div>
+                      <div className="font-bold">Research Lead &amp; VP Education</div>
                       <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                        ITER Innovation Lab • 2024 – Present
+                        AI/ML Society &amp; Toastmasters ITER • 2024 – Present
                       </div>
                       <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                        Shipped FinAudit Multi-Agent, VaniSetu Odia ASR &amp; IEEE Access legal RAG research.
+                        Published in Interspeech Workshop 2024 • IEEE Access (2026) Co-Author (RP-01).
                       </p>
                     </div>
                   </div>
@@ -1796,19 +1796,19 @@ export default function StudentStudioPage() {
                     <div className="border-l-2 border-emerald-500/40 pl-3 space-y-0.5 text-xs">
                       <div className="font-bold">B.Tech in Computer Science &amp; Engineering</div>
                       <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                        ITER, Siksha &apos;O&apos; Anusandhan • 2023 – 2027
+                        ITER, Siksha &apos;O&apos; Anusandhan • 2022 – 2026
                       </div>
                       <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                        9.2 CGPA • Published IEEE Research Author • FinTech &amp; Systems Track
+                        9.28 CGPA • Reg: 2341016089 • Published Research Author (RP-01)
                       </p>
                     </div>
                     <div className="border-l-2 border-emerald-500/40 pl-3 space-y-0.5 text-xs">
-                      <div className="font-bold">Senior Secondary (Class XII, CBSE)</div>
+                      <div className="font-bold">Class XII &amp; Class X (CBSE)</div>
                       <div className="text-[11px] font-medium text-[#52525B] dark:text-zinc-400">
-                        Bhubaneswar, Odisha • 2021 – 2023
+                        DPS Kalinga Cuttack
                       </div>
                       <p className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                        95.4% Aggregate • Physics, Chemistry, Mathematics &amp; Computer Science
+                        Class XII: 93.8% • Class X: 96.2%
                       </p>
                     </div>
                   </div>
