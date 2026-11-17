@@ -1231,6 +1231,198 @@ export default function AlumniFeedPage() {
                   </div>
                 </div>
               </div>
+
+              {/* ALUMNI ACTIVITIES & CONTRIBUTIONS */}
+              <div className="space-y-4">
+                <h2 className="text-sm font-bold flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#2563EB]" />
+                  My Alumni Activities &amp; Contributions
+                </h2>
+
+                {/* 4-Stat Activity Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5">
+                    <div className="text-lg font-bold text-[#2563EB]">
+                      {endorsedCards.filter((c) => !c.isPaper).length}
+                    </div>
+                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">Projects Endorsed</div>
+                  </div>
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5">
+                    <div className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                      {endorsedCards.filter((c) => c.isPaper).length}
+                    </div>
+                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">Papers Reviewed</div>
+                  </div>
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5">
+                    <div className="text-lg font-bold text-emerald-600">
+                      {OFFERS_DATA.filter((o) => o.referringAlumniId === CURRENT_ALUM.id).length}
+                    </div>
+                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">Offers / Referrals Given</div>
+                  </div>
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5">
+                    <div className="text-lg font-bold">
+                      {jobs.filter((j) => j.company === CURRENT_ALUM.company).length}
+                    </div>
+                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">Open Roles Posted</div>
+                  </div>
+                </div>
+
+                {/* Offers Given & Mentored Students */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                      <Award className="w-3.5 h-3.5 text-emerald-600" />
+                      Offers &amp; Referrals Given
+                    </h3>
+                    {OFFERS_DATA.filter((o) => o.referringAlumniId === CURRENT_ALUM.id).map((o) => (
+                      <button
+                        key={o.id}
+                        type="button"
+                        onClick={() => openProfileByName(o.studentName)}
+                        className="w-full text-left rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-500/10 p-3 flex items-center justify-between gap-2 hover:border-[#2563EB] transition-colors"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <img
+                            src={getIndianAvatar(o.studentName)}
+                            alt={o.studentName}
+                            className="h-8 w-8 rounded-full object-cover shrink-0"
+                          />
+                          <div className="min-w-0">
+                            <div className="text-xs font-bold truncate">{o.studentName}</div>
+                            <div className="text-[10px] text-[#52525B] dark:text-zinc-400 truncate">
+                              {o.jobRole} • {o.company}
+                            </div>
+                          </div>
+                        </div>
+                        <span className="shrink-0 rounded-full bg-white dark:bg-zinc-900 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                          {o.packageStr} ({o.offerType})
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-[#2563EB]" />
+                      Students Currently Mentored ({CURRENT_ALUM.linkedStudentIds.length})
+                    </h3>
+                    <div className="space-y-2">
+                      {STUDENTS_DATA.filter((st) => CURRENT_ALUM.linkedStudentIds.includes(st.id)).map((st) => (
+                        <button
+                          key={st.id}
+                          type="button"
+                          onClick={() => setSelectedProfile({ kind: 'student', student: st })}
+                          className="w-full text-left rounded-xl bg-[#F4F4F5] dark:bg-zinc-800 p-2.5 flex items-center justify-between gap-2 hover:border-[#2563EB] border border-transparent transition-colors"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <img
+                              src={getIndianAvatar(st.fullName)}
+                              alt={st.fullName}
+                              className="h-8 w-8 rounded-full object-cover shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <div className="text-xs font-bold truncate">{st.fullName}</div>
+                              <div className="text-[10px] text-[#52525B] truncate">
+                                {st.academicYear} {st.branch} • {st.projectIds.join(', ')}
+                              </div>
+                            </div>
+                          </div>
+                          <span className="text-[11px] font-semibold text-[#2563EB] shrink-0">
+                            Profile →
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Projects & Research Papers Endorsed / Reviewed */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-sm font-bold">
+                      Projects &amp; Papers I&apos;ve Endorsed / Reviewed ({endorsedCards.length})
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setSection('feed')}
+                      className="text-xs font-semibold text-[#2563EB] hover:underline"
+                    >
+                      Review More Builds →
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {endorsedCards.map((c) => (
+                      <div
+                        key={c.id}
+                        className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2"
+                      >
+                        <div className="flex items-center justify-between gap-2 text-xs">
+                          <span className="font-semibold text-[#2563EB]">{c.domain}</span>
+                          <span className="rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 text-[10px] font-bold">
+                            {c.isPaper ? 'Paper Reviewed' : 'Endorsed ✓'}
+                          </span>
+                        </div>
+                        <h4 className="text-sm font-bold">{c.title}</h4>
+                        <p className="text-xs text-[#52525B] dark:text-zinc-400 line-clamp-2">
+                          {c.subtitle}
+                        </p>
+                        <div className="pt-2 flex items-center justify-between text-xs">
+                          <button
+                            type="button"
+                            onClick={() => openProfileByName(c.author)}
+                            className="text-[#52525B] hover:text-[#2563EB] font-medium truncate"
+                          >
+                            By {c.author}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setCaseStudyItem(c)}
+                            className="font-semibold text-[#2563EB] hover:underline shrink-0"
+                          >
+                            Open →
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Jobs Posted by Me */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-sm font-bold">
+                      Openings Posted at {CURRENT_ALUM.company} ({jobs.filter((j) => j.company === CURRENT_ALUM.company).length})
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setJobModalOpen(true)}
+                      className="rounded-full bg-[#18181B] hover:bg-[#27272A] dark:bg-zinc-100 dark:text-zinc-950 text-white px-4 py-1.5 text-xs font-semibold"
+                    >
+                      + Create Opening
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {jobs
+                      .filter((j) => j.company === CURRENT_ALUM.company)
+                      .map((job) => (
+                        <div
+                          key={job.id}
+                          className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-1.5"
+                        >
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-bold text-[#2563EB]">{job.type}</span>
+                            <span className="font-bold text-emerald-600">{job.compensation}</span>
+                          </div>
+                          <div className="text-sm font-bold">{job.role}</div>
+                          <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                            {job.location} • {job.slots} referral slots
+                            {job.lastDate ? ` • Last Date: ${job.lastDate}` : ''}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </main>
