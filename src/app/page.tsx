@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -11,28 +11,17 @@ import {
 } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
 import { HIRING_COMPANIES } from '../data/hiringCompanies';
-
-interface GatewaySummary {
-  status: string;
-  db1Count: number;
-  db2Count: number;
-  db3Status: string;
-}
+import {
+  ALUMNI_DATA,
+  OFFERS_DATA,
+  PROJECTS_DATA,
+  RESEARCH_PAPERS_DATA,
+  STUDENTS_DATA,
+} from '../data/alumConnectData';
 
 export default function HomePage() {
-  const [summary, setSummary] = useState<GatewaySummary | null>(null);
-
-  useEffect(() => {
-    fetch('/api/gateway')
-      .then((r) => r.json())
-      .then((d: GatewaySummary) => {
-        if (d?.status === 'ok') setSummary(d);
-      })
-      .catch(() => { });
-  }, []);
-
-  const projectCount = summary?.db1Count ?? 18;
-  const dealCount = summary?.db2Count ?? 9;
+  const projectCount = PROJECTS_DATA.length + RESEARCH_PAPERS_DATA.length;
+  const dealCount = ALUMNI_DATA.reduce((sum, a) => sum + a.activeJobOpeningsCount, 0);
 
   const portals = [
     {
@@ -267,7 +256,7 @@ export default function HomePage() {
                     Real-Time Proof-of-Work Sync
                   </div>
                   <div className="text-xs text-[#52525B] dark:text-slate-400">
-                    Student ↔ Alumni ↔ Dean Telemetry
+                    {STUDENTS_DATA.length} Students ↔ {ALUMNI_DATA.length} Alumni ↔ {OFFERS_DATA.length} Offers
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
