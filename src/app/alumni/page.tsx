@@ -400,18 +400,13 @@ export default function AlumniFeedPage() {
     <div className="min-h-screen bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-zinc-100 transition-colors">
       {/* ==================== STICKY TOP NAVBAR (MATCHES STUDENT FEED) ==================== */}
       <header className="sticky top-0 z-40 border-b border-[#E4E4E7] dark:border-zinc-800 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-16 flex lg:grid lg:grid-cols-[auto_1fr_auto] items-center justify-between gap-3">
-          {/* 1. Brand + LinkedIn-style Global Search */}
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 h-15 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center gap-3">
+          {/* 1. Logo + 2. LinkedIn-style Global Search */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-bold tracking-tight hover:opacity-80"
-            >
-              <ArrowLeft className="w-4 h-4 text-[#52525B]" />
-              <div className="h-8 w-8 rounded-lg bg-[#F4F4F5] dark:bg-zinc-900 border border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-center p-1">
+            <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
+              <div className="h-9 w-9 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
                 <img src="/logo.png" alt="Alum Connect" className="h-full w-full object-contain dark:invert" />
               </div>
-              <span className="hidden sm:inline">Alum Connect</span>
             </Link>
 
             <div className="relative hidden md:block w-56 lg:w-64">
@@ -425,7 +420,7 @@ export default function AlumniFeedPage() {
                   setSearch(e.target.value);
                   setSearchFocused(true);
                 }}
-                placeholder="Search students, projects, alums..."
+                placeholder="Search people, projects, skills..."
                 className="w-full rounded-full border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 pl-8 pr-7 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
               />
               {search && (
