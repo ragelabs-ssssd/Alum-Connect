@@ -412,9 +412,6 @@ export default function AlumniFeedPage() {
                 <img src="/logo.png" alt="Alum Connect" className="h-full w-full object-contain dark:invert" />
               </div>
               <span className="hidden sm:inline">Alum Connect</span>
-              <span className="hidden xl:inline rounded-full bg-blue-50 dark:bg-sky-500/10 text-[#2563EB] dark:text-sky-400 px-2 py-0.5 text-[10px] font-bold">
-                Alumni
-              </span>
             </Link>
 
             <div className="relative hidden md:block w-56 lg:w-64">
