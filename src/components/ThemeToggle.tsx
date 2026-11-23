@@ -1,11 +1,15 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import { Monitor, Moon, Sun } from 'lucide-react';
 import { ThemeMode, useTheme } from '../context/ThemeContext';
 
 const OPTIONS: { value: ThemeMode; label: string; icon: React.ReactNode }[] = [
-  { value: 'auto', label: 'Auto', icon: <Monitor className="w-3.5 h-3.5" /> },
+  {
+    value: 'auto',
+    label: 'Auto (IST: 6 AM–6 PM Light, 6 PM–6 AM Dark)',
+    icon: <Monitor className="w-3.5 h-3.5" />,
+  },
   { value: 'light', label: 'Light', icon: <Sun className="w-3.5 h-3.5" /> },
   { value: 'dark', label: 'Dark', icon: <Moon className="w-3.5 h-3.5" /> },
 ];
