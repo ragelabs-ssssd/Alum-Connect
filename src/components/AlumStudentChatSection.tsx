@@ -426,9 +426,6 @@ export default function AlumStudentChatSection({
           <h2 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight text-zinc-900 dark:text-zinc-100">
             Alumni ↔ Student Direct Chat
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Two-pane inbox synced across Student &amp; Alumni portals — share live builds, ask for referrals, or schedule 15-min critiques.
-          </p>
         </div>
         <button
           type="button"
