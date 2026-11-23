@@ -31,10 +31,10 @@ export default function HomePage() {
       cta: 'Open Student Feed',
       icon: <Code2 className="w-5 h-5" />,
       badge: 'For Builders',
-      accentText: 'text-[#2563EB] dark:text-sky-400',
+      accentText: 'text-[#0891B2] dark:text-[#22D3EE]',
       accentBg:
-        'bg-blue-50 dark:bg-sky-500/10 border-blue-200/80 dark:border-sky-500/25',
-      topBar: 'bg-[#2563EB]',
+        'bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border-[#0891B2]/25 dark:border-[#22D3EE]/30',
+      topBar: 'bg-gradient-to-r from-[#0891B2] to-[#059669] dark:from-[#22D3EE] dark:to-[#34D399]',
     },
     {
       href: '/alumni',
@@ -43,10 +43,10 @@ export default function HomePage() {
       cta: 'Open Alumni Marketplace',
       icon: <Briefcase className="w-5 h-5" />,
       badge: 'For Recruiters',
-      accentText: 'text-indigo-600 dark:text-indigo-400',
+      accentText: 'text-[#059669] dark:text-[#34D399]',
       accentBg:
-        'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200/80 dark:border-indigo-500/25',
-      topBar: 'bg-indigo-600',
+        'bg-[#059669]/10 dark:bg-[#34D399]/15 border-[#059669]/25 dark:border-[#34D399]/30',
+      topBar: 'bg-gradient-to-r from-[#059669] to-[#0891B2] dark:from-[#34D399] dark:to-[#22D3EE]',
     },
     {
       href: '/dean',
@@ -55,20 +55,40 @@ export default function HomePage() {
       cta: 'Open Placement Telemetry',
       icon: <GraduationCap className="w-5 h-5" />,
       badge: 'For Leadership',
-      accentText: 'text-emerald-700 dark:text-emerald-400',
+      accentText: 'text-[#0891B2] dark:text-[#22D3EE]',
       accentBg:
-        'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200/80 dark:border-emerald-500/25',
-      topBar: 'bg-emerald-600',
+        'bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border-[#0891B2]/25 dark:border-[#22D3EE]/30',
+      topBar: 'bg-gradient-to-r from-[#0891B2] to-[#059669] dark:from-[#22D3EE] dark:to-[#34D399]',
     },
   ];
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-slate-100 grid grid-rows-[auto_1fr_auto] transition-colors">
+    <div className="font-luma-body relative h-dvh w-full overflow-hidden bg-[linear-gradient(135deg,#F8FAFC_0%,#E2E8F0_100%)] dark:bg-[radial-gradient(800px_500px_at_25%_20%,rgba(148,163,184,0.22)_0%,transparent_60%),linear-gradient(135deg,#07080A_0%,#14171F_55%,#090A0E_100%)] text-[#0F172A] dark:text-white grid grid-rows-[auto_1fr_auto] transition-colors">
+      {/* Option 18: Panning Isometric Diamond Mesh Full-Background Animation */}
+      <div
+        className="pointer-events-none fixed -inset-12 opacity-20 dark:opacity-20 animate-iso-drift hidden dark:block"
+        style={{
+          backgroundImage:
+            'linear-gradient(30deg, #22D3EE 1px, transparent 1px), linear-gradient(150deg, #34D399 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none fixed -inset-12 opacity-15 animate-iso-drift dark:hidden"
+        style={{
+          backgroundImage:
+            'linear-gradient(30deg, #0891B2 1px, transparent 1px), linear-gradient(150deg, #059669 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+        aria-hidden="true"
+      />
+
       {/* NAV 4: Brand + Quick Jump Bar + Live Status + ThemeToggle */}
-      <header className="border-b border-[#E4E4E7]/90 dark:border-slate-800/80 bg-white/95 dark:bg-[#18181B]/95 backdrop-blur-md">
+      <header className="relative z-10 border-b border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#0C0E12]/78 backdrop-blur-xl">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-white dark:bg-slate-800 border border-[#E4E4E7] dark:border-slate-700 flex items-center justify-center p-1 shadow-xs overflow-hidden">
+            <div className="h-9 w-9 rounded-lg bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1 shadow-xs overflow-hidden">
               <img
                 src="/logo.png"
                 alt="AlmaConnect"
@@ -76,41 +96,41 @@ export default function HomePage() {
               />
             </div>
             <div className="leading-tight">
-              <span className="font-bold text-sm tracking-tight text-[#09090B] dark:text-white">
+              <span className="font-luma-title text-sm tracking-tight text-[#0F172A] dark:text-white">
                 AlmaConnect
               </span>
-              <p className="text-[11px] text-[#52525B] dark:text-slate-400 hidden lg:block">
+              <p className="text-[11px] text-[#475569] dark:text-[#94A3B8] hidden lg:block">
                 Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
               </p>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-2.5 rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-[#F4F4F5] dark:bg-slate-900 px-3.5 py-1 text-xs text-[#52525B] dark:text-slate-400">
+          <div className="hidden md:flex items-center gap-2.5 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 px-3.5 py-1 text-xs text-[#475569] dark:text-[#94A3B8]">
             <span>Quick Jump:</span>
             <Link
               href="/student"
-              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
             >
               /student
             </Link>
             <span>•</span>
             <Link
               href="/alumni"
-              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
             >
               /alumni
             </Link>
             <span>•</span>
             <Link
               href="/dean"
-              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
             >
               /dean
             </Link>
             <span>•</span>
             <Link
               href="/login"
-              className="font-mono text-[#2563EB] dark:text-sky-400 hover:underline"
+              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
             >
               /login
             </Link>
@@ -123,89 +143,23 @@ export default function HomePage() {
       </header>
 
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
-      <main className="min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 grid grid-rows-[minmax(0,1.45fr)_minmax(0,0.9fr)] gap-4">
-        {/* HERO 1: Constellation Hero + 2x2 Telemetry */}
-        <section className="relative h-full overflow-hidden rounded-3xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
-          <svg
-            className="pointer-events-none absolute inset-0 w-full h-full opacity-20 dark:opacity-25"
-            viewBox="0 0 1200 420"
-            preserveAspectRatio="none"
-            fill="none"
-            aria-hidden="true"
-          >
-            <line
-              x1="180"
-              y1="90"
-              x2="560"
-              y2="210"
-              stroke="#2563EB"
-              strokeWidth="1.5"
-              strokeDasharray="5 5"
-            />
-            <line
-              x1="560"
-              y1="210"
-              x2="940"
-              y2="95"
-              stroke="#2563EB"
-              strokeWidth="1.5"
-            />
-            <line
-              x1="560"
-              y1="210"
-              x2="980"
-              y2="310"
-              stroke="#10B981"
-              strokeWidth="1.5"
-            />
-            <line
-              x1="940"
-              y1="95"
-              x2="980"
-              y2="310"
-              stroke="#6366F1"
-              strokeWidth="1.25"
-              strokeDasharray="4 4"
-            />
-            <line
-              x1="180"
-              y1="90"
-              x2="300"
-              y2="330"
-              stroke="#64748B"
-              strokeWidth="1"
-              strokeDasharray="3 4"
-            />
-            <line
-              x1="300"
-              y1="330"
-              x2="560"
-              y2="210"
-              stroke="#2563EB"
-              strokeWidth="1.25"
-            />
-            <circle cx="180" cy="90" r="7" fill="#2563EB" />
-            <circle cx="300" cy="330" r="6" fill="#38BDF8" />
-            <circle cx="560" cy="210" r="11" fill="#2563EB" />
-            <circle cx="560" cy="210" r="26" stroke="#2563EB" strokeOpacity="0.22" />
-            <circle cx="940" cy="95" r="8" fill="#6366F1" />
-            <circle cx="980" cy="310" r="9" fill="#10B981" />
-          </svg>
-
+      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 grid grid-rows-[minmax(0,1.45fr)_minmax(0,0.9fr)] gap-4">
+        {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + 2x2 Telemetry */}
+        <section className="relative h-full overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#14171E]/68 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
           <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
-              <h1 className="text-3xl sm:text-5xl xl:text-[54px] font-bold tracking-tight text-[#09090B] dark:text-white leading-[1.08]">
+              <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[54px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
                 A living graph of campus{' '}
-                <span className="text-[#2563EB] dark:text-sky-400">engineering talent.</span>
+                <span className="text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
               </h1>
 
-              <p className="text-sm sm:text-base text-[#52525B] dark:text-slate-400 max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base text-[#475569] dark:text-[#94A3B8] max-w-2xl leading-relaxed">
                 Connecting{' '}
-                <span className="font-semibold text-[#09090B] dark:text-white">
+                <span className="font-semibold text-[#0F172A] dark:text-white">
                   {projectCount} verified student builds
                 </span>{' '}
                 directly to alumni mentors, 5-minute architecture roasts, and{' '}
-                <span className="font-semibold text-[#2563EB] dark:text-sky-400">
+                <span className="font-semibold text-[#0891B2] dark:text-[#22D3EE]">
                   {dealCount} active hiring deals
                 </span>{' '}
                 across ITER.
@@ -214,13 +168,13 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   href="/student"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#18181B] hover:bg-[#27272A] text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-950 px-6 py-2.5 text-sm font-semibold transition-colors shadow-xs"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-6 py-2.5 text-sm font-semibold transition-all shadow-xs"
                 >
                   Join the Graph <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/alumni"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 hover:border-[#2563EB] px-6 py-2.5 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-6 py-2.5 text-sm font-semibold transition-colors"
                 >
                   Explore Talent Nodes
                 </Link>
@@ -228,50 +182,50 @@ export default function HomePage() {
             </div>
 
             <div className="lg:col-span-5 grid grid-cols-2 gap-3 h-full max-h-[250px]">
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
-                <span className="text-[11px] font-mono uppercase text-stone-400">
+              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 flex flex-col justify-between">
+                <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
                   Repositories
                 </span>
                 <div>
-                  <div className="text-3xl font-bold">{projectCount}</div>
-                  <div className="text-xs text-[#52525B] mt-0.5">Live Campus Builds</div>
+                  <div className="font-luma-title text-3xl text-[#0F172A] dark:text-white">{projectCount}</div>
+                  <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">Live Campus Builds</div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 p-5 flex flex-col justify-between">
-                <span className="text-[11px] font-mono uppercase text-stone-400">
+              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 flex flex-col justify-between">
+                <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
                   Marketplace
                 </span>
                 <div>
-                  <div className="text-3xl font-bold text-[#2563EB] dark:text-sky-400">
+                  <div className="font-luma-title text-3xl text-[#0891B2] dark:text-[#22D3EE]">
                     {dealCount}
                   </div>
-                  <div className="text-xs text-[#52525B] mt-0.5">
+                  <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
                     Deals &amp; Paid Bounties
                   </div>
                 </div>
               </div>
-              <div className="col-span-2 rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-[#F4F4F5]/95 dark:bg-[#0B111D]/95 px-5 py-4 flex items-center justify-between">
+              <div className="col-span-2 rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] px-5 py-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-bold text-[#09090B] dark:text-white">
+                  <div className="text-sm font-bold text-[#0F172A] dark:text-white">
                     Real-Time Proof-of-Work Sync
                   </div>
-                  <div className="text-xs text-[#52525B] dark:text-slate-400">
+                  <div className="text-xs text-[#475569] dark:text-[#94A3B8]">
                     {STUDENTS_DATA.length} Students ↔ {ALUMNI_DATA.length} Alumni ↔ {OFFERS_DATA.length} Offers
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/25 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border border-[#0891B2]/25 dark:border-[#22D3EE]/30 px-3 py-1 text-xs font-semibold text-[#0891B2] dark:text-[#22D3EE]">
                   <CheckCircle2 className="w-3.5 h-3.5" /> 100% Verified
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="relative z-10 pt-4 mt-4 border-t border-stone-100 dark:border-slate-800/80 flex items-center gap-4 text-xs text-[#52525B] dark:text-slate-400">
+          <div className="relative z-10 pt-4 mt-4 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium shrink-0">
               Alumni Reviewing &amp; Hiring From:
             </span>
             <div className="flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-              <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#09090B] dark:text-slate-200">
+              <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#0F172A] dark:text-white">
                 {[...HIRING_COMPANIES, ...HIRING_COMPANIES].map((c, i) => (
                   <span key={`${c.name}-${i}`} className="shrink-0">
                     {c.name}
@@ -288,7 +242,7 @@ export default function HomePage() {
             <Link
               key={p.href}
               href={p.href}
-              className="group relative overflow-hidden rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-[#18181B] hover:border-[#2563EB] dark:hover:border-sky-500/60 p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
+              className="group relative overflow-hidden rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#14171E]/68 hover:border-[#0891B2] dark:hover:border-[#22D3EE]/60 backdrop-blur-xl p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
             >
               <div className={`absolute top-0 left-0 right-0 h-1 ${p.topBar}`} />
               <div className="space-y-3">
@@ -298,22 +252,22 @@ export default function HomePage() {
                   >
                     {p.icon}
                   </div>
-                  <span className="rounded-full bg-[#F4F4F5] dark:bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-[#52525B] dark:text-slate-300">
+                  <span className="rounded-full bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] px-2.5 py-0.5 text-[11px] font-semibold text-[#475569] dark:text-[#94A3B8]">
                     {p.badge}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-[#09090B] dark:text-white">
+                  <h3 className="font-luma-title text-base sm:text-lg text-[#0F172A] dark:text-white">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-[#52525B] dark:text-slate-400 mt-1 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-1 leading-relaxed line-clamp-2">
                     {p.desc}
                   </p>
                 </div>
               </div>
 
               <div
-                className={`pt-3 mt-3 border-t border-stone-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold ${p.accentText}`}
+                className={`pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center justify-between text-xs font-semibold ${p.accentText}`}
               >
                 <span>{p.cta}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -324,9 +278,9 @@ export default function HomePage() {
       </main>
 
       {/* FOOT 4: Floating Glass Pill Footer */}
-      <div className="px-4 sm:px-6 pb-3">
-        <footer className="max-w-[1440px] mx-auto rounded-full border border-[#E4E4E7] dark:border-slate-800 bg-white/95 dark:bg-[#18181B]/95 backdrop-blur px-5 py-2 flex items-center justify-between text-xs text-[#52525B] dark:text-slate-400">
-          <span className="font-semibold text-[#09090B] dark:text-white">
+      <div className="relative z-10 px-4 sm:px-6 pb-3">
+        <footer className="max-w-[1440px] mx-auto rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#0C0E12]/78 backdrop-blur-xl px-5 py-2 flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
+          <span className="font-luma-title text-[#0F172A] dark:text-white">
             AlmaConnect
           </span>
           <span>
