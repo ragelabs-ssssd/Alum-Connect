@@ -1,12 +1,12 @@
 import React from 'react';
 
-export default function AlumConnectLogo({ className = 'h-6 w-6' }: { className?: string }) {
+export default function AlumConnectLogo({ className = 'h-7 w-7' }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 36 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={`shrink-0 ${className}`}
       aria-label="Alum Connect Logo"
     >
       <rect x="14" y="5" width="8" height="5" className="fill-[#0891B2] dark:fill-[#22D3EE]" />
