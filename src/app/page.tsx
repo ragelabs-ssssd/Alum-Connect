@@ -60,7 +60,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="font-luma-body relative h-dvh w-full overflow-hidden bg-[linear-gradient(135deg,#F8FAFC_0%,#E2E8F0_100%)] dark:bg-[radial-gradient(800px_500px_at_25%_20%,rgba(148,163,184,0.22)_0%,transparent_60%),linear-gradient(135deg,#07080A_0%,#14171F_55%,#090A0E_100%)] text-[#0F172A] dark:text-white grid grid-rows-[auto_1fr_auto] transition-colors">
+    <div className="font-luma-body relative min-h-dvh lg:h-dvh w-full overflow-x-hidden lg:overflow-hidden bg-[linear-gradient(135deg,#F8FAFC_0%,#E2E8F0_100%)] dark:bg-[radial-gradient(800px_500px_at_25%_20%,rgba(148,163,184,0.22)_0%,transparent_60%),linear-gradient(135deg,#07080A_0%,#14171F_55%,#090A0E_100%)] text-[#0F172A] dark:text-white grid grid-rows-[auto_1fr_auto] transition-colors">
       {/* Option 18: Panning Isometric Diamond Mesh Full-Background Animation */}
       <div
         className="pointer-events-none fixed -inset-12 opacity-20 dark:opacity-20 animate-iso-drift hidden dark:block"
@@ -140,12 +140,12 @@ export default function HomePage() {
       </header>
 
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
-      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[minmax(0,1.35fr)_minmax(0,0.85fr)] gap-3.5">
-        {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + 2x2 Telemetry */}
-        <section className="relative h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-8 shadow-2xs flex flex-col justify-between">
-          <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-4">
-              <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[54px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
+      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[auto_auto] lg:grid-rows-[minmax(0,1.28fr)_minmax(0,0.82fr)] gap-3.5">
+        {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + Telemetry & CTAs */}
+        <section className="relative lg:h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-7 shadow-2xs flex flex-col justify-between gap-3">
+          <div className="relative z-10 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-7 space-y-3">
+              <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[52px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
                 A living graph of campus{' '}
                 <span className="text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
               </h1>
@@ -161,54 +161,56 @@ export default function HomePage() {
                 </span>{' '}
                 across ITER.
               </p>
+            </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+            <div className="lg:col-span-5 flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-4 sm:p-5 min-h-[118px] flex flex-col justify-between">
+                  <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
+                    Repositories
+                  </span>
+                  <div>
+                    <div className="font-luma-title text-3xl text-[#0F172A] dark:text-white">{projectCount}</div>
+                    <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">Live Campus Builds</div>
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-4 sm:p-5 min-h-[118px] flex flex-col justify-between">
+                  <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
+                    Marketplace
+                  </span>
+                  <div>
+                    <div className="font-luma-title text-3xl text-[#0891B2] dark:text-[#22D3EE]">
+                      {dealCount}
+                    </div>
+                    <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
+                      Deals &amp; Paid Bounties
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5">
                 <Link
                   href="/student"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-6 py-2.5 text-sm font-semibold transition-all shadow-xs"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-5 py-2 text-xs sm:text-sm font-semibold transition-all shadow-xs"
                 >
                   Join the Graph <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/alumni"
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-6 py-2.5 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-5 py-2 text-xs sm:text-sm font-semibold transition-colors"
                 >
                   Explore Talent Nodes
                 </Link>
               </div>
             </div>
-
-            <div className="lg:col-span-5 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 min-h-[140px] flex flex-col justify-between">
-                <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
-                  Repositories
-                </span>
-                <div>
-                  <div className="font-luma-title text-3xl text-[#0F172A] dark:text-white">{projectCount}</div>
-                  <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">Live Campus Builds</div>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 min-h-[140px] flex flex-col justify-between">
-                <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
-                  Marketplace
-                </span>
-                <div>
-                  <div className="font-luma-title text-3xl text-[#0891B2] dark:text-[#22D3EE]">
-                    {dealCount}
-                  </div>
-                  <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
-                    Deals &amp; Paid Bounties
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
-          <div className="relative z-10 shrink-0 pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
+          <div className="relative z-10 shrink-0 pt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium shrink-0">
               Alumni Reviewing &amp; Hiring From:
             </span>
-            <div className="flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="w-full sm:flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
               <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#0F172A] dark:text-white">
                 {[...HIRING_COMPANIES, ...HIRING_COMPANIES].map((c, i) => (
                   <span key={`${c.name}-${i}`} className="shrink-0">
