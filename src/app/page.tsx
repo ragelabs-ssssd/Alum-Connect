@@ -5,7 +5,6 @@ import Link from 'next/link';
 import {
   ArrowRight,
   Briefcase,
-  CheckCircle2,
   Code2,
   GraduationCap,
 } from 'lucide-react';
@@ -13,10 +12,8 @@ import ThemeToggle from '../components/ThemeToggle';
 import { HIRING_COMPANIES } from '../data/hiringCompanies';
 import {
   ALUMNI_DATA,
-  OFFERS_DATA,
   PROJECTS_DATA,
   RESEARCH_PAPERS_DATA,
-  STUDENTS_DATA,
 } from '../data/alumConnectData';
 
 export default function HomePage() {
@@ -181,8 +178,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 grid grid-cols-2 gap-3 h-full max-h-[250px]">
-              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 flex flex-col justify-between">
+            <div className="lg:col-span-5 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 min-h-[140px] flex flex-col justify-between">
                 <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
                   Repositories
                 </span>
@@ -191,7 +188,7 @@ export default function HomePage() {
                   <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">Live Campus Builds</div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 flex flex-col justify-between">
+              <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-5 min-h-[140px] flex flex-col justify-between">
                 <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
                   Marketplace
                 </span>
@@ -203,19 +200,6 @@ export default function HomePage() {
                     Deals &amp; Paid Bounties
                   </div>
                 </div>
-              </div>
-              <div className="col-span-2 rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] px-5 py-4 flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-bold text-[#0F172A] dark:text-white">
-                    Real-Time Proof-of-Work Sync
-                  </div>
-                  <div className="text-xs text-[#475569] dark:text-[#94A3B8]">
-                    {STUDENTS_DATA.length} Students ↔ {ALUMNI_DATA.length} Alumni ↔ {OFFERS_DATA.length} Offers
-                  </div>
-                </div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border border-[#0891B2]/25 dark:border-[#22D3EE]/30 px-3 py-1 text-xs font-semibold text-[#0891B2] dark:text-[#22D3EE]">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> 100% Verified
-                </span>
               </div>
             </div>
           </div>
