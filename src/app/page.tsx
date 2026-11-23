@@ -33,6 +33,8 @@ export default function HomePage() {
       accentBg:
         'bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border-[#0891B2]/25 dark:border-[#22D3EE]/30',
       topBar: 'bg-gradient-to-r from-[#0891B2] to-[#059669] dark:from-[#22D3EE] dark:to-[#34D399]',
+      primaryHex: '#22D3EE',
+      secondaryHex: '#2563EB',
     },
     {
       href: '/alumni',
@@ -45,6 +47,8 @@ export default function HomePage() {
       accentBg:
         'bg-[#059669]/10 dark:bg-[#34D399]/15 border-[#059669]/25 dark:border-[#34D399]/30',
       topBar: 'bg-gradient-to-r from-[#059669] to-[#0891B2] dark:from-[#34D399] dark:to-[#22D3EE]',
+      primaryHex: '#34D399',
+      secondaryHex: '#0891B2',
     },
     {
       href: '/dean',
@@ -57,6 +61,8 @@ export default function HomePage() {
       accentBg:
         'bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 border-[#0891B2]/25 dark:border-[#22D3EE]/30',
       topBar: 'bg-gradient-to-r from-[#0891B2] to-[#059669] dark:from-[#22D3EE] dark:to-[#34D399]',
+      primaryHex: '#38BDF8',
+      secondaryHex: '#818CF8',
     },
   ];
 
@@ -213,8 +219,27 @@ export default function HomePage() {
               href={p.href}
               className="group relative overflow-hidden rounded-2xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 hover:border-[#0891B2] dark:hover:border-[#22D3EE]/60 backdrop-blur-xl p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
             >
-              <div className={`absolute top-0 left-0 right-0 h-1 ${p.topBar}`} />
-              <div className="space-y-3">
+              <div className={`absolute top-0 left-0 right-0 h-1 z-20 ${p.topBar}`} />
+              {/* Merged #5 Dot-Matrix Spotlight + #6 Holographic Iridescent Wash */}
+              <div
+                className="pointer-events-none absolute inset-0 opacity-25 dark:opacity-35 transition-opacity group-hover:opacity-45"
+                style={{
+                  backgroundImage: `radial-gradient(at 90% 10%, ${p.primaryHex}55 0px, transparent 55%), radial-gradient(at 10% 90%, ${p.secondaryHex}55 0px, transparent 55%)`,
+                }}
+                aria-hidden="true"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 opacity-30 dark:opacity-35"
+                style={{
+                  backgroundImage: `radial-gradient(${p.primaryHex} 1.2px, transparent 1.2px)`,
+                  backgroundSize: '16px 16px',
+                  maskImage: 'radial-gradient(circle at 85% 20%, black, transparent 70%)',
+                  WebkitMaskImage:
+                    'radial-gradient(circle at 85% 20%, black, transparent 70%)',
+                }}
+                aria-hidden="true"
+              />
+              <div className="relative z-10 space-y-3">
                 <div className="flex items-center justify-between">
                   <div
                     className={`h-10 w-10 rounded-xl border flex items-center justify-center ${p.accentBg} ${p.accentText}`}
@@ -236,7 +261,7 @@ export default function HomePage() {
               </div>
 
               <div
-                className={`pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center justify-between text-xs font-semibold ${p.accentText}`}
+                className={`relative z-10 pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center justify-between text-xs font-semibold ${p.accentText}`}
               >
                 <span>{p.cta}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
