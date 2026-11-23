@@ -130,7 +130,7 @@ export default function LoginPage() {
       />
 
       {/* Top Navigation Bar */}
-      <header className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pt-6 flex items-center justify-between gap-4">
+      <header className="relative z-10 max-w-[1440px] w-full mx-auto px-4 sm:px-8 pt-5 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="h-9 w-9 rounded-xl bg-white/75 dark:bg-white/[0.06] border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1.5 shadow-xs backdrop-blur-md shrink-0">
             <AlumConnectLogo className="h-6 w-6" />
@@ -145,15 +145,15 @@ export default function LoginPage() {
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#475569] dark:text-[#94A3B8] hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Gateway
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to Page
           </Link>
           <ThemeToggle compact />
         </div>
       </header>
 
       {/* Main Layout: Option 2 (60% Left Open Canvas / 40% Right Glass Dock) + Option 5 Quote Content */}
-      <main className="relative z-10 flex-1 flex items-center justify-center px-6 sm:px-10 py-8">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <main className="relative z-10 flex-1 flex items-center justify-center py-8">
+        <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left 60%: Option 5 Alumni Hiring Story Quote + Live Campus Metrics */}
           <div className="lg:col-span-7 space-y-6">
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/60 dark:bg-white/[0.05] backdrop-blur-md px-3.5 py-1 text-xs font-mono uppercase tracking-wider text-[#0891B2] dark:text-[#22D3EE]">
