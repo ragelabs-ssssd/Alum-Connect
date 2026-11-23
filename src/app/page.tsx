@@ -140,9 +140,9 @@ export default function HomePage() {
       </header>
 
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
-      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 grid grid-rows-[minmax(0,1.45fr)_minmax(0,0.9fr)] gap-4">
+      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[minmax(0,1.35fr)_minmax(0,0.85fr)] gap-3.5">
         {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + 2x2 Telemetry */}
-        <section className="relative h-full overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
+        <section className="relative h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-8 shadow-2xs flex flex-col justify-between">
           <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
               <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[54px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
@@ -204,7 +204,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="relative z-10 pt-4 mt-4 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
+          <div className="relative z-10 shrink-0 pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium shrink-0">
               Alumni Reviewing &amp; Hiring From:
             </span>
