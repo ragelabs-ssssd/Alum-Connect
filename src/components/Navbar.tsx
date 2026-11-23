@@ -38,10 +38,10 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="inline-flex items-center rounded bg-blue-500/30 px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider text-blue-200">
-              SOA DEEMED TO BE UNIVERSITY
+              ALMACONNECT
             </span>
             <span className="hidden text-slate-300 md:inline">
-              Institute of Technical Education and Research (ITER) • Official Alumni-Student Proof-of-Work Network
+              Official Alumni-Student Proof-of-Work Network
             </span>
           </div>
           <div className="flex items-center space-x-3 text-[11px]">

@@ -137,11 +137,7 @@ export default function LoginPage() {
           </div>
           <div className="leading-tight">
             <span className="font-luma-title text-sm sm:text-base text-[#0F172A] dark:text-white block">
-              Alum Connect
-            </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#475569] dark:text-[#94A3B8]">
-              <GraduationCap className="w-3 h-3 text-[#0891B2] dark:text-[#22D3EE]" />
-              ITER • Siksha &apos;O&apos; Anusandhan
+              AlmaConnect
             </span>
           </div>
         </Link>
@@ -415,8 +411,8 @@ export default function LoginPage() {
 
       {/* Footer */}
       <footer className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pb-5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#475569] dark:text-[#94A3B8]">
-        <span>Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan</span>
-        <span className="font-mono">Alum Connect • Proof-of-Work Network</span>
+        <span className="font-luma-title text-[#0F172A] dark:text-white">AlmaConnect</span>
+        <span className="font-mono">Proof-of-Work Network</span>
       </footer>
     </div>
   );

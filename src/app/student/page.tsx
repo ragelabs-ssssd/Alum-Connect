@@ -1458,17 +1458,27 @@ export default function StudentStudioPage() {
           {/* ---------- TAB 2: EXPLORE FEED (TOP TECH NEWS) ---------- */}
           {section === 'explore' && (
             <div className="space-y-5">
-              <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-6 space-y-2">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
-                  <Compass className="w-4 h-4" />
-                  EXPLORE TECH NEWS
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(226,232,240,0.18)] bg-[#14171E]/95 text-white p-6 sm:p-7 space-y-3.5 shadow-sm backdrop-blur-xl">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#22D3EE] to-[#34D399]" />
+                <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent blur-3xl" />
+                <div className="relative z-10 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-3 py-1 text-[11px] font-semibold text-[#22D3EE]">
+                      <Compass className="w-3.5 h-3.5" />
+                      <span>5-MIN TECH BRIEF</span>
+                    </div>
+                    <span className="font-mono text-[11px] text-zinc-400">
+                      Time: <strong className="text-white">5 Min</strong>
+                    </span>
+                  </div>
+                  <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">
+                    Four categories. Zero clickbait.{' '}
+                    <span className="text-[#22D3EE]">Built for busy builders.</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                    Catch up on AI, Engineering, Indian Startups, and Career shifts between lectures.
+                  </p>
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold">
-                  Top engineering, AI &amp; startup briefings for ITER builders.
-                </h1>
-                <p className="text-xs text-[#52525B] dark:text-zinc-400">
-                  Stay sharp on what top tech teams are shipping and what hiring managers value right now.
-                </p>
               </div>
 
               <div className="flex flex-wrap gap-1.5">
@@ -1528,17 +1538,36 @@ export default function StudentStudioPage() {
           {/* ---------- TAB 3: ALUMNI JOBS & INTERNSHIPS ---------- */}
           {section === 'jobs' && (
             <div className="space-y-5">
-              <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-6 space-y-2">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
-                  <Briefcase className="w-4 h-4" />
-                  ALUMNI JOB BOARD
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(226,232,240,0.18)] bg-[#14171E]/95 text-white p-6 sm:p-7 space-y-3.5 shadow-sm backdrop-blur-xl">
+                <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent blur-3xl" />
+                <div className="relative z-10 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-3 py-1 text-[11px] font-semibold text-[#22D3EE]">
+                      <Briefcase className="w-3.5 h-3.5" />
+                      <span>DIRECT CONVERSION</span>
+                    </div>
+                    <span className="font-mono text-[11px] text-zinc-400">
+                      Network: <strong className="text-white">SOA ITER</strong>
+                    </span>
+                  </div>
+                  <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">
+                    From campus sprint to{' '}
+                    <span className="text-[#22D3EE]">full-time engineering seat.</span>
+                  </h1>
+                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                    Transparent roles with clear deliverables, compensation, and alumni points of contact.
+                  </p>
+                  <div className="pt-2.5 border-t border-white/10 flex items-center gap-3 text-[11px] text-zinc-400">
+                    <span className="shrink-0 font-medium">Partner Teams:</span>
+                    <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
+                      {HIRING_COMPANIES.slice(0, 5).map((c) => (
+                        <span key={c.name} className="font-semibold text-zinc-200">
+                          {c.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <h1 className="text-xl sm:text-2xl font-bold">
-                  Apply directly to internships, full-time roles &amp; bounties posted by ITER alumni.
-                </h1>
-                <p className="text-xs text-[#52525B] dark:text-zinc-400">
-                  Every application automatically attaches your published Student Studio projects.
-                </p>
               </div>
 
               <div className="flex flex-wrap gap-1.5">
@@ -1653,28 +1682,50 @@ export default function StudentStudioPage() {
           {/* ---------- TAB 4: NOTIFICATIONS ---------- */}
           {section === 'notifications' && (
             <div className="space-y-5">
-              <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-6 flex flex-wrap items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2563EB]">
-                    <Bell className="w-4 h-4" />
-                    NOTIFICATIONS CENTER
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(226,232,240,0.18)] bg-[#14171E]/95 text-white p-6 sm:p-7 space-y-3.5 shadow-sm backdrop-blur-xl">
+                <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-gradient-to-br from-blue-600/25 via-sky-500/10 to-transparent blur-3xl" />
+                <div className="relative z-10 space-y-3.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-500/15 px-3 py-1 text-[11px] font-semibold text-sky-300">
+                      <Bell className="w-3.5 h-3.5" />
+                      <span>PRIORITY INBOX</span>
+                    </div>
+                    <span className="font-mono text-[11px] text-zinc-400">
+                      Categories: <strong className="text-white">4 Filters</strong>
+                    </span>
                   </div>
-                  <h1 className="text-xl sm:text-2xl font-bold">
-                    Every endorsement, referral &amp; mentor update in one place.
+                  <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">
+                    High-signal alerts from your{' '}
+                    <span className="text-sky-400">ITER talent graph.</span>
                   </h1>
+                  <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                    Filter unread items, jump straight to job updates, or reply to mentor feedback.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3.5 py-2.5 flex items-center justify-between">
+                      <span className="text-[11px] text-zinc-400">Categories</span>
+                      <span className="font-luma-title text-sm text-white">4 Filters</span>
+                    </div>
+                    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3.5 py-2.5 flex items-center justify-between">
+                      <span className="text-[11px] text-zinc-400">Noise</span>
+                      <span className="font-luma-title text-sm text-sky-400">Zero Spam</span>
+                    </div>
+                  </div>
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setNotifications((prev) =>
+                          prev.map((n) => ({ ...n, unread: false }))
+                        );
+                        notify('All notifications marked as read');
+                      }}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#2563EB] hover:bg-blue-500 text-white px-4 py-1.5 text-xs font-semibold transition-colors"
+                    >
+                      Mark all as read
+                    </button>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setNotifications((prev) =>
-                      prev.map((n) => ({ ...n, unread: false }))
-                    );
-                    notify('All notifications marked as read');
-                  }}
-                  className="rounded-full border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-4 py-1.5 text-xs font-semibold hover:border-[#2563EB]"
-                >
-                  Mark all as read
-                </button>
               </div>
 
               <div className="flex flex-wrap gap-1.5">

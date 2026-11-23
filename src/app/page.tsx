@@ -93,9 +93,6 @@ export default function HomePage() {
               <span className="font-luma-title text-sm tracking-tight text-[#0F172A] dark:text-white">
                 AlmaConnect
               </span>
-              <p className="text-[11px] text-[#475569] dark:text-[#94A3B8] hidden lg:block">
-                Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
-              </p>
             </div>
           </div>
 
@@ -155,8 +152,7 @@ export default function HomePage() {
                 directly to alumni mentors, 5-minute architecture roasts, and{' '}
                 <span className="font-semibold text-[#0891B2] dark:text-[#22D3EE]">
                   {dealCount} active hiring deals
-                </span>{' '}
-                across ITER.
+                </span>.
               </p>
             </div>
 
@@ -267,7 +263,7 @@ export default function HomePage() {
             AlmaConnect
           </span>
           <span>
-            Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan
+            Proof-of-Work &amp; Alumni Talent Network
           </span>
         </footer>
       </div>
