@@ -32,6 +32,7 @@ import {
   X,
 } from 'lucide-react';
 import ThemeToggle from '../../components/ThemeToggle';
+import { HIRING_COMPANIES } from '../../data/hiringCompanies';
 import AlumConnectLogo from '../../components/AlumConnectLogo';
 import {
   ALUMNI_DATA,
@@ -1193,32 +1194,56 @@ export default function StudentStudioPage() {
           {/* ---------- TAB 1: HOME FEED ---------- */}
           {section === 'home' && (
             <>
-              <div className="rounded-3xl bg-[#18181B] dark:bg-zinc-900 text-white p-6 sm:p-7 space-y-3 border border-zinc-800">
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-sky-300">
-                  <Award className="w-3.5 h-3.5" />
-                  Student Story of the Week
-                </div>
-                <h1 className="text-xl sm:text-2xl font-bold leading-snug">
-                  From a 10-day campus build to a direct Razorpay engineering interview.
-                </h1>
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                  Share your product story, attach a live walkthrough, and let ITER alumni endorse your real engineering craft.
-                </p>
-                <div className="pt-1 flex flex-wrap gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setShareModalOpen(true)}
-                    className="rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-4 py-2 text-xs font-semibold transition-colors"
-                  >
-                    Publish Your Case Study
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSection('jobs')}
-                    className="rounded-full border border-white/20 hover:bg-white/10 px-4 py-2 text-xs font-semibold transition-colors"
-                  >
-                    Browse Alumni Jobs →
-                  </button>
+              <div className="relative overflow-hidden rounded-3xl border border-[rgba(226,232,240,0.18)] bg-[#14171E]/95 text-white p-6 sm:p-7 space-y-4 shadow-sm backdrop-blur-xl">
+                <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent blur-3xl" />
+                <div className="relative z-10 space-y-3.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-3 py-1 text-[11px] font-semibold text-[#22D3EE]">
+                      <Award className="w-3.5 h-3.5" />
+                      <span>Student Story of the Week</span>
+                    </div>
+                    <span className="font-mono text-[11px] text-zinc-400">
+                      Sprint Time: <strong className="text-white">10 Days</strong>
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">
+                      From a 10-day campus build to a direct{' '}
+                      <span className="text-[#22D3EE]">Razorpay engineering interview.</span>
+                    </h1>
+                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                      Share your product story, attach a live walkthrough, and let ITER alumni endorse your real engineering craft.
+                    </p>
+                  </div>
+
+                  <div className="pt-1 flex flex-wrap items-center gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setShareModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] hover:brightness-110 text-[#041E24] px-4 py-2 text-xs font-semibold transition-all shadow-xs"
+                    >
+                      Publish Your Case Study
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSection('jobs')}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/[0.05] hover:bg-white/10 px-4 py-2 text-xs font-semibold text-white transition-colors"
+                    >
+                      Browse Alumni Jobs →
+                    </button>
+                  </div>
+
+                  <div className="pt-2.5 border-t border-white/10 flex items-center gap-3 text-[11px] text-zinc-400">
+                    <span className="shrink-0 font-medium">Reviewing:</span>
+                    <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
+                      {HIRING_COMPANIES.slice(0, 5).map((c) => (
+                        <span key={c.name} className="font-semibold text-zinc-200">
+                          {c.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
