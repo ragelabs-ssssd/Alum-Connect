@@ -9,6 +9,7 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
+import AlumConnectLogo from '../components/AlumConnectLogo';
 import { HIRING_COMPANIES } from '../data/hiringCompanies';
 import {
   ALUMNI_DATA,
@@ -86,11 +87,7 @@ export default function HomePage() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1 shadow-xs overflow-hidden">
-              <img
-                src="/logo.png"
-                alt="AlmaConnect"
-                className="h-full w-full object-contain dark:invert"
-              />
+              <AlumConnectLogo className="h-6 w-6" />
             </div>
             <div className="leading-tight">
               <span className="font-luma-title text-sm tracking-tight text-[#0F172A] dark:text-white">

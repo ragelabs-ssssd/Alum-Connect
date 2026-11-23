@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import ThemeToggle from '../../components/ThemeToggle';
+import AlumConnectLogo from '../../components/AlumConnectLogo';
 import {
   ALUMNI_DATA,
   PROJECTS_DATA,
@@ -132,11 +133,7 @@ export default function LoginPage() {
       <header className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pt-6 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="h-9 w-9 rounded-xl bg-white/75 dark:bg-white/[0.06] border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1.5 shadow-xs backdrop-blur-md">
-            <img
-              src="/logo.png"
-              alt="Alum Connect"
-              className="h-full w-full object-contain dark:invert"
-            />
+            <AlumConnectLogo className="h-6 w-6" />
           </div>
           <div className="leading-tight">
             <span className="font-luma-title text-sm sm:text-base text-[#0F172A] dark:text-white block">

@@ -31,6 +31,7 @@ import {
   X,
 } from 'lucide-react';
 import ThemeToggle from '../../components/ThemeToggle';
+import AlumConnectLogo from '../../components/AlumConnectLogo';
 import {
   ALUMNI_DATA,
   INDIAN_GENERAL_IMAGES,
@@ -431,7 +432,7 @@ export default function AlumniFeedPage() {
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center shrink-0" aria-label="Alum Connect Home">
               <div className="h-9 w-9 rounded-lg bg-[#F4F4F5] dark:bg-zinc-800 border border-[#E4E4E7] dark:border-zinc-700 flex items-center justify-center p-1 overflow-hidden">
-                <img src="/logo.png" alt="Alum Connect" className="h-full w-full object-contain dark:invert" />
+                <AlumConnectLogo className="h-6 w-6" />
               </div>
             </Link>
 
