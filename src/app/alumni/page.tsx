@@ -864,13 +864,13 @@ export default function AlumniFeedPage() {
           {section === 'feed' && (
             <>
               {/* Hero Card */}
-              <div className="rounded-3xl bg-[#111318] text-white p-6 sm:p-7 space-y-4 shadow-md border border-zinc-800">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-semibold text-sky-300">
+              <div className="rounded-3xl bg-[#0C0F16] text-white p-6 sm:p-7 space-y-4 shadow-md border border-[rgba(226,232,240,0.16)]">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 px-3 py-1 text-[11px] font-semibold text-[#22D3EE]">
                   <Compass className="w-3.5 h-3.5" />
                   Alumni Talent &amp; Proof-of-Work Feed
                 </span>
-                <h1 className="text-xl sm:text-2xl font-bold leading-snug">
-                  Discover {PROJECTS_DATA.length} live student builds &amp; {RESEARCH_PAPERS_DATA.length} research papers across ITER.
+                <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">
+                  Discover <span className="text-[#22D3EE]">{PROJECTS_DATA.length} live student builds</span> &amp; {RESEARCH_PAPERS_DATA.length} research papers across ITER.
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed">
                   Endorse engineering craft, review research preprints, and fast-track high-signal students straight to your team&apos;s interview loop.
@@ -879,7 +879,7 @@ export default function AlumniFeedPage() {
                   <button
                     type="button"
                     onClick={() => setSection('post-job')}
-                    className="rounded-full bg-[#2563EB] hover:bg-blue-500 text-white px-5 py-2 text-xs font-semibold transition-colors"
+                    className="rounded-full bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] hover:brightness-110 text-[#041E24] px-5 py-2 text-xs font-semibold transition-all shadow-xs"
                   >
                     Post Referral Opening
                   </button>
@@ -1053,7 +1053,7 @@ export default function AlumniFeedPage() {
           {section === 'endorsements' && (
             <div className="space-y-4">
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-6 space-y-1">
-                <h1 className="text-lg font-bold">My Endorsed Builds &amp; Papers ({endorsedCards.length})</h1>
+                <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">My Endorsed Builds &amp; Papers ({endorsedCards.length})</h1>
                 <p className="text-xs text-[#52525B] dark:text-zinc-400">
                   Every endorsement you issue appears on the Student Feed and boosts referral readiness.
                 </p>
@@ -1084,7 +1084,7 @@ export default function AlumniFeedPage() {
             <div className="space-y-4">
               <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h1 className="text-sm font-bold">Post a Detailed Alumni Opening</h1>
+                  <h1 className="font-luma-title text-base sm:text-lg leading-snug tracking-tight">Post a Detailed Alumni Opening</h1>
                   <p className="text-xs text-[#52525B] dark:text-zinc-400">
                     Add Job Title, full JD, Last Date to apply, CGPA/Batch eligibility &amp; Referral Slots.
                   </p>
@@ -1145,7 +1145,7 @@ export default function AlumniFeedPage() {
             <div className="space-y-3">
               <div className="rounded-3xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-5 flex items-center justify-between">
                 <div>
-                  <h1 className="text-lg font-bold">Alumni Notifications</h1>
+                  <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">Alumni Notifications</h1>
                   <p className="text-xs text-[#52525B]">Referral requests, paper reviews &amp; student chat bookings.</p>
                 </div>
                 <button
@@ -1192,7 +1192,7 @@ export default function AlumniFeedPage() {
                     className="h-20 w-20 rounded-2xl object-cover border-4 border-white dark:border-zinc-900 shadow-sm bg-[#18181B]"
                   />
                   <div>
-                    <h1 className="text-xl font-bold">{CURRENT_ALUM.fullName}</h1>
+                    <h1 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight">{CURRENT_ALUM.fullName}</h1>
                     <p className="text-xs sm:text-sm text-[#52525B] dark:text-zinc-400">
                       {CURRENT_ALUM.designation} @ {CURRENT_ALUM.company} • Batch &apos;{String(CURRENT_ALUM.batchYear).slice(-2)} (ITER, SOA)
                     </p>

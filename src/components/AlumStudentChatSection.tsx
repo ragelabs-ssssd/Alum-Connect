@@ -423,7 +423,7 @@ export default function AlumStudentChatSection({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h2 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight text-zinc-900 dark:text-zinc-100">
             Alumni ↔ Student Direct Chat
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
