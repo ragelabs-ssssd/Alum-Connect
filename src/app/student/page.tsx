@@ -1701,16 +1701,6 @@ export default function StudentStudioPage() {
                   <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                     Filter unread items, jump straight to job updates, or reply to mentor feedback.
                   </p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3.5 py-2.5 flex items-center justify-between">
-                      <span className="text-[11px] text-zinc-400">Categories</span>
-                      <span className="font-luma-title text-sm text-white">4 Filters</span>
-                    </div>
-                    <div className="rounded-xl border border-white/10 bg-white/[0.05] px-3.5 py-2.5 flex items-center justify-between">
-                      <span className="text-[11px] text-zinc-400">Noise</span>
-                      <span className="font-luma-title text-sm text-sky-400">Zero Spam</span>
-                    </div>
-                  </div>
                   <div className="pt-1">
                     <button
                       type="button"
@@ -2248,38 +2238,55 @@ export default function StudentStudioPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-gradient-to-b from-[#09090B] via-[#111827] to-[#1E293B] text-white p-4 space-y-3 shadow-2xs">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-2.5 py-0.5 text-[10px] font-semibold text-sky-300">
-                    <Award className="w-3 h-3" />
-                    Student Story of the Week
-                  </span>
-                  <span className="text-[10px] font-semibold text-emerald-300">Featured</span>
-                </div>
+              <div className="relative overflow-hidden rounded-2xl border border-[rgba(226,232,240,0.18)] bg-[#14171E]/95 text-white p-4 space-y-3 shadow-sm backdrop-blur-xl">
+                <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent blur-2xl" />
+                <div className="relative z-10 space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#22D3EE]">
+                      <Award className="w-3 h-3" />
+                      Student Story of the Week
+                    </span>
+                    <span className="font-mono text-[10px] text-zinc-400">
+                      <strong className="text-white">10 Days</strong>
+                    </span>
+                  </div>
 
-                <div className="space-y-1.5">
-                  <h4 className="text-sm font-bold leading-snug">
-                    From a 10-day campus build to a direct Razorpay engineering interview.
-                  </h4>
-                  <p className="text-[11px] text-zinc-300 leading-relaxed">
-                    Share your product story, attach a live walkthrough, and let ITER alumni endorse your real engineering craft.
-                  </p>
-                </div>
+                  <div className="space-y-1.5">
+                    <h4 className="font-luma-title text-sm leading-snug tracking-tight">
+                      From a 10-day campus build to a direct{' '}
+                      <span className="text-[#22D3EE]">Razorpay engineering interview.</span>
+                    </h4>
+                    <p className="text-[11px] text-zinc-300 leading-relaxed">
+                      Share your product story, attach a live walkthrough, and let ITER alumni endorse your real engineering craft.
+                    </p>
+                  </div>
 
-                <div className="flex flex-col gap-2 pt-1">
-                  <Link
-                    href="/share-project"
-                    className="w-full text-center rounded-full bg-[#2563EB] hover:bg-blue-500 text-white py-2 text-xs font-semibold transition-colors"
-                  >
-                    Publish Your Case Study
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setSection('jobs')}
-                    className="w-full rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white py-1.5 text-xs font-semibold transition-colors"
-                  >
-                    Browse Alumni Jobs →
-                  </button>
+                  <div className="flex flex-col gap-2 pt-0.5">
+                    <Link
+                      href="/share-project"
+                      className="w-full text-center rounded-full bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] hover:brightness-110 text-[#041E24] py-2 text-xs font-semibold transition-all shadow-xs"
+                    >
+                      Publish Your Case Study
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setSection('jobs')}
+                      className="w-full rounded-full border border-white/20 bg-white/[0.05] hover:bg-white/10 text-white py-1.5 text-xs font-semibold transition-colors"
+                    >
+                      Browse Alumni Jobs →
+                    </button>
+                  </div>
+
+                  <div className="pt-2 border-t border-white/10 flex items-center gap-2 text-[10px] text-zinc-400">
+                    <span className="shrink-0 font-medium">Reviewing:</span>
+                    <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+                      {HIRING_COMPANIES.slice(0, 3).map((c) => (
+                        <span key={c.name} className="font-semibold text-zinc-200">
+                          {c.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>

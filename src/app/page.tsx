@@ -82,56 +82,46 @@ export default function HomePage() {
         aria-hidden="true"
       />
 
-      {/* NAV 4: Brand + Quick Jump Bar + Live Status + ThemeToggle */}
-      <header className="relative z-10 border-b border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#0C0E12]/78 backdrop-blur-xl">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1 shadow-xs overflow-hidden">
-              <AlumConnectLogo className="h-6 w-6" />
-            </div>
-            <div className="leading-tight">
-              <span className="font-luma-title text-sm tracking-tight text-[#0F172A] dark:text-white">
+      {/* NAV 10: Dual-Row Micro Ribbon + Nav */}
+      <div className="relative z-10">
+        <div className="bg-gradient-to-r from-[#0891B2] via-[#2563EB] to-emerald-500 text-white text-[11px] font-medium py-1 px-4 text-center">
+          Proof-of-Work Network • Ship builds, get 5-min alumni roasts &amp; unlock fast-track interviews
+        </div>
+        <header className="border-b border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#0B0D12]/90 backdrop-blur-xl">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-lg bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1 shadow-xs overflow-hidden shrink-0">
+                <AlumConnectLogo className="h-6 w-6" />
+              </div>
+              <span className="font-luma-title text-lg sm:text-xl leading-none tracking-tight text-[#0F172A] dark:text-white inline-flex items-center translate-y-[0.5px]">
                 AlmaConnect
               </span>
+            </Link>
+
+            <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-[#475569] dark:text-zinc-300">
+              <Link href="/student" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
+                Student Network
+              </Link>
+              <Link href="/alumni" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
+                Alumni &amp; Hiring
+              </Link>
+              <Link href="/dean" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
+                Dean &amp; T&amp;P
+              </Link>
+            </nav>
+
+            <div className="flex items-center gap-2.5">
+              <Link
+                href="/login"
+                className="text-xs font-semibold px-3.5 py-1.5 rounded-full border border-zinc-300 dark:border-zinc-700 hover:border-[#0891B2] dark:hover:border-[#22D3EE] transition-colors"
+              >
+                Sign In
+              </Link>
+              <ThemeToggle compact />
             </div>
           </div>
-
-          <div className="hidden md:flex items-center gap-2.5 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 px-3.5 py-1 text-xs text-[#475569] dark:text-[#94A3B8]">
-            <span>Quick Jump:</span>
-            <Link
-              href="/student"
-              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
-            >
-              /student
-            </Link>
-            <span>•</span>
-            <Link
-              href="/alumni"
-              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
-            >
-              /alumni
-            </Link>
-            <span>•</span>
-            <Link
-              href="/dean"
-              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
-            >
-              /dean
-            </Link>
-            <span>•</span>
-            <Link
-              href="/login"
-              className="font-mono text-[#0891B2] dark:text-[#22D3EE] hover:underline"
-            >
-              /login
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2.5">
-            <ThemeToggle compact />
-          </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
       <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[auto_auto] lg:grid-rows-[minmax(0,1.28fr)_minmax(0,0.82fr)] gap-3.5">
