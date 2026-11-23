@@ -75,7 +75,7 @@ export default function HomePage() {
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none fixed -inset-12 opacity-15 animate-iso-drift dark:hidden"
+        className="pointer-events-none fixed -inset-12 opacity-40 animate-iso-drift dark:hidden"
         style={{
           backgroundImage:
             'linear-gradient(30deg, #0891B2 1px, transparent 1px), linear-gradient(150deg, #059669 1px, transparent 1px)',
@@ -145,7 +145,7 @@ export default function HomePage() {
       {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
       <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 grid grid-rows-[minmax(0,1.45fr)_minmax(0,0.9fr)] gap-4">
         {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + 2x2 Telemetry */}
-        <section className="relative h-full overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#14171E]/68 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
+        <section className="relative h-full overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-2xs flex flex-col justify-between">
           <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
               <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[54px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
@@ -242,7 +242,7 @@ export default function HomePage() {
             <Link
               key={p.href}
               href={p.href}
-              className="group relative overflow-hidden rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#14171E]/68 hover:border-[#0891B2] dark:hover:border-[#22D3EE]/60 backdrop-blur-xl p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
+              className="group relative overflow-hidden rounded-2xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 hover:border-[#0891B2] dark:hover:border-[#22D3EE]/60 backdrop-blur-xl p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
             >
               <div className={`absolute top-0 left-0 right-0 h-1 ${p.topBar}`} />
               <div className="space-y-3">
