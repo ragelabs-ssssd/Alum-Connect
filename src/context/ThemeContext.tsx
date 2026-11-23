@@ -39,9 +39,7 @@ function getIndiaTimeTheme(): 'light' | 'dark' {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>('auto');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() =>
-    getIndiaTimeTheme()
-  );
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     try {
