@@ -143,7 +143,7 @@ export default function HomePage() {
       <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[auto_auto] lg:grid-rows-[minmax(0,1.28fr)_minmax(0,0.82fr)] gap-3.5">
         {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + Telemetry & CTAs */}
         <section className="relative lg:h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-7 shadow-2xs flex flex-col justify-between gap-3">
-          <div className="relative z-10 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="relative z-10 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div className="lg:col-span-7 space-y-3">
               <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[52px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
                 A living graph of campus{' '}
@@ -189,16 +189,16 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 <Link
                   href="/student"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-5 py-2 text-xs sm:text-sm font-semibold transition-all shadow-xs"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all shadow-xs"
                 >
-                  Join the Graph <ArrowRight className="w-4 h-4" />
+                  Join the Graph <ArrowRight className="w-4 h-4 shrink-0" />
                 </Link>
                 <Link
                   href="/alumni"
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-5 py-2 text-xs sm:text-sm font-semibold transition-colors"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors text-center"
                 >
                   Explore Talent Nodes
                 </Link>
