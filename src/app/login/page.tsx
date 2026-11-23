@@ -132,14 +132,12 @@ export default function LoginPage() {
       {/* Top Navigation Bar */}
       <header className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pt-6 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="h-9 w-9 rounded-xl bg-white/75 dark:bg-white/[0.06] border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1.5 shadow-xs backdrop-blur-md">
+          <div className="h-9 w-9 rounded-xl bg-white/75 dark:bg-white/[0.06] border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] flex items-center justify-center p-1.5 shadow-xs backdrop-blur-md shrink-0">
             <AlumConnectLogo className="h-6 w-6" />
           </div>
-          <div className="leading-tight">
-            <span className="font-luma-title text-sm sm:text-base text-[#0F172A] dark:text-white block">
-              AlmaConnect
-            </span>
-          </div>
+          <span className="font-luma-title text-lg sm:text-xl leading-none tracking-tight text-[#0F172A] dark:text-white inline-flex items-center translate-y-[0.5px]">
+            AlmaConnect
+          </span>
         </Link>
 
         <div className="flex items-center gap-3">
@@ -409,11 +407,17 @@ export default function LoginPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pb-5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#475569] dark:text-[#94A3B8]">
-        <span className="font-luma-title text-[#0F172A] dark:text-white">AlmaConnect</span>
-        <span className="font-mono">Proof-of-Work Network</span>
-      </footer>
+      {/* Floating Glass Pill Footer (matching Landing Page) */}
+      <div className="sticky bottom-0 z-20 px-4 sm:px-6 pb-3 pt-1">
+        <footer className="max-w-[1440px] mx-auto rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-white/85 dark:bg-[#0C0E12]/78 backdrop-blur-xl px-5 py-2 flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
+          <span className="font-luma-title text-[#0F172A] dark:text-white">
+            AlmaConnect
+          </span>
+          <span>
+            Proof-of-Work &amp; Alumni Talent Network
+          </span>
+        </footer>
+      </div>
     </div>
   );
 }
