@@ -414,7 +414,7 @@ export default function LoginPage() {
             AlmaConnect
           </span>
           <span>
-            Proof-of-Work &amp; Alumni Talent Network
+            Institute of Technical Education &amp; Research • Siksha &apos;O&apos; Anusandhan (Deemed to be University)
           </span>
         </footer>
       </div>
