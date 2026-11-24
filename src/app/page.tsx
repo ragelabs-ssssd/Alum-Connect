@@ -123,48 +123,34 @@ export default function HomePage() {
         </header>
       </div>
 
-      {/* FULL-VIEWPORT PROPORTIONAL MAIN */}
-      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-3 grid grid-rows-[auto_auto] lg:grid-rows-[minmax(0,1.28fr)_minmax(0,0.82fr)] gap-3.5">
-        {/* HERO 1: Liquid Chrome + Panning Isometric Mesh Hero + Telemetry & CTAs */}
-        <section className="relative lg:h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-7 shadow-2xs flex flex-col justify-between gap-3">
-          <div className="relative z-10 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            <div className="lg:col-span-7 space-y-3">
-              <h1 className="font-luma-title text-2xl sm:text-4xl xl:text-[42px] tracking-tight text-[#0F172A] dark:text-white leading-[1.12]">
-                <span className="block lg:whitespace-nowrap">A living graph of campus</span>
-                <span className="block text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
-              </h1>
+      {/* OPTION 17: Open Poster + Unified Floating Portal Bar */}
+      <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 flex flex-col justify-between gap-6">
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-5">
+          <h1 className="font-luma-title text-4xl sm:text-6xl leading-[1.06] tracking-tight text-[#0F172A] dark:text-white">
+            A living graph of campus{' '}
+            <span className="text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
+          </h1>
 
-              <p className="text-sm sm:text-base text-[#475569] dark:text-[#94A3B8] max-w-2xl leading-relaxed">
-                Connecting{' '}
-                <span className="font-semibold text-[#0F172A] dark:text-white">
-                  {projectCount} verified student builds
-                </span>{' '}
-                directly to alumni mentors, 5-minute architecture roasts, and{' '}
-                <span className="font-semibold text-[#0891B2] dark:text-[#22D3EE]">
-                  {dealCount} active hiring deals
-                </span>.
-              </p>
-            </div>
+          <p className="text-sm sm:text-base text-[#475569] dark:text-[#94A3B8] max-w-xl leading-relaxed">
+            Ship live repositories, get 5-minute alumni architecture roasts, and unlock fast-track campus hiring.
+          </p>
 
-            <div className="lg:col-span-5 flex flex-col justify-center lg:self-center">
-              <div className="grid grid-cols-2 gap-3">
-                <Link
-                  href="/student"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-4 py-2.5 text-xs sm:text-sm font-semibold transition-all shadow-xs"
-                >
-                  Join the Graph <ArrowRight className="w-4 h-4 shrink-0" />
-                </Link>
-                <Link
-                  href="/alumni"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors text-center"
-                >
-                  Explore Talent Nodes
-                </Link>
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/student"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] px-5 py-2.5 text-xs sm:text-sm font-semibold transition-all shadow-xs"
+            >
+              Join the Graph <ArrowRight className="w-4 h-4 shrink-0" />
+            </Link>
+            <Link
+              href="/alumni"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] hover:border-[#0891B2] dark:hover:border-[#22D3EE] px-5 py-2.5 text-xs sm:text-sm font-semibold transition-colors text-center"
+            >
+              Explore Talent Nodes
+            </Link>
           </div>
 
-          <div className="relative z-10 shrink-0 pt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
+          <div className="w-full max-w-2xl pt-2 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium shrink-0">
               Alumni Reviewing &amp; Hiring From:
             </span>
@@ -178,63 +164,31 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* CARD 3: Elevated Accent Workspace Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-full">
+        <div className="rounded-2xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-2 grid grid-cols-1 md:grid-cols-3 gap-2 shadow-2xs">
           {portals.map((p) => (
             <Link
               key={p.href}
               href={p.href}
-              className="group relative overflow-hidden rounded-2xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 hover:border-[#0891B2] dark:hover:border-[#22D3EE]/60 backdrop-blur-xl p-5 sm:p-6 transition-all shadow-2xs hover:shadow-md flex flex-col justify-between h-full"
+              className="group rounded-xl px-4 py-3 hover:bg-white/70 dark:hover:bg-white/[0.06] transition-all flex items-center justify-between gap-3"
             >
-              <div className={`absolute top-0 left-0 right-0 h-1 z-20 ${p.topBar}`} />
-              {/* Merged #5 Dot-Matrix Spotlight + #6 Holographic Iridescent Wash */}
-              <div
-                className="pointer-events-none absolute inset-0 opacity-25 dark:opacity-35 transition-opacity group-hover:opacity-45"
-                style={{
-                  backgroundImage: `radial-gradient(at 90% 10%, ${p.primaryHex}55 0px, transparent 55%), radial-gradient(at 10% 90%, ${p.secondaryHex}55 0px, transparent 55%)`,
-                }}
-                aria-hidden="true"
-              />
-              <div
-                className="pointer-events-none absolute inset-0 opacity-30 dark:opacity-35"
-                style={{
-                  backgroundImage: `radial-gradient(${p.primaryHex} 1.2px, transparent 1.2px)`,
-                  backgroundSize: '16px 16px',
-                  maskImage: 'radial-gradient(circle at 85% 20%, black, transparent 70%)',
-                  WebkitMaskImage:
-                    'radial-gradient(circle at 85% 20%, black, transparent 70%)',
-                }}
-                aria-hidden="true"
-              />
-              <div className="relative z-10 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div
-                    className={`h-10 w-10 rounded-xl border flex items-center justify-center ${p.accentBg} ${p.accentText}`}
-                  >
-                    {p.icon}
-                  </div>
-                  <span className="rounded-full bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] px-2.5 py-0.5 text-[11px] font-semibold text-[#475569] dark:text-[#94A3B8]">
-                    {p.badge}
-                  </span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`h-9 w-9 rounded-xl border flex items-center justify-center shrink-0 ${p.accentBg} ${p.accentText}`}
+                >
+                  {p.icon}
                 </div>
-                <div>
-                  <h3 className="font-luma-title text-base sm:text-lg text-[#0F172A] dark:text-white">
+                <div className="min-w-0">
+                  <div className="font-luma-title text-sm text-[#0F172A] dark:text-white truncate">
                     {p.title}
-                  </h3>
-                  <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-1 leading-relaxed line-clamp-2">
-                    {p.desc}
-                  </p>
+                  </div>
+                  <div className="text-[11px] text-[#475569] dark:text-[#94A3B8] truncate">
+                    {p.badge}
+                  </div>
                 </div>
               </div>
-
-              <div
-                className={`relative z-10 pt-3 mt-3 border-t border-[rgba(100,116,139,0.16)] dark:border-[rgba(226,232,240,0.14)] flex items-center justify-between text-xs font-semibold ${p.accentText}`}
-              >
-                <span>{p.cta}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </div>
+              <ArrowRight className={`w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform ${p.accentText}`} />
             </Link>
           ))}
         </div>
