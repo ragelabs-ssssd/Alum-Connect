@@ -125,10 +125,10 @@ export default function HomePage() {
 
       {/* OPTION 17: Open Poster + Unified Floating Portal Bar */}
       <main className="relative z-10 min-h-0 max-w-[1440px] w-full mx-auto px-4 sm:px-8 py-4 flex flex-col justify-between gap-6">
-        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-5">
-          <h1 className="font-luma-title text-4xl sm:text-6xl leading-[1.06] tracking-tight text-[#0F172A] dark:text-white">
-            A living graph of campus{' '}
-            <span className="text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
+        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto space-y-5">
+          <h1 className="font-luma-title text-3xl sm:text-5xl lg:text-[54px] leading-[1.08] tracking-tight text-[#0F172A] dark:text-white">
+            <span className="block sm:whitespace-nowrap">A living graph of campus</span>
+            <span className="block sm:whitespace-nowrap text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
           </h1>
 
           <p className="text-sm sm:text-base text-[#475569] dark:text-[#94A3B8] max-w-xl leading-relaxed">
