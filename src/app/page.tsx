@@ -112,7 +112,7 @@ export default function HomePage() {
                 Sign In
               </Link>
               <Link
-                href="/login?mode=signup"
+                href="/signup"
                 className="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] transition-all shadow-xs"
               >
                 Sign Up
@@ -129,9 +129,9 @@ export default function HomePage() {
         <section className="relative lg:h-full min-h-0 overflow-hidden rounded-3xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-5 sm:p-6 lg:p-7 shadow-2xs flex flex-col justify-between gap-3">
           <div className="relative z-10 flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div className="lg:col-span-7 space-y-3">
-              <h1 className="font-luma-title text-3xl sm:text-5xl xl:text-[52px] tracking-tight text-[#0F172A] dark:text-white leading-[1.08]">
-                A living graph of campus{' '}
-                <span className="text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
+              <h1 className="font-luma-title text-2xl sm:text-4xl xl:text-[42px] tracking-tight text-[#0F172A] dark:text-white leading-[1.12]">
+                <span className="block lg:whitespace-nowrap">A living graph of campus</span>
+                <span className="block text-[#0891B2] dark:text-[#22D3EE]">engineering talent.</span>
               </h1>
 
               <p className="text-sm sm:text-base text-[#475569] dark:text-[#94A3B8] max-w-2xl leading-relaxed">

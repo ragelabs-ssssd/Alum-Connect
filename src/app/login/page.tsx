@@ -319,6 +319,15 @@ export default function LoginPage() {
                   <span>{isSubmitting ? 'Signing In...' : 'Sign In'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
+                <p className="text-center text-xs text-[#475569] dark:text-[#94A3B8] pt-1">
+                  New to AlmaConnect?{' '}
+                  <Link
+                    href="/signup"
+                    className="font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline"
+                  >
+                    Create an account →
+                  </Link>
+                </p>
               </form>
 
               {/* Divider */}
