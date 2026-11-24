@@ -51,6 +51,7 @@ import {
   findProfileByName,
 } from '../../components/ProfileDirectoryModal';
 import AlumStudentChatSection from '../../components/AlumStudentChatSection';
+import FloatingChatToast from '../../components/FloatingChatToast';
 
 type AlumSection = 'feed' | 'endorsements' | 'post-job' | 'chat' | 'notifications' | 'profile';
 
@@ -230,6 +231,7 @@ const INITIAL_ALUM_NOTIFICATIONS = [
 
 export default function AlumniFeedPage() {
   const [section, setSection] = useState<AlumSection>('feed');
+  const [expandThreadId, setExpandThreadId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchScope, setSearchScope] = useState<'all' | 'students' | 'alumni'>('all');
@@ -1138,6 +1140,7 @@ export default function AlumniFeedPage() {
             <AlumStudentChatSection
               viewerRole="alumni"
               viewerName={CURRENT_ALUM.fullName}
+              initialThreadId={expandThreadId}
             />
           )}
 
@@ -1886,6 +1889,17 @@ export default function AlumniFeedPage() {
           </form>
         </div>
       )}
+
+      {/* FLOATING QUICK-REPLY CHAT POPUP */}
+      <FloatingChatToast
+        viewerRole="alumni"
+        viewerName={CURRENT_ALUM.fullName}
+        isChatOpen={section === 'chat'}
+        onExpandToChat={(threadId) => {
+          if (threadId) setExpandThreadId(threadId);
+          setSection('chat');
+        }}
+      />
 
       {/* TOAST */}
       {toast && (

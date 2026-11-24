@@ -51,6 +51,7 @@ import {
   findProfileByName,
 } from '../../components/ProfileDirectoryModal';
 import AlumStudentChatSection from '../../components/AlumStudentChatSection';
+import FloatingChatToast from '../../components/FloatingChatToast';
 
 type MainSection = 'home' | 'explore' | 'jobs' | 'chat' | 'notifications' | 'profile';
 
@@ -364,6 +365,7 @@ const INITIAL_NOTIFICATIONS: NotificationItem[] = [
 
 export default function StudentStudioPage() {
   const [section, setSection] = useState<MainSection>('home');
+  const [expandThreadId, setExpandThreadId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<string>('All');
   const [newsCategory, setNewsCategory] = useState<string>('All');
@@ -1676,6 +1678,7 @@ export default function StudentStudioPage() {
             <AlumStudentChatSection
               viewerRole="student"
               viewerName={STUDENTS_DATA[0]?.fullName || 'Aarav Mohanty'}
+              initialThreadId={expandThreadId}
             />
           )}
 
@@ -2434,6 +2437,17 @@ export default function StudentStudioPage() {
           onClose={() => setDirectoryOpen(false)}
         />
       )}
+
+      {/* FLOATING QUICK-REPLY CHAT POPUP */}
+      <FloatingChatToast
+        viewerRole="student"
+        viewerName={STUDENTS_DATA[0]?.fullName || 'Aarav Mohanty'}
+        isChatOpen={section === 'chat'}
+        onExpandToChat={(threadId) => {
+          if (threadId) setExpandThreadId(threadId);
+          setSection('chat');
+        }}
+      />
 
       {/* TOAST */}
       {toast && (

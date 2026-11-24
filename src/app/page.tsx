@@ -104,24 +104,18 @@ export default function HomePage() {
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-[#475569] dark:text-zinc-300">
-              <Link href="/student" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
-                Student Network
-              </Link>
-              <Link href="/alumni" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
-                Alumni &amp; Hiring
-              </Link>
-              <Link href="/dean" className="hover:text-[#0891B2] dark:hover:text-[#22D3EE] transition-colors">
-                Dean &amp; T&amp;P
-              </Link>
-            </nav>
-
             <div className="flex items-center gap-2.5">
               <Link
                 href="/login"
                 className="text-xs font-semibold px-3.5 py-1.5 rounded-full border border-zinc-300 dark:border-zinc-700 hover:border-[#0891B2] dark:hover:border-[#22D3EE] transition-colors"
               >
                 Sign In
+              </Link>
+              <Link
+                href="/login?mode=signup"
+                className="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-[#0F172A] hover:bg-[#1E293B] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:hover:brightness-110 dark:text-[#041E24] transition-all shadow-xs"
+              >
+                Sign Up
               </Link>
               <ThemeToggle compact />
             </div>
@@ -152,32 +146,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="lg:col-span-5 flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-4 sm:p-5 min-h-[118px] flex flex-col justify-between">
-                  <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
-                    Repositories
-                  </span>
-                  <div>
-                    <div className="font-luma-title text-3xl text-[#0F172A] dark:text-white">{projectCount}</div>
-                    <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">Live Campus Builds</div>
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-[rgba(100,116,139,0.20)] dark:border-[rgba(226,232,240,0.18)] bg-[rgba(15,23,42,0.05)] dark:bg-white/[0.06] p-4 sm:p-5 min-h-[118px] flex flex-col justify-between">
-                  <span className="text-[11px] font-mono uppercase text-[#475569] dark:text-[#94A3B8]">
-                    Marketplace
-                  </span>
-                  <div>
-                    <div className="font-luma-title text-3xl text-[#0891B2] dark:text-[#22D3EE]">
-                      {dealCount}
-                    </div>
-                    <div className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
-                      Deals &amp; Paid Bounties
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+            <div className="lg:col-span-5 flex flex-col justify-center lg:self-center">
               <div className="grid grid-cols-2 gap-3">
                 <Link
                   href="/student"

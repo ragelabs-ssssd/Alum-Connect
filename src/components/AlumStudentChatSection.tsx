@@ -42,9 +42,10 @@ export interface ChatThread {
   messages: ChatMessage[];
 }
 
-const STORAGE_KEY = 'alum_connect_chat_threads_v1';
+export const CHAT_STORAGE_KEY = 'alum_connect_chat_threads_v1';
+const STORAGE_KEY = CHAT_STORAGE_KEY;
 
-const buildInitialThreads = (): ChatThread[] => {
+export const buildInitialThreads = (): ChatThread[] => {
   const s1 = STUDENTS_DATA[0];
   const s2 = STUDENTS_DATA[1];
   const s3 = STUDENTS_DATA[2];
@@ -187,12 +188,14 @@ interface AlumStudentChatSectionProps {
   viewerRole: 'student' | 'alumni';
   viewerName: string;
   initialTargetName?: string | null;
+  initialThreadId?: string | null;
 }
 
 export default function AlumStudentChatSection({
   viewerRole,
   viewerName,
   initialTargetName,
+  initialThreadId,
 }: AlumStudentChatSectionProps) {
   const [threads, setThreads] = useState<ChatThread[]>(() => {
     if (typeof window !== 'undefined') {
@@ -209,7 +212,9 @@ export default function AlumStudentChatSection({
     return buildInitialThreads();
   });
 
-  const [activeThreadId, setActiveThreadId] = useState<string>(threads[0]?.id || 'thread-1');
+  const [activeThreadId, setActiveThreadId] = useState<string>(
+    initialThreadId || threads[0]?.id || 'thread-1'
+  );
   const [search, setSearch] = useState('');
   const [filterMode, setFilterMode] = useState<'all' | 'unread'>('all');
   const [draft, setDraft] = useState('');

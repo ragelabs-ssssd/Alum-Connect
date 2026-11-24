@@ -156,10 +156,6 @@ export default function LoginPage() {
         <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left 60%: Option 5 Alumni Hiring Story Quote + Live Campus Metrics */}
           <div className="lg:col-span-7 space-y-6">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/60 dark:bg-white/[0.05] backdrop-blur-md px-3.5 py-1 text-xs font-mono uppercase tracking-wider text-[#0891B2] dark:text-[#22D3EE]">
-              Alumni Hiring Story • ITER × SOA
-            </span>
-
             <blockquote className="font-luma-title text-3xl sm:text-4xl xl:text-[42px] leading-[1.14] text-[#0F172A] dark:text-white">
               &ldquo;We stopped filtering resumes. On Alum Connect, we inspect{' '}
               <span className="text-[#0891B2] dark:text-[#22D3EE]">
@@ -175,25 +171,6 @@ export default function LoginPage() {
               </div>
               <div className="text-xs text-[#475569] dark:text-[#94A3B8]">
                 CTO @ HyperScale Labs • ITER Batch &apos;18
-              </div>
-            </div>
-
-            <div className="flex flex-wrap gap-8 pt-2 border-t border-[rgba(100,116,139,0.18)] dark:border-[rgba(226,232,240,0.14)]">
-              <div>
-                <div className="font-luma-title text-3xl text-[#0F172A] dark:text-white">
-                  {projectCount}
-                </div>
-                <div className="text-xs text-[#475569] dark:text-[#94A3B8]">
-                  Live Campus Builds
-                </div>
-              </div>
-              <div>
-                <div className="font-luma-title text-3xl text-[#0891B2] dark:text-[#22D3EE]">
-                  {dealCount}
-                </div>
-                <div className="text-xs text-[#475569] dark:text-[#94A3B8]">
-                  Active Hiring Deals
-                </div>
               </div>
             </div>
           </div>
