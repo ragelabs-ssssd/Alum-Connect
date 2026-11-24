@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import {
+  ArrowUpRight,
   Award,
   BookOpen,
   Briefcase,
@@ -12,11 +14,13 @@ import {
   GraduationCap,
   Mail,
   Search,
+  Sparkles,
   UserCheck,
   UserPlus,
   Users,
   X,
 } from 'lucide-react';
+import type { SearchHitDTO } from '@/types/domain';
 import {
   ALUMNI_DATA,
   AlumniRecord,
@@ -107,7 +111,15 @@ export function PublicProfileModal({
                 alt={s.fullName}
                 className="h-24 w-24 rounded-2xl object-cover border-4 border-white dark:border-zinc-900 shadow-md bg-[#18181B]"
               />
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href={`/u/${encodeURIComponent(s.id)}`}
+                  onClick={onClose}
+                  className="inline-flex items-center gap-1 rounded-full border border-[#0891B2]/35 dark:border-[#22D3EE]/35 bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 text-[#0891B2] dark:text-[#22D3EE] px-3 py-1.5 text-xs font-semibold hover:brightness-110 transition-all"
+                >
+                  <span>View Full Profile Page</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
                 <a
                   href={`mailto:${s.email}`}
                   className="inline-flex items-center gap-1.5 rounded-full border border-[#E4E4E7] dark:border-zinc-700 px-3.5 py-1.5 text-xs font-semibold hover:border-[#2563EB]"
@@ -273,16 +285,25 @@ export function PublicProfileModal({
                       </div>
                     </div>
                     <div className="px-3 pb-3 flex items-center justify-between gap-2 text-[11px]">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          onClose();
-                          onOpenProject(p.id);
-                        }}
-                        className="font-semibold text-[#2563EB] hover:underline"
-                      >
-                        Case Study →
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onClose();
+                            onOpenProject(p.id);
+                          }}
+                          className="font-semibold text-[#2563EB] hover:underline"
+                        >
+                          Case Study →
+                        </button>
+                        <Link
+                          href={`/projects/${encodeURIComponent(p.id)}`}
+                          onClick={onClose}
+                          className="font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline inline-flex items-center gap-0.5"
+                        >
+                          Page <ArrowUpRight className="w-3 h-3" />
+                        </Link>
+                      </div>
                       <div className="flex items-center gap-2">
                         <a
                           href={p.githubUrl}
@@ -393,7 +414,15 @@ export function PublicProfileModal({
               alt={a.fullName}
               className="h-24 w-24 rounded-2xl object-cover border-4 border-white dark:border-zinc-900 shadow-md bg-[#18181B]"
             />
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href={`/u/${encodeURIComponent(a.id)}`}
+                onClick={onClose}
+                className="inline-flex items-center gap-1 rounded-full border border-[#0891B2]/35 dark:border-[#22D3EE]/35 bg-[#0891B2]/10 dark:bg-[#22D3EE]/15 text-[#0891B2] dark:text-[#22D3EE] px-3 py-1.5 text-xs font-semibold hover:brightness-110 transition-all"
+              >
+                <span>View Full Profile Page</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
               <button
                 type="button"
                 onClick={() => onNotify(`Sent 15-min coffee chat request to ${a.fullName}!`)}
@@ -538,23 +567,34 @@ export function PublicProfileModal({
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {linkedProjects.map((p) => (
-                  <button
+                  <div
                     key={p.id}
-                    type="button"
-                    onClick={() => {
-                      onClose();
-                      onOpenProject(p.id);
-                    }}
-                    className="text-left rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3 space-y-1 hover:border-[#2563EB] transition-colors"
+                    className="rounded-2xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#FAFAFA] dark:bg-zinc-950 p-3 space-y-1.5 hover:border-[#2563EB] transition-colors"
                   >
                     <div className="text-xs font-bold">{p.name}</div>
                     <div className="text-[11px] text-[#52525B] dark:text-zinc-400 line-clamp-2">
                       {p.pitch}
                     </div>
-                    <div className="text-[10px] font-semibold text-[#2563EB]">
-                      By {p.leadName} • Open Case Study →
+                    <div className="flex items-center justify-between gap-2 pt-1 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onClose();
+                          onOpenProject(p.id);
+                        }}
+                        className="font-semibold text-[#2563EB] hover:underline"
+                      >
+                        By {p.leadName} • Case Study →
+                      </button>
+                      <Link
+                        href={`/projects/${encodeURIComponent(p.id)}`}
+                        onClick={onClose}
+                        className="font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline inline-flex items-center gap-0.5"
+                      >
+                        Page <ArrowUpRight className="w-3 h-3" />
+                      </Link>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -568,12 +608,21 @@ export function PublicProfileModal({
               {linkedPapers.map((rp) => (
                 <div
                   key={rp.id}
-                  className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-800/60 p-3 text-xs space-y-1"
+                  className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-800/60 p-3 text-xs space-y-1 flex items-center justify-between gap-2"
                 >
-                  <div className="font-bold">{rp.topic}</div>
-                  <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
-                    {rp.venue} • {rp.status}
+                  <div className="min-w-0">
+                    <div className="font-bold truncate">{rp.topic}</div>
+                    <div className="text-[11px] text-[#52525B] dark:text-zinc-400">
+                      {rp.venue} • {rp.status}
+                    </div>
                   </div>
+                  <Link
+                    href={`/projects/${encodeURIComponent(rp.id)}`}
+                    onClick={onClose}
+                    className="shrink-0 text-[11px] font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline inline-flex items-center gap-0.5"
+                  >
+                    Inspect <ArrowUpRight className="w-3 h-3" />
+                  </Link>
                 </div>
               ))}
             </div>
@@ -590,6 +639,7 @@ interface DirectoryModalProps {
   onToggleFollow: (id: string, name: string) => void;
   onSelectProfile: (target: SelectedProfileTarget) => void;
   onClose: () => void;
+  onLiveSearch?: (query: string, scope: 'all' | 'students' | 'alumni' | 'research' | 'hiring') => Promise<SearchHitDTO[]>;
 }
 
 export function PeopleDirectoryModal({
@@ -598,9 +648,40 @@ export function PeopleDirectoryModal({
   onToggleFollow,
   onSelectProfile,
   onClose,
+  onLiveSearch,
 }: DirectoryModalProps) {
   const [query, setQuery] = useState(initialQuery);
   const [filter, setFilter] = useState<'all' | 'students' | 'alumni' | 'research' | 'hiring'>('all');
+  const [liveHits, setLiveHits] = useState<SearchHitDTO[]>([]);
+  const [searchingLive, setSearchingLive] = useState(false);
+
+  useEffect(() => {
+    if (!onLiveSearch) return;
+    const trimmed = query.trim();
+    if (!trimmed) return;
+
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      setSearchingLive(true);
+      onLiveSearch(trimmed, filter)
+        .then((hits) => {
+          if (!cancelled) setLiveHits(hits);
+        })
+        .catch(() => {
+          if (!cancelled) setLiveHits([]);
+        })
+        .finally(() => {
+          if (!cancelled) setSearchingLive(false);
+        });
+    }, 180);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [query, filter, onLiveSearch]);
+
+  const activeLiveHits = query.trim() && onLiveSearch ? liveHits : [];
 
   const filteredStudents = useMemo(() => {
     if (filter === 'alumni' || filter === 'hiring') return [];
@@ -687,7 +768,45 @@ export function PeopleDirectoryModal({
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-6">
+        <div className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-6">
+          {(searchingLive || activeLiveHits.length > 0) && (
+            <div className="rounded-2xl border border-[#0891B2]/25 dark:border-[#22D3EE]/25 bg-[#0891B2]/5 dark:bg-[#22D3EE]/10 p-3.5 space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold uppercase tracking-wider text-[#0891B2] dark:text-[#22D3EE] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Unified Search Matches
+                </span>
+                {searchingLive && (
+                  <span className="text-[10px] text-[#52525B] dark:text-zinc-400">
+                    Searching...
+                  </span>
+                )}
+              </div>
+              {activeLiveHits.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {activeLiveHits.slice(0, 6).map((hit) => (
+                    <Link
+                      key={`${hit.kind}-${hit.id}`}
+                      href={hit.href}
+                      onClick={onClose}
+                      className="flex items-center justify-between gap-2 rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 hover:border-[#0891B2] dark:hover:border-[#22D3EE] transition-colors"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold truncate">{hit.title}</div>
+                        <div className="text-[10px] text-[#52525B] dark:text-zinc-400 truncate">
+                          {hit.subtitle}
+                        </div>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-[#F4F4F5] dark:bg-zinc-800 px-2 py-0.5 text-[9px] font-semibold uppercase text-[#0891B2] dark:text-[#22D3EE]">
+                        {hit.badge || hit.kind}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {filteredAlumni.length > 0 && (
             <div className="space-y-3">
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#52525B] dark:text-zinc-400 flex items-center gap-1.5">
@@ -754,18 +873,27 @@ export function PeopleDirectoryModal({
                           </div>
                         </div>
                       </div>
-                      <div className="px-3.5 pb-3 pt-1 border-t border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-between text-[10px]">
+                      <div className="px-3.5 pb-3 pt-1 border-t border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-between text-[10px] gap-2">
                         <span className="text-[#52525B]">Batch &apos;{String(a.batchYear).slice(-2)}</span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            onClose();
-                            onSelectProfile({ kind: 'alumni', alumni: a });
-                          }}
-                          className="font-semibold text-[#2563EB] hover:underline"
-                        >
-                          View Profile →
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/u/${encodeURIComponent(a.id)}`}
+                            onClick={onClose}
+                            className="font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline inline-flex items-center gap-0.5"
+                          >
+                            Page <ArrowUpRight className="w-3 h-3" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onClose();
+                              onSelectProfile({ kind: 'alumni', alumni: a });
+                            }}
+                            className="font-semibold text-[#2563EB] hover:underline"
+                          >
+                            Preview →
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -840,20 +968,29 @@ export function PeopleDirectoryModal({
                           </div>
                         </div>
                       </div>
-                      <div className="px-3.5 pb-3 pt-1 border-t border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-between text-[10px]">
+                      <div className="px-3.5 pb-3 pt-1 border-t border-[#E4E4E7] dark:border-zinc-800 flex items-center justify-between text-[10px] gap-2">
                         <span className="text-[#52525B]">
                           {s.isResearchAuthor ? 'Research Author' : 'Builder'}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            onClose();
-                            onSelectProfile({ kind: 'student', student: s });
-                          }}
-                          className="font-semibold text-[#2563EB] hover:underline"
-                        >
-                          View Profile →
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/u/${encodeURIComponent(s.id)}`}
+                            onClick={onClose}
+                            className="font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline inline-flex items-center gap-0.5"
+                          >
+                            Page <ArrowUpRight className="w-3 h-3" />
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onClose();
+                              onSelectProfile({ kind: 'student', student: s });
+                            }}
+                            className="font-semibold text-[#2563EB] hover:underline"
+                          >
+                            Preview →
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );

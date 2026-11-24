@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   CheckCircle2,
   Maximize2,
@@ -8,11 +8,19 @@ import {
   Send,
   X,
 } from 'lucide-react';
+import { sendChatMessageAction } from '@/modules/messaging/actions';
+import {
+  useRealtimeChannel,
+  type RealtimeChatPayload,
+} from '@/modules/messaging/useRealtimeChannel';
+import type { ChatThreadDTO } from '@/types/domain';
 import {
   CHAT_STORAGE_KEY,
   ChatMessage,
   ChatThread,
   buildInitialThreads,
+  mapDtoMessageToChatMessage,
+  mapDtoThreadToChatThread,
 } from './AlumStudentChatSection';
 
 interface FloatingChatToastProps {
@@ -20,6 +28,8 @@ interface FloatingChatToastProps {
   viewerName: string;
   isChatOpen: boolean;
   onExpandToChat: (threadId?: string) => void;
+  currentUserId?: string;
+  initialThreads?: ChatThreadDTO[];
 }
 
 export default function FloatingChatToast({
@@ -27,21 +37,45 @@ export default function FloatingChatToast({
   viewerName,
   isChatOpen,
   onExpandToChat,
+  currentUserId,
+  initialThreads,
 }: FloatingChatToastProps) {
   const [incoming, setIncoming] = useState<{
     thread: ChatThread;
     message: ChatMessage;
+    recipientUserId?: string;
   } | null>(null);
   const [replyText, setReplyText] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
   const [sentToast, setSentToast] = useState(false);
+
   const lastSeenCountRef = useRef<Record<string, number>>({});
+  const replyCounterRef = useRef(1);
+
+  const knownThreadsRef = useRef<ChatThread[]>(
+    initialThreads && initialThreads.length > 0
+      ? initialThreads.map(mapDtoThreadToChatThread)
+      : []
+  );
+
+  useEffect(() => {
+    if (initialThreads && initialThreads.length > 0) {
+      knownThreadsRef.current = initialThreads.map(mapDtoThreadToChatThread);
+    }
+  }, [initialThreads]);
 
   // Initialize baseline message counts so seed messages don't auto-popup on mount
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      const raw = window.localStorage.getItem(CHAT_STORAGE_KEY);
-      const list: ChatThread[] = raw ? JSON.parse(raw) : buildInitialThreads();
+      const list: ChatThread[] =
+        initialThreads && initialThreads.length > 0
+          ? initialThreads.map(mapDtoThreadToChatThread)
+          : (() => {
+              const raw = window.localStorage.getItem(CHAT_STORAGE_KEY);
+              return raw ? (JSON.parse(raw) as ChatThread[]) : buildInitialThreads();
+            })();
+
       const counts: Record<string, number> = {};
       list.forEach((t) => {
         counts[t.id] = t.messages.length;
@@ -50,9 +84,68 @@ export default function FloatingChatToast({
     } catch {
       // ignore
     }
-  }, []);
+  }, [initialThreads]);
 
-  // Listen for incoming messages from another tab/portal when Chat tab is closed
+  // Realtime listener (Supabase Realtime + BroadcastChannel cross-tab bus)
+  const handleRealtimeMessage = useCallback(
+    (payload: RealtimeChatPayload) => {
+      if (isChatOpen) return;
+      if (currentUserId && payload.senderUserId === currentUserId) return;
+      if (!currentUserId && payload.message.senderRole === viewerRole) return;
+
+      const existing = knownThreadsRef.current.find(
+        (t) => t.id === payload.threadId
+      );
+
+      const mappedMsg = mapDtoMessageToChatMessage(payload.message);
+      const threadSnapshot: ChatThread = existing ?? {
+        id: payload.threadId,
+        studentUserId:
+          payload.message.senderRole === 'student'
+            ? payload.senderUserId
+            : payload.recipientUserId,
+        studentName:
+          payload.message.senderRole === 'student'
+            ? payload.message.senderName
+            : viewerName,
+        studentMeta: 'ITER Student Builder',
+        studentAvatar: '',
+        alumniUserId:
+          payload.message.senderRole === 'alumni'
+            ? payload.senderUserId
+            : payload.recipientUserId,
+        alumniName:
+          payload.message.senderRole === 'alumni'
+            ? payload.message.senderName
+            : viewerName,
+        alumniMeta: 'ITER Alumni Mentor',
+        alumniAvatar: '',
+        topic: payload.topic || 'Direct Mentorship Chat',
+        online: true,
+        unreadForStudent: 0,
+        unreadForAlumni: 0,
+        messages: [mappedMsg],
+      };
+
+      setIncoming({
+        thread: threadSnapshot,
+        message: mappedMsg,
+        recipientUserId: payload.senderUserId,
+      });
+      setSentToast(false);
+      setReplyText('');
+    },
+    [currentUserId, isChatOpen, viewerName, viewerRole]
+  );
+
+  const { publishMessage } = useRealtimeChannel({
+    userId: currentUserId,
+    userName: viewerName,
+    userRole: viewerRole,
+    onMessage: handleRealtimeMessage,
+  });
+
+  // Listen for legacy localStorage cross-tab updates when Chat tab is closed
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== CHAT_STORAGE_KEY || !e.newValue) return;
@@ -85,15 +178,53 @@ export default function FloatingChatToast({
   // Hide popup if user opens the full Chat section
   if (isChatOpen) return null;
 
-  const handleInstantReply = () => {
+  const handleInstantReply = async () => {
     const text = replyText.trim();
-    if (!text || !incoming) return;
+    if (!text || !incoming || sendingReply) return;
+
+    if (currentUserId) {
+      const peerId =
+        incoming.recipientUserId ??
+        (viewerRole === 'student'
+          ? incoming.thread.alumniUserId
+          : incoming.thread.studentUserId);
+
+      setSendingReply(true);
+      try {
+        const res = await sendChatMessageAction({
+          threadId: incoming.thread.id,
+          recipientUserId: peerId,
+          topic: incoming.thread.topic,
+          text,
+        });
+
+        if (res.ok) {
+          await publishMessage({
+            threadId: res.data.thread.id,
+            message: res.data.message,
+            senderUserId: currentUserId,
+            recipientUserId: res.data.recipientUserId,
+            topic: res.data.thread.topic,
+          });
+          setReplyText('');
+          setSentToast(true);
+          setTimeout(() => {
+            setIncoming(null);
+            setSentToast(false);
+          }, 1100);
+          return;
+        }
+      } finally {
+        setSendingReply(false);
+      }
+    }
 
     try {
       const raw = window.localStorage.getItem(CHAT_STORAGE_KEY);
       const threads: ChatThread[] = raw ? JSON.parse(raw) : buildInitialThreads();
+      replyCounterRef.current += 1;
       const newMessage: ChatMessage = {
-        id: `m-${Date.now()}`,
+        id: `m-toast-${replyCounterRef.current}`,
         senderRole: viewerRole,
         senderName: viewerName,
         time: new Date().toLocaleTimeString([], {
@@ -130,7 +261,7 @@ export default function FloatingChatToast({
     }
   };
 
-  // Compact launcher pill when no popup is active so user can also preview/open chat anytime
+  // Compact launcher pill when no popup is active
   if (!incoming) {
     return (
       <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2">
@@ -138,10 +269,15 @@ export default function FloatingChatToast({
           type="button"
           onClick={() => {
             try {
-              const raw = window.localStorage.getItem(CHAT_STORAGE_KEY);
-              const list: ChatThread[] = raw
-                ? JSON.parse(raw)
-                : buildInitialThreads();
+              const list: ChatThread[] =
+                knownThreadsRef.current.length > 0
+                  ? knownThreadsRef.current
+                  : (() => {
+                      const raw = window.localStorage.getItem(CHAT_STORAGE_KEY);
+                      return raw
+                        ? (JSON.parse(raw) as ChatThread[])
+                        : buildInitialThreads();
+                    })();
               const target =
                 list.find((t) =>
                   t.messages.some((m) => m.senderRole !== viewerRole)
@@ -190,11 +326,17 @@ export default function FloatingChatToast({
       {/* Top Bar with Expand & Close */}
       <div className="flex items-center justify-between gap-2 border-b border-white/10 px-4 py-2.5 bg-white/[0.04]">
         <div className="flex items-center gap-2.5 min-w-0">
-          <img
-            src={peerAvatar}
-            alt={peerName}
-            className="h-8 w-8 rounded-full object-cover border border-white/20 shrink-0"
-          />
+          {peerAvatar ? (
+            <img
+              src={peerAvatar}
+              alt={peerName}
+              className="h-8 w-8 rounded-full object-cover border border-white/20 shrink-0"
+            />
+          ) : (
+            <span className="h-8 w-8 rounded-full bg-[#22D3EE]/20 text-[#22D3EE] font-bold text-xs flex items-center justify-center shrink-0">
+              {peerName.slice(0, 2).toUpperCase()}
+            </span>
+          )}
           <div className="min-w-0">
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-bold truncate">{peerName}</span>
@@ -250,7 +392,7 @@ export default function FloatingChatToast({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleInstantReply();
+              void handleInstantReply();
             }}
             className="flex items-center gap-2"
           >
@@ -263,7 +405,7 @@ export default function FloatingChatToast({
             />
             <button
               type="submit"
-              disabled={!replyText.trim()}
+              disabled={!replyText.trim() || sendingReply}
               className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] text-[#041E24] disabled:opacity-40 transition-opacity"
               aria-label="Send instant reply"
             >

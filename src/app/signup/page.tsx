@@ -9,32 +9,39 @@ import {
   Briefcase,
   Building2,
   CheckCircle2,
+  Clock,
   Code2,
   ExternalLink,
   Eye,
   EyeOff,
   GitBranch,
   GraduationCap,
+  Hash,
   Lock,
   Mail,
   ShieldCheck,
   User,
 } from 'lucide-react';
-import { useApp } from '../../context/AppContext';
+import AlumConnectLogo from '@/components/AlumConnectLogo';
+import ThemeToggle from '@/components/ThemeToggle';
 import {
   ALUMNI_DATA,
   STUDENTS_DATA,
   getIndianAvatar,
-} from '../../data/alumConnectData';
-import { AlumniPersona, BandwidthShield, StudentCohort } from '../../types';
-import AlumConnectLogo from '../../components/AlumConnectLogo';
-import ThemeToggle from '../../components/ThemeToggle';
+} from '@/data/alumConnectData';
+import { isDemoModeEnabled, isSupabaseConfigured } from '@/lib/env';
+import { signUpAction } from '@/modules/identity/actions';
+import {
+  isCorporateDomainMatch,
+  signUpSchema,
+} from '@/modules/identity/validators';
 
 type SignUpRole = 'student' | 'alumni';
 
 export default function SignUpPage() {
   const router = useRouter();
-  const { setCurrentUser, allPresetUsers } = useApp();
+  const demoEnabled = isDemoModeEnabled();
+  const supabaseEnabled = isSupabaseConfigured();
 
   const [role, setRole] = useState<SignUpRole>('student');
   const [fullName, setFullName] = useState('');
@@ -45,7 +52,8 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   // Student-specific fields
-  const [cohort, setCohort] = useState<StudentCohort>('3rd_year');
+  const [regNo, setRegNo] = useState('');
+  const [academicYear, setAcademicYear] = useState('3rd Year');
   const [branch, setBranch] = useState('CSE');
   const [githubHandle, setGithubHandle] = useState('');
   const [techStack, setTechStack] = useState('Next.js, TypeScript, FastAPI');
@@ -54,8 +62,13 @@ export default function SignUpPage() {
   const [company, setCompany] = useState('');
   const [designation, setDesignation] = useState('');
   const [batchYear, setBatchYear] = useState('2019');
-  const [persona, setPersona] = useState<AlumniPersona>('manager');
-  const [shield, setShield] = useState<BandwidthShield>('5-min async roast');
+  const [workEmail, setWorkEmail] = useState('');
+  const [personaCategory, setPersonaCategory] = useState(
+    'Hiring Manager / Engineering Lead',
+  );
+  const [mentorshipScope, setMentorshipScope] = useState(
+    '5-min async roasts, referrals & mock interviews',
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -63,116 +76,82 @@ export default function SignUpPage() {
   const linkedinMatch = linkedinUrl.match(/linkedin\.com\/in\/([^/?#\s]+)/i);
   const linkedinSlug = linkedinMatch?.[1] || '';
   const linkedinDisplayName = linkedinSlug
-    ? linkedinSlug.replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+    ? linkedinSlug
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase())
     : '';
   const normalizedSlug = linkedinSlug.toLowerCase().replace(/[-_]+/g, ' ');
   const matchedAlum = linkedinSlug
-    ? ALUMNI_DATA.find((a) => a.fullName.toLowerCase().includes(normalizedSlug))
+    ? ALUMNI_DATA.find((a) =>
+        a.fullName.toLowerCase().includes(normalizedSlug),
+      )
     : undefined;
   const matchedStudent = linkedinSlug
-    ? STUDENTS_DATA.find((s) => s.fullName.toLowerCase().includes(normalizedSlug))
+    ? STUDENTS_DATA.find((s) =>
+        s.fullName.toLowerCase().includes(normalizedSlug),
+      )
     : undefined;
+
+  const corporateDomainMatched =
+    role === 'alumni' && isCorporateDomainMatch(workEmail, company);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
 
-    if (!fullName.trim()) {
-      setErrorMsg('Please enter your full name.');
-      return;
-    }
-    if (!email.trim()) {
-      setErrorMsg('Please enter your email address.');
-      return;
-    }
-    if (!linkedinUrl.trim() || !linkedinUrl.toLowerCase().includes('linkedin.com/')) {
-      setErrorMsg('Please enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/your-handle).');
-      return;
-    }
-    if (password.length < 6) {
+    if (supabaseEnabled && !demoEnabled && password.length < 6) {
       setErrorMsg('Please choose a password of at least 6 characters.');
       return;
     }
-    if (role === 'alumni' && (!company.trim() || !designation.trim())) {
-      setErrorMsg('Please enter your current company and designation.');
+
+    const parsedTechStack = techStack
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    const payload = {
+      role,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      password: password || undefined,
+      linkedinUrl: linkedinUrl.trim() || undefined,
+      githubHandle: githubHandle.trim().replace(/^@/, '') || undefined,
+      techStack: parsedTechStack,
+      regNo: role === 'student' ? regNo.trim() : undefined,
+      academicYear: role === 'student' ? academicYear : undefined,
+      branch: role === 'student' ? branch : undefined,
+      batchYear:
+        role === 'alumni'
+          ? Number.parseInt(batchYear, 10) || 2019
+          : undefined,
+      company: role === 'alumni' ? company.trim() : undefined,
+      designation: role === 'alumni' ? designation.trim() : undefined,
+      workEmail: role === 'alumni' ? workEmail.trim() || undefined : undefined,
+      personaCategory: role === 'alumni' ? personaCategory : undefined,
+      mentorshipScope: role === 'alumni' ? mentorshipScope : undefined,
+    };
+
+    const clientCheck = signUpSchema.safeParse(payload);
+    if (!clientCheck.success) {
+      setErrorMsg(
+        clientCheck.error.issues[0]?.message ??
+          'Please check all required fields.',
+      );
       return;
     }
 
     setIsSubmitting(true);
     try {
-      if (role === 'student') {
-        const res = await fetch('/api/student', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'login',
-            identifier: email.trim(),
-            cohort,
-          }),
-        });
-        const data = await res.json();
-        const base =
-          (res.ok && data?.user) ||
-          allPresetUsers.find((u) => u.role === 'student');
-
-        if (base) {
-          setCurrentUser({
-            ...base,
-            name: fullName.trim(),
-            email: email.trim(),
-            cohort,
-            branch,
-            techStack: techStack
-              .split(',')
-              .map((s) => s.trim())
-              .filter(Boolean),
-            headline: `${branch} Builder${githubHandle.trim() ? ` • @${githubHandle.trim().replace(/^@/, '')}` : ''} • ${techStack}`,
-          });
-        }
-        router.push('/student');
-      } else {
-        const res = await fetch('/api/alumni', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'login',
-            payload: {
-              identifier: email.trim(),
-              persona,
-              shield,
-            },
-          }),
-        });
-        const data = await res.json();
-        const base =
-          (res.ok && data?.user) ||
-          allPresetUsers.find((u) => u.role === 'alumni');
-
-        if (base) {
-          setCurrentUser({
-            ...base,
-            name: fullName.trim(),
-            email: email.trim(),
-            company: company.trim(),
-            designation: designation.trim(),
-            batchYear: Number(batchYear) || 2019,
-            alumniPersona: persona,
-            bandwidthShield: shield,
-            headline: `${designation.trim()} @ ${company.trim()} • Batch '${String(batchYear).slice(-2)}`,
-          });
-        }
-        router.push('/alumni');
+      const result = await signUpAction(clientCheck.data);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return;
       }
+
+      router.push(result.data.role === 'alumni' ? '/alumni' : '/student');
+      router.refresh();
     } catch {
-      const fallback = allPresetUsers.find((u) => u.role === role);
-      if (fallback) {
-        setCurrentUser({
-          ...fallback,
-          name: fullName.trim() || fallback.name,
-          email: email.trim() || fallback.email,
-        });
-      }
-      router.push(role === 'student' ? '/student' : '/alumni');
+      setErrorMsg('Unable to create account right now. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -228,20 +207,24 @@ export default function SignUpPage() {
       {/* Main Split Container */}
       <main className="relative z-10 flex-1 flex items-center justify-center py-6">
         <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left 5 Cols: Value Props & Role Highlights */}
+          {/* Left 5 Cols: Value Props & Live LinkedIn Preview Card */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/60 dark:bg-white/[0.05] backdrop-blur-md px-3.5 py-1 text-xs font-mono uppercase tracking-wider text-[#0891B2] dark:text-[#22D3EE]">
                 Create Your Profile
               </span>
               <h1 className="font-luma-title text-2xl sm:text-3xl xl:text-[36px] leading-[1.14] text-[#0F172A] dark:text-white">
-                <span className="block sm:whitespace-nowrap">Join the campus</span>
+                <span className="block sm:whitespace-nowrap">
+                  Join the campus
+                </span>
                 <span className="block text-[#0891B2] dark:text-[#22D3EE]">
                   proof-of-work network.
                 </span>
               </h1>
               <p className="text-sm text-[#475569] dark:text-[#94A3B8] leading-relaxed">
-                Set up a verified builder or alumni profile in 60 seconds—tailored to your cohort, tech stack, or hiring bandwidth.
+                Set up a verified builder or alumni profile in 60
+                seconds—tailored to your cohort, tech stack, or hiring
+                bandwidth.
               </p>
             </div>
 
@@ -263,12 +246,13 @@ export default function SignUpPage() {
                 </div>
 
                 <div className="flex items-center gap-3.5 rounded-2xl border border-zinc-200 dark:border-white/10 bg-zinc-50/80 dark:bg-white/[0.04] p-3.5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={getIndianAvatar(
                       matchedAlum?.fullName ||
                         matchedStudent?.fullName ||
                         fullName ||
-                        linkedinDisplayName
+                        linkedinDisplayName,
                     )}
                     alt={linkedinDisplayName}
                     className="h-12 w-12 rounded-full object-cover border border-[#0A66C2]/40 shrink-0"
@@ -303,7 +287,7 @@ export default function SignUpPage() {
                         setFullName(
                           matchedAlum?.fullName ||
                             matchedStudent?.fullName ||
-                            linkedinDisplayName
+                            linkedinDisplayName,
                         );
                       }
                       if (matchedAlum) {
@@ -316,10 +300,12 @@ export default function SignUpPage() {
                       setLinkedinExtracted(true);
                       setErrorMsg('');
                     }}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white px-4 py-2 text-xs font-semibold transition-colors"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0A66C2] hover:bg-[#004182] text-white px-4 py-2 text-xs font-semibold transition-colors cursor-pointer"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    {linkedinExtracted ? "Profile Confirmed ✓" : "Yes, that's my profile"}
+                    {linkedinExtracted
+                      ? 'Profile Confirmed ✓'
+                      : "Yes, that's my profile"}
                   </button>
                   <a
                     href={
@@ -340,18 +326,18 @@ export default function SignUpPage() {
                 {[
                   {
                     icon: Code2,
-                    title: 'Students: Link GitHub & Cohort',
-                    desc: 'Auto-attach your repositories and sprint builds to every alumni bounty and job.',
+                    title: 'Students: 10-Digit Reg No & GitHub',
+                    desc: 'Link your ITER registration number and sprint builds to every alumni bounty and job.',
                   },
                   {
                     icon: ShieldCheck,
-                    title: 'Alumni: Set Your Bandwidth Shield',
-                    desc: 'Choose 5-min async roasts or Deal Room access—zero calendar spam.',
+                    title: 'Alumni: Corporate Email Instant Verification',
+                    desc: 'Verify instantly via matching corporate domain email, or route through Dean T&P review.',
                   },
                   {
                     icon: CheckCircle2,
                     title: 'Verified Vouch & Referral Graph',
-                    desc: 'Earn and issue Vouch Cards backed by real shipped engineering craft.',
+                    desc: 'Earn and issue HMAC-signed Vouch Cards backed by real shipped engineering craft.',
                   },
                 ].map((item) => (
                   <div
@@ -407,7 +393,10 @@ export default function SignUpPage() {
                   type="button"
                   role="tab"
                   aria-selected={role === 'student'}
-                  onClick={() => setRole('student')}
+                  onClick={() => {
+                    setRole('student');
+                    setErrorMsg('');
+                  }}
                   className={`rounded-lg py-2 text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1.5 ${
                     role === 'student'
                       ? 'bg-[#0F172A] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:text-[#041E24] shadow-xs'
@@ -421,7 +410,10 @@ export default function SignUpPage() {
                   type="button"
                   role="tab"
                   aria-selected={role === 'alumni'}
-                  onClick={() => setRole('alumni')}
+                  onClick={() => {
+                    setRole('alumni');
+                    setErrorMsg('');
+                  }}
                   className={`rounded-lg py-2 text-xs font-semibold transition-all cursor-pointer inline-flex items-center justify-center gap-1.5 ${
                     role === 'alumni'
                       ? 'bg-[#0F172A] text-white dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] dark:text-[#041E24] shadow-xs'
@@ -462,7 +454,9 @@ export default function SignUpPage() {
                       htmlFor="signup-email"
                       className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                     >
-                      {role === 'student' ? 'Student Email' : 'Work Email'}
+                      {role === 'student'
+                        ? 'ITER Student Email'
+                        : 'Personal / Login Email'}
                     </label>
                     <div className="relative">
                       <Mail className="w-4 h-4 text-[#475569] dark:text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -473,7 +467,9 @@ export default function SignUpPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder={
-                          role === 'student' ? 'name@campus.edu' : 'name@company.com'
+                          role === 'student'
+                            ? 'name@soa.ac.in'
+                            : 'you@gmail.com'
                         }
                         className={`${inputClass} pl-9`}
                       />
@@ -481,19 +477,30 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
-                {/* Required LinkedIn Profile URL + Auto-Extract */}
+                {/* LinkedIn Profile URL + Auto-Extract */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
                     <label
                       htmlFor="signup-linkedin"
                       className="font-semibold text-[#0F172A] dark:text-white"
                     >
-                      LinkedIn Profile URL <span className="text-[#0891B2] dark:text-[#22D3EE]">*</span>
+                      LinkedIn Profile URL{' '}
+                      {role === 'alumni' ? (
+                        <span className="text-[#0891B2] dark:text-[#22D3EE]">
+                          *
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-normal text-[#64748B]">
+                          (optional)
+                        </span>
+                      )}
                     </label>
                     <button
                       type="button"
                       onClick={() => {
-                        const match = linkedinUrl.match(/linkedin\.com\/in\/([^/?#]+)/i);
+                        const match = linkedinUrl.match(
+                          /linkedin\.com\/in\/([^/?#]+)/i,
+                        );
                         if (match?.[1]) {
                           const cleaned = match[1]
                             .replace(/[-_]+/g, ' ')
@@ -505,18 +512,22 @@ export default function SignUpPage() {
                           setLinkedinExtracted(true);
                           setErrorMsg('');
                         } else {
-                          setErrorMsg('Enter a valid linkedin.com/in/username URL to extract profile details.');
+                          setErrorMsg(
+                            'Enter a valid linkedin.com/in/username URL to extract profile details.',
+                          );
                         }
                       }}
-                      className="inline-flex items-center gap-1 font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline"
+                      className="inline-flex items-center gap-1 font-semibold text-[#0891B2] dark:text-[#22D3EE] hover:underline cursor-pointer"
                     >
-                      {linkedinExtracted ? 'Profile Extracted ✓' : 'Extract from LinkedIn'}
+                      {linkedinExtracted
+                        ? 'Profile Extracted ✓'
+                        : 'Extract from LinkedIn'}
                     </button>
                   </div>
                   <input
                     id="signup-linkedin"
                     type="url"
-                    required
+                    required={role === 'alumni'}
                     value={linkedinUrl}
                     onChange={(e) => {
                       setLinkedinUrl(e.target.value);
@@ -530,26 +541,57 @@ export default function SignUpPage() {
                 {/* Role-Specific Fields */}
                 {role === 'student' ? (
                   <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="signup-regno"
+                          className="block text-xs font-semibold text-[#0F172A] dark:text-white"
+                        >
+                          10-Digit Reg No{' '}
+                          <span className="text-[#0891B2] dark:text-[#22D3EE]">
+                            *
+                          </span>
+                        </label>
+                        <div className="relative">
+                          <Hash className="w-4 h-4 text-[#475569] dark:text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <input
+                            id="signup-regno"
+                            type="text"
+                            required
+                            inputMode="numeric"
+                            pattern="\d{10}"
+                            maxLength={10}
+                            value={regNo}
+                            onChange={(e) =>
+                              setRegNo(e.target.value.replace(/\D/g, '').slice(0, 10))
+                            }
+                            placeholder="2341016089"
+                            className={`${inputClass} pl-9 font-mono`}
+                          />
+                        </div>
+                      </div>
+
                       <div className="space-y-1">
                         <label
                           htmlFor="signup-cohort"
                           className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                         >
-                          Current Year / Cohort
+                          Academic Year
                         </label>
                         <select
                           id="signup-cohort"
-                          value={cohort}
-                          onChange={(e) =>
-                            setCohort(e.target.value as StudentCohort)
-                          }
+                          value={academicYear}
+                          onChange={(e) => setAcademicYear(e.target.value)}
                           className={inputClass}
                         >
-                          <option value="1st_year">1st Year (Batch 2028) • Beta Scout</option>
-                          <option value="2nd_year">2nd Year (Batch 2027) • Core Builder</option>
-                          <option value="3rd_year">3rd Year (Batch 2026) • Bounty Sprinter</option>
-                          <option value="4th_year">4th Year (Batch 2025) • Squad Lead</option>
+                          <option value="1st Year">1st Year • Beta Scout</option>
+                          <option value="2nd Year">
+                            2nd Year • Core Builder
+                          </option>
+                          <option value="3rd Year">
+                            3rd Year • Bounty Sprinter
+                          </option>
+                          <option value="4th Year">4th Year • Squad Lead</option>
                         </select>
                       </div>
 
@@ -567,9 +609,15 @@ export default function SignUpPage() {
                           className={inputClass}
                         >
                           <option value="CSE">Computer Science (CSE)</option>
-                          <option value="CSIT">CS &amp; Information Tech (CSIT)</option>
-                          <option value="ECE">Electronics &amp; Comm (ECE)</option>
-                          <option value="EEE">Electrical &amp; Electronics (EEE)</option>
+                          <option value="CSIT">
+                            CS &amp; Information Tech (CSIT)
+                          </option>
+                          <option value="ECE">
+                            Electronics &amp; Comm (ECE)
+                          </option>
+                          <option value="EEE">
+                            Electrical &amp; Electronics (EEE)
+                          </option>
                           <option value="MCA">MCA / Post-Grad</option>
                         </select>
                       </div>
@@ -590,7 +638,7 @@ export default function SignUpPage() {
                             type="text"
                             value={githubHandle}
                             onChange={(e) => setGithubHandle(e.target.value)}
-                            placeholder="github.com/username"
+                            placeholder="ananya-dash"
                             className={`${inputClass} pl-9`}
                           />
                         </div>
@@ -622,7 +670,10 @@ export default function SignUpPage() {
                           htmlFor="signup-company"
                           className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                         >
-                          Current Company
+                          Current Company{' '}
+                          <span className="text-[#0891B2] dark:text-[#22D3EE]">
+                            *
+                          </span>
                         </label>
                         <div className="relative">
                           <Building2 className="w-4 h-4 text-[#475569] dark:text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -643,7 +694,10 @@ export default function SignUpPage() {
                           htmlFor="signup-designation"
                           className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                         >
-                          Designation
+                          Designation{' '}
+                          <span className="text-[#0891B2] dark:text-[#22D3EE]">
+                            *
+                          </span>
                         </label>
                         <input
                           id="signup-designation"
@@ -666,13 +720,49 @@ export default function SignUpPage() {
                         <input
                           id="signup-batch"
                           type="number"
-                          min="2000"
+                          min="1995"
                           max="2026"
                           value={batchYear}
                           onChange={(e) => setBatchYear(e.target.value)}
                           className={inputClass}
                         />
                       </div>
+                    </div>
+
+                    {/* Optional Corporate Work Email for Instant Domain Verification */}
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <label
+                          htmlFor="signup-work-email"
+                          className="font-semibold text-[#0F172A] dark:text-white"
+                        >
+                          Corporate Work Email{' '}
+                          <span className="text-[11px] font-normal text-[#64748B]">
+                            (optional — unlocks instant verification)
+                          </span>
+                        </label>
+                        {workEmail.trim().length > 0 && company.trim().length > 0 && (
+                          corporateDomainMatched ? (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/35 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+                              <ShieldCheck className="w-3 h-3" />
+                              Corporate Domain Match → Instant Verified
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
+                              <Clock className="w-3 h-3" />
+                              Routes to Dean T&amp;P Approval Queue
+                            </span>
+                          )
+                        )}
+                      </div>
+                      <input
+                        id="signup-work-email"
+                        type="email"
+                        value={workEmail}
+                        onChange={(e) => setWorkEmail(e.target.value)}
+                        placeholder="your.name@company.com (leave blank for Dean T&P review)"
+                        className={inputClass}
+                      />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -685,39 +775,40 @@ export default function SignUpPage() {
                         </label>
                         <select
                           id="signup-persona"
-                          value={persona}
-                          onChange={(e) =>
-                            setPersona(e.target.value as AlumniPersona)
-                          }
+                          value={personaCategory}
+                          onChange={(e) => setPersonaCategory(e.target.value)}
                           className={inputClass}
                         >
-                          <option value="ic">MNC IC (0–5 Yrs) • Vouch &amp; Referrals</option>
-                          <option value="manager">Hiring Manager (5–15 Yrs) • Roasts &amp; Fast-Track</option>
-                          <option value="founder">Startup Founder (10–25 Yrs) • Acqui-Hire &amp; Bounties</option>
-                          <option value="chro">CHRO / Recruiter • Campus Shortlist</option>
+                          <option value="Technical Mentor / Staff Engineer">
+                            Staff / IC Mentor • Vouch &amp; Referrals
+                          </option>
+                          <option value="Hiring Manager / Engineering Lead">
+                            Hiring Manager • Roasts &amp; Fast-Track
+                          </option>
+                          <option value="Startup Founder">
+                            Startup Founder • Acqui-Hire &amp; Bounties
+                          </option>
+                          <option value="HR / Talent Acquisition">
+                            HR / Talent Acquisition • Campus Shortlist
+                          </option>
                         </select>
                       </div>
 
                       <div className="space-y-1">
                         <label
-                          htmlFor="signup-shield"
+                          htmlFor="signup-scope"
                           className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                         >
-                          Bandwidth Shield
+                          Mentorship &amp; Hiring Focus
                         </label>
-                        <select
-                          id="signup-shield"
-                          value={shield}
-                          onChange={(e) =>
-                            setShield(e.target.value as BandwidthShield)
-                          }
+                        <input
+                          id="signup-scope"
+                          type="text"
+                          value={mentorshipScope}
+                          onChange={(e) => setMentorshipScope(e.target.value)}
+                          placeholder="Capstone Reviews & Campus Hiring"
                           className={inputClass}
-                        >
-                          <option value="5-min async roast">5-min async roast</option>
-                          <option value="2 async reviews/mo">2 async reviews/mo</option>
-                          <option value="1 session/quarter">1 session/quarter</option>
-                          <option value="Direct deal room only">Direct deal room only</option>
-                        </select>
+                        />
                       </div>
                     </div>
                   </>
@@ -729,23 +820,34 @@ export default function SignUpPage() {
                     htmlFor="signup-password"
                     className="block text-xs font-semibold text-[#0F172A] dark:text-white"
                   >
-                    Create Password
+                    Create Password{' '}
+                    {demoEnabled && !supabaseEnabled && (
+                      <span className="text-[11px] font-normal text-[#64748B]">
+                        (optional in Demo Mode)
+                      </span>
+                    )}
                   </label>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-[#475569] dark:text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       id="signup-password"
                       type={showPassword ? 'text' : 'password'}
-                      required
+                      required={supabaseEnabled && !demoEnabled}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Minimum 6 characters"
+                      placeholder={
+                        demoEnabled && !supabaseEnabled
+                          ? 'Optional in Demo Mode (min 6 chars if set)'
+                          : 'Minimum 6 characters'
+                      }
                       className={`${inputClass} pl-9 pr-10`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      aria-label={
+                        showPassword ? 'Hide password' : 'Show password'
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white p-1"
                     >
                       {showPassword ? (
@@ -758,7 +860,7 @@ export default function SignUpPage() {
                 </div>
 
                 {errorMsg && (
-                  <div className="rounded-xl border border-[#0891B2]/25 dark:border-[#22D3EE]/25 bg-[#0891B2]/10 dark:bg-[#22D3EE]/10 px-3.5 py-2 text-xs text-[#0F172A] dark:text-white">
+                  <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2 text-xs text-rose-700 dark:text-rose-300">
                     {errorMsg}
                   </div>
                 )}
@@ -785,7 +887,9 @@ export default function SignUpPage() {
 
       {/* Footer */}
       <footer className="relative z-10 max-w-7xl w-full mx-auto px-6 sm:px-10 pb-5 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#475569] dark:text-[#94A3B8]">
-        <span className="font-luma-title text-[#0F172A] dark:text-white">AlmaConnect</span>
+        <span className="font-luma-title text-[#0F172A] dark:text-white">
+          AlmaConnect
+        </span>
         <span className="font-mono">Proof-of-Work Network</span>
       </footer>
     </div>

@@ -1,14 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {
+  AlertCircle,
   CheckCircle2,
   ExternalLink,
   Film,
   GitBranch,
   Globe,
   Link2,
+  Loader2,
   Play,
+  Plus,
   Search,
   Upload,
   UserCheck,
@@ -30,8 +34,111 @@ interface SectionProps {
   compact?: boolean;
 }
 
+interface UploadSignPayload {
+  ok: boolean;
+  error?: string;
+  code?: string;
+  data?: {
+    mode: 'supabase' | 'mock';
+    bucket: string;
+    path: string;
+    signedUrl: string | null;
+    token: string;
+    publicUrl: string | null;
+  };
+}
+
+interface UploadOutcome {
+  ok: boolean;
+  mode?: 'supabase' | 'mock';
+  path?: string;
+  publicUrl?: string | null;
+  error?: string;
+  unauthorized?: boolean;
+}
+
+async function uploadFileViaSignedEndpoint(
+  bucket: 'project-media' | 'research-pdfs',
+  file: File
+): Promise<UploadOutcome> {
+  try {
+    const signRes = await fetch('/api/uploads/sign', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        bucket,
+        fileName: file.name,
+        mimeType: file.type || (bucket === 'research-pdfs' ? 'application/pdf' : 'video/mp4'),
+        sizeBytes: file.size,
+      }),
+    });
+
+    const json = (await signRes.json()) as UploadSignPayload;
+    if (signRes.status === 401 || json.code === 'UNAUTHORIZED') {
+      return {
+        ok: false,
+        unauthorized: true,
+        error: json.error ?? 'Sign in required to upload media.',
+      };
+    }
+
+    if (!signRes.ok || !json.ok || !json.data) {
+      return {
+        ok: false,
+        error: json.error ?? 'Failed to authorize upload.',
+      };
+    }
+
+    const signed = json.data;
+    if (signed.mode === 'supabase' && signed.signedUrl) {
+      const putRes = await fetch(signed.signedUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+        },
+        body: file,
+      });
+
+      if (!putRes.ok) {
+        return {
+          ok: false,
+          error: `Storage upload failed (${putRes.status}).`,
+        };
+      }
+    }
+
+    return {
+      ok: true,
+      mode: signed.mode,
+      path: signed.path,
+      publicUrl: signed.publicUrl,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : 'Network error during upload.',
+    };
+  }
+}
+
+const DOMAIN_CHOICES = [
+  'Full-Stack & Cloud',
+  'Applied AI',
+  'Product & FinTech',
+  'IoT & Systems',
+  'Cybersecurity & ZK',
+  'Graphics & WebXR',
+];
+
 export function IdentitySection({ data, onChange, compact }: SectionProps) {
   const remaining = 120 - data.oneLiner.length;
+  const [techInput, setTechInput] = useState('');
+  const [pdfStatus, setPdfStatus] = useState<{
+    state: 'idle' | 'uploading' | 'done' | 'error';
+    message?: string;
+    unauthorized?: boolean;
+  }>({ state: 'idle' });
+
   const guidanceOptions = [
     'Methodology Review',
     'Dataset / Compute',
@@ -50,6 +157,46 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
           : [...p.research.guidanceNeeded, item],
       },
     }));
+  };
+
+  const addTechTag = () => {
+    const cleaned = techInput.trim();
+    if (!cleaned) return;
+    if (data.techStack.some((t) => t.toLowerCase() === cleaned.toLowerCase())) {
+      setTechInput('');
+      return;
+    }
+    onChange((p) => ({ ...p, techStack: [...p.techStack, cleaned] }));
+    setTechInput('');
+  };
+
+  const handlePdfUpload = async (file: File) => {
+    setPdfStatus({ state: 'uploading', message: `Signing ${file.name}...` });
+    const outcome = await uploadFileViaSignedEndpoint('research-pdfs', file);
+    if (!outcome.ok) {
+      setPdfStatus({
+        state: 'error',
+        message: outcome.error,
+        unauthorized: outcome.unauthorized,
+      });
+      return;
+    }
+
+    onChange((p) => ({
+      ...p,
+      research: {
+        ...p.research,
+        paperPdfName: file.name,
+        pdfStoragePath: outcome.path ?? p.research.pdfStoragePath,
+      },
+    }));
+    setPdfStatus({
+      state: 'done',
+      message:
+        outcome.mode === 'supabase'
+          ? 'Uploaded PDF to private research-pdfs bucket'
+          : 'Signed mock PDF path attached (demo mode)',
+    });
   };
 
   return (
@@ -137,9 +284,13 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label className="flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs font-semibold cursor-pointer hover:border-[#2563EB]">
-              <Upload className="w-3.5 h-3.5 text-[#2563EB]" />
+              {pdfStatus.state === 'uploading' ? (
+                <Loader2 className="w-3.5 h-3.5 text-[#2563EB] animate-spin shrink-0" />
+              ) : (
+                <Upload className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+              )}
               <span className="truncate">
-                {data.research.paperPdfName || 'Upload Paper PDF'}
+                {data.research.paperPdfName || 'Upload Paper PDF (<= 25MB)'}
               </span>
               <input
                 type="file"
@@ -148,10 +299,7 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
                 onChange={(e) => {
                   const f = e.target.files?.[0];
                   if (f) {
-                    onChange((p) => ({
-                      ...p,
-                      research: { ...p.research, paperPdfName: f.name },
-                    }));
+                    void handlePdfUpload(f);
                   }
                 }}
               />
@@ -169,6 +317,35 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
               className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs font-mono focus:outline-none focus:border-[#2563EB]"
             />
           </div>
+
+          {pdfStatus.state !== 'idle' && (
+            <div
+              className={`rounded-xl px-3 py-2 text-[11px] flex items-center justify-between gap-2 ${
+                pdfStatus.state === 'error'
+                  ? 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/30'
+                  : pdfStatus.state === 'done'
+                    ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+                    : 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/30'
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                {pdfStatus.state === 'error' ? (
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                ) : (
+                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                )}
+                {pdfStatus.message}
+              </span>
+              {pdfStatus.unauthorized && (
+                <Link
+                  href="/login?next=/share-project"
+                  className="font-bold underline shrink-0"
+                >
+                  Sign in →
+                </Link>
+              )}
+            </div>
+          )}
 
           <div>
             <div className="text-xs font-semibold mb-1.5">
@@ -194,6 +371,27 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
               })}
             </div>
           </div>
+        </div>
+      )}
+
+      {data.submissionType === 'project' && (
+        <div>
+          <label className="block text-xs font-semibold mb-1">
+            Primary Engineering Domain
+          </label>
+          <select
+            value={data.domain}
+            onChange={(e) =>
+              onChange((p) => ({ ...p, domain: e.target.value }))
+            }
+            className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-[#2563EB]"
+          >
+            {DOMAIN_CHOICES.map((dom) => (
+              <option key={dom} value={dom}>
+                {dom}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
@@ -237,7 +435,7 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
 
       <div>
         <label className="block text-xs font-semibold mb-1">
-          Detailed Description (Problem, Architecture, Impact)
+          Detailed Description (Problem, Architecture, Impact) *
         </label>
         <textarea
           rows={compact ? 3 : 4}
@@ -248,6 +446,57 @@ export function IdentitySection({ data, onChange, compact }: SectionProps) {
           placeholder="Break down the problem, technical architecture, and traction/impact..."
           className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-[#2563EB]"
         />
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold mb-1">
+          Tech Stack Tags
+        </label>
+        <div className="flex gap-2 mb-2">
+          <input
+            type="text"
+            value={techInput}
+            onChange={(e) => setTechInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                addTechTag();
+              }
+            }}
+            placeholder="Add tech (e.g., Rust, LangGraph, PostgreSQL)..."
+            className="flex-1 rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-1.5 text-xs focus:outline-none focus:border-[#2563EB]"
+          />
+          <button
+            type="button"
+            onClick={addTechTag}
+            className="inline-flex items-center gap-1 rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-3 py-1.5 text-xs font-semibold hover:border-[#2563EB]"
+          >
+            <Plus className="w-3.5 h-3.5" /> Add
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {data.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="inline-flex items-center gap-1 rounded-full border border-[#E4E4E7] dark:border-zinc-700 bg-[#F4F4F5] dark:bg-zinc-800 px-2.5 py-0.5 text-[11px] font-medium"
+            >
+              {tech}
+              <button
+                type="button"
+                onClick={() =>
+                  onChange((p) => ({
+                    ...p,
+                    techStack: p.techStack.filter((t) => t !== tech),
+                  }))
+                }
+                aria-label={`Remove ${tech}`}
+                className="text-[#52525B] hover:text-rose-600"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -533,7 +782,39 @@ function SingleVideoSlot({
   video: VideoInputState;
   onUpdate: (next: VideoInputState) => void;
 }) {
+  const [uploadStatus, setUploadStatus] = useState<{
+    state: 'idle' | 'uploading' | 'done' | 'error';
+    message?: string;
+    unauthorized?: boolean;
+  }>({ state: 'idle' });
+
   const hasPreview = Boolean(video.fileName || video.url.trim());
+
+  const handleVideoFile = async (file: File) => {
+    setUploadStatus({ state: 'uploading', message: `Uploading ${file.name}...` });
+    const outcome = await uploadFileViaSignedEndpoint('project-media', file);
+    if (!outcome.ok) {
+      setUploadStatus({
+        state: 'error',
+        message: outcome.error,
+        unauthorized: outcome.unauthorized,
+      });
+      return;
+    }
+
+    onUpdate({
+      ...video,
+      fileName: file.name,
+      url: outcome.publicUrl || outcome.path || video.url,
+    });
+    setUploadStatus({
+      state: 'done',
+      message:
+        outcome.mode === 'supabase'
+          ? 'Uploaded to project-media bucket'
+          : 'Signed mock video attached (demo mode)',
+    });
+  };
 
   return (
     <div className="rounded-xl border border-[#E4E4E7] dark:border-zinc-800 bg-[#F4F4F5] dark:bg-zinc-900 p-3.5 space-y-2.5">
@@ -574,17 +855,23 @@ function SingleVideoSlot({
 
       {video.mode === 'upload' ? (
         <label className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 p-3 text-center cursor-pointer hover:border-[#2563EB]">
-          <Upload className="w-4 h-4 text-[#2563EB] mb-1" />
+          {uploadStatus.state === 'uploading' ? (
+            <Loader2 className="w-4 h-4 text-[#2563EB] mb-1 animate-spin" />
+          ) : (
+            <Upload className="w-4 h-4 text-[#2563EB] mb-1" />
+          )}
           <span className="text-[11px] font-semibold">
-            {video.fileName || 'Drop MP4 / WebM or click to browse'}
+            {video.fileName || 'Drop MP4 / WebM (<= 150MB) or click to browse'}
           </span>
           <input
             type="file"
-            accept="video/mp4,video/webm"
+            accept="video/mp4,video/webm,video/quicktime"
             className="hidden"
             onChange={(e) => {
               const f = e.target.files?.[0];
-              if (f) onUpdate({ ...video, fileName: f.name });
+              if (f) {
+                void handleVideoFile(f);
+              }
             }}
           />
         </label>
@@ -598,6 +885,28 @@ function SingleVideoSlot({
             placeholder="Paste Loom or YouTube Unlisted URL..."
             className="w-full rounded-xl border border-[#E4E4E7] dark:border-zinc-700 bg-white dark:bg-zinc-950 pl-8 pr-3 py-2 text-xs font-mono focus:outline-none focus:border-[#2563EB]"
           />
+        </div>
+      )}
+
+      {uploadStatus.state !== 'idle' && (
+        <div
+          className={`rounded-lg px-3 py-1.5 text-[11px] flex items-center justify-between gap-2 ${
+            uploadStatus.state === 'error'
+              ? 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/30'
+              : uploadStatus.state === 'done'
+                ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
+                : 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/30'
+          }`}
+        >
+          <span>{uploadStatus.message}</span>
+          {uploadStatus.unauthorized && (
+            <Link
+              href="/login?next=/share-project"
+              className="font-bold underline shrink-0"
+            >
+              Sign in →
+            </Link>
+          )}
         </div>
       )}
 

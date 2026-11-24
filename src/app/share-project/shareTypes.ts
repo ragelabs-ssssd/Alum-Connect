@@ -21,6 +21,7 @@ export interface ResearchPaperFields {
   researchDomain: string;
   paperPdfName: string;
   paperUrl: string;
+  pdfStoragePath?: string;
   guidanceNeeded: string[];
 }
 
@@ -30,6 +31,8 @@ export interface ShareProjectFormData {
   oneLiner: string;
   shortDesc: string;
   detailedDesc: string;
+  domain: string;
+  techStack: string[];
   mode: 'individual' | 'group';
   academicYear: AcademicYear;
   regNumber: string;
@@ -98,6 +101,8 @@ export const EMPTY_SHARE_DATA: ShareProjectFormData = {
   oneLiner: '',
   shortDesc: '',
   detailedDesc: '',
+  domain: 'Full-Stack & Cloud',
+  techStack: ['Next.js', 'TypeScript'],
   mode: 'individual',
   academicYear: '3rd Year',
   regNumber: '',
@@ -111,6 +116,7 @@ export const EMPTY_SHARE_DATA: ShareProjectFormData = {
     researchDomain: 'Applied AI & ML',
     paperPdfName: '',
     paperUrl: '',
+    pdfStoragePath: '',
     guidanceNeeded: ['Methodology Review', 'Co-Author Mentorship'],
   },
 };
@@ -123,6 +129,8 @@ export const SAMPLE_GROUP_PROJECT: ShareProjectFormData = {
     'Connects student repositories, live product demos, and 2-minute founder pitches directly with ITER alumni at top tech companies for fast-track referrals.',
   detailedDesc:
     'Problem: Static PDF resumes fail to show real engineering depth.\nArchitecture: Next.js 16 App Router, TypeScript, Tailwind CSS, and persistent API routes synced across Student, Alumni, and Dean portals.\nImpact: 18 active campus projects, 4 alumni-verified vouches, and direct internship referrals.',
+  domain: 'Full-Stack & Cloud',
+  techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Drizzle ORM'],
   mode: 'group',
   academicYear: '3rd Year',
   regNumber: '2341019042',
@@ -144,6 +152,7 @@ export const SAMPLE_GROUP_PROJECT: ShareProjectFormData = {
     researchDomain: 'Software Engineering & EdTech',
     paperPdfName: 'iter-proof-of-work-preprint.pdf',
     paperUrl: 'https://arxiv.org/abs/2501.00001',
+    pdfStoragePath: 'research-pdfs/iter-proof-of-work-preprint.pdf',
     guidanceNeeded: ['Methodology Review', 'Venue Selection'],
   },
 };

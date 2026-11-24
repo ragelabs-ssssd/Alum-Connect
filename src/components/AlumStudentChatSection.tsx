@@ -1,16 +1,23 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   BadgeCheck,
   CheckCheck,
   FolderGit2,
   MessageSquare,
   Plus,
+  Radio,
   Search,
   Send,
   Video,
 } from 'lucide-react';
+import { sendChatMessageAction, markThreadReadAction } from '@/modules/messaging/actions';
+import {
+  useRealtimeChannel,
+  type RealtimeChatPayload,
+} from '@/modules/messaging/useRealtimeChannel';
+import type { ChatMessageDTO, ChatThreadDTO } from '@/types/domain';
 import {
   ALUMNI_DATA,
   PROJECTS_DATA,
@@ -22,6 +29,7 @@ export interface ChatMessage {
   id: string;
   senderRole: 'student' | 'alumni';
   senderName: string;
+  senderUserId?: string;
   time: string;
   text: string;
   attachment?: string;
@@ -29,9 +37,11 @@ export interface ChatMessage {
 
 export interface ChatThread {
   id: string;
+  studentUserId?: string;
   studentName: string;
   studentMeta: string;
   studentAvatar: string;
+  alumniUserId?: string;
   alumniName: string;
   alumniMeta: string;
   alumniAvatar: string;
@@ -39,11 +49,55 @@ export interface ChatThread {
   online: boolean;
   unreadForStudent: number;
   unreadForAlumni: number;
+  isLocalDraft?: boolean;
   messages: ChatMessage[];
 }
 
 export const CHAT_STORAGE_KEY = 'alum_connect_chat_threads_v1';
 const STORAGE_KEY = CHAT_STORAGE_KEY;
+
+function formatMessageTime(iso?: string): string {
+  if (!iso) {
+    return new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+export function mapDtoMessageToChatMessage(m: ChatMessageDTO): ChatMessage {
+  return {
+    id: m.id,
+    senderRole: m.senderRole,
+    senderName: m.senderName,
+    senderUserId: m.senderUserId,
+    time: formatMessageTime(m.createdAt),
+    text: m.text,
+    attachment: m.attachmentUrl ?? undefined,
+  };
+}
+
+export function mapDtoThreadToChatThread(t: ChatThreadDTO): ChatThread {
+  return {
+    id: t.id,
+    studentUserId: t.studentUserId,
+    studentName: t.studentName,
+    studentMeta: t.studentMeta,
+    studentAvatar: t.studentAvatar || getIndianAvatar(t.studentName),
+    alumniUserId: t.alumniUserId,
+    alumniName: t.alumniName,
+    alumniMeta: t.alumniMeta,
+    alumniAvatar: t.alumniAvatar || getIndianAvatar(t.alumniName),
+    topic: t.topic,
+    online: true,
+    unreadForStudent: t.studentUnreadCount,
+    unreadForAlumni: t.alumniUnreadCount,
+    messages: t.messages.map(mapDtoMessageToChatMessage),
+  };
+}
 
 export const buildInitialThreads = (): ChatThread[] => {
   const s1 = STUDENTS_DATA[0];
@@ -184,11 +238,79 @@ export const buildInitialThreads = (): ChatThread[] => {
   ];
 };
 
+export interface ChatPeerOption {
+  userId?: string;
+  name: string;
+  meta: string;
+  avatarUrl?: string;
+}
+
 interface AlumStudentChatSectionProps {
   viewerRole: 'student' | 'alumni';
   viewerName: string;
   initialTargetName?: string | null;
   initialThreadId?: string | null;
+  currentUserId?: string;
+  initialThreads?: ChatThreadDTO[];
+  availablePeers?: ChatPeerOption[];
+}
+
+function buildThreadForTarget(
+  targetName: string,
+  viewerRole: 'student' | 'alumni',
+  viewerName: string,
+  currentUserId?: string,
+  peerOption?: ChatPeerOption
+): ChatThread {
+  const normalized = targetName.trim().toLowerCase();
+  const counterpartAlum = ALUMNI_DATA.find(
+    (a) => a.fullName.toLowerCase() === normalized
+  );
+  const counterpartStudent = STUDENTS_DATA.find(
+    (s) => s.fullName.toLowerCase() === normalized
+  );
+
+  return {
+    id: `local-${targetName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    isLocalDraft: true,
+    studentUserId:
+      viewerRole === 'student' ? currentUserId : peerOption?.userId,
+    studentName:
+      viewerRole === 'student'
+        ? viewerName
+        : counterpartStudent?.fullName || targetName,
+    studentMeta:
+      viewerRole === 'student'
+        ? 'ITER Student Builder'
+        : peerOption?.meta ||
+          `${counterpartStudent?.branch || 'CSE'} • ${counterpartStudent?.academicYear || '4th Year'}`,
+    studentAvatar: getIndianAvatar(
+      viewerRole === 'student'
+        ? viewerName
+        : counterpartStudent?.fullName || targetName
+    ),
+    alumniUserId:
+      viewerRole === 'alumni' ? currentUserId : peerOption?.userId,
+    alumniName:
+      viewerRole === 'alumni'
+        ? viewerName
+        : counterpartAlum?.fullName || targetName,
+    alumniMeta:
+      viewerRole === 'alumni'
+        ? 'ITER Alumni Mentor'
+        : peerOption?.meta ||
+          `${counterpartAlum?.designation || 'Senior Engineer'} @ ${counterpartAlum?.company || 'Tech Partner'}`,
+    alumniAvatar: getIndianAvatar(
+      viewerRole === 'alumni'
+        ? viewerName
+        : counterpartAlum?.fullName || targetName
+    ),
+    topic: 'Direct Mentorship & Project Collaboration',
+    online: true,
+    unreadForStudent: 0,
+    unreadForAlumni: 0,
+    messages: [],
+  };
 }
 
 export default function AlumStudentChatSection({
@@ -196,44 +318,150 @@ export default function AlumStudentChatSection({
   viewerName,
   initialTargetName,
   initialThreadId,
+  currentUserId,
+  initialThreads,
+  availablePeers,
 }: AlumStudentChatSectionProps) {
+  const isServerBacked = Boolean(currentUserId || initialThreads);
+  const idCounterRef = useRef(1);
+
   const [threads, setThreads] = useState<ChatThread[]>(() => {
-    if (typeof window !== 'undefined') {
+    let base: ChatThread[] = [];
+    if (initialThreads && initialThreads.length > 0) {
+      base = initialThreads.map(mapDtoThreadToChatThread);
+    } else if (!currentUserId && typeof window !== 'undefined') {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as ChatThread[];
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            base = parsed;
+          }
         }
       } catch {
         // ignore malformed storage
       }
     }
-    return buildInitialThreads();
+
+    if (base.length === 0 && !currentUserId) {
+      base = buildInitialThreads();
+    }
+
+    if (initialTargetName) {
+      const normalized = initialTargetName.trim().toLowerCase();
+      const existing = base.find((t) =>
+        viewerRole === 'student'
+          ? t.alumniName.toLowerCase() === normalized
+          : t.studentName.toLowerCase() === normalized
+      );
+      if (!existing) {
+        const peerMatch = availablePeers?.find(
+          (p) => p.name.toLowerCase() === normalized
+        );
+        base = [
+          buildThreadForTarget(
+            initialTargetName,
+            viewerRole,
+            viewerName,
+            currentUserId,
+            peerMatch
+          ),
+          ...base,
+        ];
+      }
+    }
+
+    return base;
   });
 
-  const [activeThreadId, setActiveThreadId] = useState<string>(
-    initialThreadId || threads[0]?.id || 'thread-1'
-  );
+  const [activeThreadId, setActiveThreadId] = useState<string>(() => {
+    if (initialThreadId) return initialThreadId;
+    if (initialTargetName) {
+      const normalized = initialTargetName.trim().toLowerCase();
+      const match = threads.find((t) =>
+        viewerRole === 'student'
+          ? t.alumniName.toLowerCase() === normalized
+          : t.studentName.toLowerCase() === normalized
+      );
+      if (match) return match.id;
+    }
+    return threads[0]?.id || 'thread-1';
+  });
+
   const [search, setSearch] = useState('');
   const [filterMode, setFilterMode] = useState<'all' | 'unread'>('all');
   const [draft, setDraft] = useState('');
   const [attachRepo, setAttachRepo] = useState(false);
+  const [sending, setSending] = useState(false);
   const [callToast, setCallToast] = useState<string | null>(null);
   const [showNewPicker, setShowNewPicker] = useState(false);
 
-  // Sync to localStorage
+  const activeThread = useMemo(
+    () => threads.find((t) => t.id === activeThreadId) || threads[0],
+    [threads, activeThreadId]
+  );
+
+  // Realtime incoming message handler
+  const handleIncomingRealtimeMessage = useCallback(
+    (payload: RealtimeChatPayload) => {
+      const incomingMsg = mapDtoMessageToChatMessage(payload.message);
+
+      setThreads((prev) => {
+        const exists = prev.some((t) => t.id === payload.threadId);
+        if (!exists) {
+          return prev;
+        }
+        return prev.map((t) => {
+          if (t.id !== payload.threadId) return t;
+          if (t.messages.some((m) => m.id === incomingMsg.id)) {
+            return t;
+          }
+          const isCurrentlyViewing = activeThread?.id === t.id;
+          const isIncomingForMe = payload.senderUserId !== currentUserId;
+          return {
+            ...t,
+            unreadForStudent:
+              viewerRole === 'student' && isIncomingForMe && !isCurrentlyViewing
+                ? t.unreadForStudent + 1
+                : t.unreadForStudent,
+            unreadForAlumni:
+              viewerRole === 'alumni' && isIncomingForMe && !isCurrentlyViewing
+                ? t.unreadForAlumni + 1
+                : t.unreadForAlumni,
+            messages: [...t.messages, incomingMsg],
+          };
+        });
+      });
+    },
+    [activeThread?.id, currentUserId, viewerRole]
+  );
+
+  const { mode, connected, onlineUsers, publishMessage } = useRealtimeChannel({
+    userId: currentUserId,
+    userName: viewerName,
+    userRole: viewerRole,
+    threadId: activeThread?.id,
+    onMessage: handleIncomingRealtimeMessage,
+  });
+
+  const onlineUserIds = useMemo(
+    () => new Set(onlineUsers.map((u) => u.userId)),
+    [onlineUsers]
+  );
+
+  // Sync localStorage when in unauthenticated legacy mode
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (isServerBacked || typeof window === 'undefined') return;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(threads));
     } catch {
       // ignore quota errors
     }
-  }, [threads]);
+  }, [isServerBacked, threads]);
 
-  // Listen for cross-tab/cross-portal updates
+  // Listen for legacy cross-tab storage updates when not server-backed
   useEffect(() => {
+    if (isServerBacked) return;
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY && e.newValue) {
         try {
@@ -246,60 +474,15 @@ export default function AlumStudentChatSection({
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
-  }, []);
-
-  // Jump to or create a thread when initialTargetName is passed
-  useEffect(() => {
-    if (!initialTargetName) return;
-    const normalized = initialTargetName.trim().toLowerCase();
-    const existing = threads.find((t) =>
-      viewerRole === 'student'
-        ? t.alumniName.toLowerCase() === normalized
-        : t.studentName.toLowerCase() === normalized
-    );
-    if (existing) {
-      setActiveThreadId(existing.id);
-      return;
-    }
-
-    const counterpartAlum = ALUMNI_DATA.find((a) => a.fullName.toLowerCase() === normalized);
-    const counterpartStudent = STUDENTS_DATA.find((s) => s.fullName.toLowerCase() === normalized);
-
-    const newThread: ChatThread = {
-      id: `thread-${Date.now()}`,
-      studentName: viewerRole === 'student' ? viewerName : counterpartStudent?.fullName || initialTargetName,
-      studentMeta:
-        viewerRole === 'student'
-          ? 'ITER Student Builder'
-          : `${counterpartStudent?.branch || 'CSE'} • ${counterpartStudent?.academicYear || '4th Year'}`,
-      studentAvatar: getIndianAvatar(
-        viewerRole === 'student' ? viewerName : counterpartStudent?.fullName || initialTargetName
-      ),
-      alumniName: viewerRole === 'alumni' ? viewerName : counterpartAlum?.fullName || initialTargetName,
-      alumniMeta:
-        viewerRole === 'alumni'
-          ? 'ITER Alumni Mentor'
-          : `${counterpartAlum?.designation || 'Senior Engineer'} @ ${counterpartAlum?.company || 'Tech Partner'}`,
-      alumniAvatar: getIndianAvatar(
-        viewerRole === 'alumni' ? viewerName : counterpartAlum?.fullName || initialTargetName
-      ),
-      topic: 'Direct Mentorship & Project Collaboration',
-      online: true,
-      unreadForStudent: 0,
-      unreadForAlumni: 0,
-      messages: [],
-    };
-
-    setThreads((prev) => [newThread, ...prev]);
-    setActiveThreadId(newThread.id);
-  }, [initialTargetName, viewerName, viewerRole]);
+  }, [isServerBacked]);
 
   const filteredThreads = useMemo(() => {
     const q = search.trim().toLowerCase();
     return threads.filter((t) => {
       const peerName = viewerRole === 'student' ? t.alumniName : t.studentName;
       const peerMeta = viewerRole === 'student' ? t.alumniMeta : t.studentMeta;
-      const unread = viewerRole === 'student' ? t.unreadForStudent : t.unreadForAlumni;
+      const unread =
+        viewerRole === 'student' ? t.unreadForStudent : t.unreadForAlumni;
       if (filterMode === 'unread' && unread === 0) return false;
       if (!q) return true;
       return (
@@ -309,11 +492,6 @@ export default function AlumStudentChatSection({
       );
     });
   }, [threads, search, filterMode, viewerRole]);
-
-  const activeThread = useMemo(
-    () => threads.find((t) => t.id === activeThreadId) || threads[0],
-    [threads, activeThreadId]
-  );
 
   const selectThread = (id: string) => {
     setActiveThreadId(id);
@@ -328,19 +506,81 @@ export default function AlumStudentChatSection({
           : t
       )
     );
+
+    const target = threads.find((t) => t.id === id);
+    if (currentUserId && target && !target.isLocalDraft) {
+      void markThreadReadAction({ threadId: id });
+    }
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = draft.trim();
-    if (!text || !activeThread) return;
+    if (!text || !activeThread || sending) return;
 
+    const attachmentUrl = attachRepo
+      ? PROJECTS_DATA[0]?.githubUrl || 'https://github.com/iter-soa/alum-connect'
+      : undefined;
+
+    if (currentUserId) {
+      const peerUserId =
+        viewerRole === 'student'
+          ? activeThread.alumniUserId
+          : activeThread.studentUserId;
+
+      setSending(true);
+      try {
+        const res = await sendChatMessageAction({
+          threadId: activeThread.isLocalDraft ? undefined : activeThread.id,
+          recipientUserId: peerUserId,
+          topic: activeThread.topic,
+          text,
+          attachmentUrl: attachmentUrl ?? null,
+        });
+
+        if (res.ok) {
+          const { thread: savedThread, message: savedMessage, recipientUserId } =
+            res.data;
+          const mappedThread = mapDtoThreadToChatThread(savedThread);
+
+          setThreads((prev) => {
+            const hasExisting = prev.some(
+              (t) => t.id === activeThread.id || t.id === mappedThread.id
+            );
+            if (!hasExisting) return [mappedThread, ...prev];
+            return prev.map((t) =>
+              t.id === activeThread.id || t.id === mappedThread.id
+                ? mappedThread
+                : t
+            );
+          });
+          setActiveThreadId(mappedThread.id);
+          setDraft('');
+          setAttachRepo(false);
+
+          await publishMessage({
+            threadId: mappedThread.id,
+            message: savedMessage,
+            senderUserId: currentUserId,
+            recipientUserId,
+            topic: mappedThread.topic,
+          });
+          return;
+        }
+      } finally {
+        setSending(false);
+      }
+    }
+
+    // Fallback local mode (when unauthenticated or legacy demo)
+    idCounterRef.current += 1;
     const newMessage: ChatMessage = {
-      id: `m-${Date.now()}`,
+      id: `m-local-${idCounterRef.current}`,
       senderRole: viewerRole,
       senderName: viewerName,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      senderUserId: currentUserId,
+      time: formatMessageTime(),
       text,
-      attachment: attachRepo ? PROJECTS_DATA[0]?.githubUrl || 'https://github.com/iter-soa/alum-connect' : undefined,
+      attachment: attachmentUrl,
     };
 
     setThreads((prev) =>
@@ -348,8 +588,10 @@ export default function AlumStudentChatSection({
         t.id === activeThread.id
           ? {
               ...t,
-              unreadForStudent: viewerRole === 'alumni' ? t.unreadForStudent + 1 : 0,
-              unreadForAlumni: viewerRole === 'student' ? t.unreadForAlumni + 1 : 0,
+              unreadForStudent:
+                viewerRole === 'alumni' ? t.unreadForStudent + 1 : 0,
+              unreadForAlumni:
+                viewerRole === 'student' ? t.unreadForAlumni + 1 : 0,
               messages: [...t.messages, newMessage],
             }
           : t
@@ -364,7 +606,10 @@ export default function AlumStudentChatSection({
       ? ['Share Project Link', 'Request Referral', 'Book 15-Min Office Hours']
       : ['Ask for Live Demo', 'Offer Referral Slot', 'Schedule 15m Critique'];
 
-  const directoryPeers = useMemo(() => {
+  const directoryPeers = useMemo<ChatPeerOption[]>(() => {
+    if (availablePeers && availablePeers.length > 0) {
+      return availablePeers;
+    }
     if (viewerRole === 'student') {
       return ALUMNI_DATA.slice(0, 8).map((a) => ({
         name: a.fullName,
@@ -375,13 +620,15 @@ export default function AlumStudentChatSection({
       name: s.fullName,
       meta: `${s.branch} • ${s.academicYear}`,
     }));
-  }, [viewerRole]);
+  }, [availablePeers, viewerRole]);
 
-  const startNewChatWith = (peerName: string, peerMeta: string) => {
+  const startNewChatWith = (peer: ChatPeerOption) => {
     const existing = threads.find((t) =>
       viewerRole === 'student'
-        ? t.alumniName.toLowerCase() === peerName.toLowerCase()
-        : t.studentName.toLowerCase() === peerName.toLowerCase()
+        ? t.alumniName.toLowerCase() === peer.name.toLowerCase() ||
+          (peer.userId && t.alumniUserId === peer.userId)
+        : t.studentName.toLowerCase() === peer.name.toLowerCase() ||
+          (peer.userId && t.studentUserId === peer.userId)
     );
     if (existing) {
       selectThread(existing.id);
@@ -389,20 +636,13 @@ export default function AlumStudentChatSection({
       return;
     }
 
-    const newThread: ChatThread = {
-      id: `thread-${Date.now()}`,
-      studentName: viewerRole === 'student' ? viewerName : peerName,
-      studentMeta: viewerRole === 'student' ? 'ITER Student Builder' : peerMeta,
-      studentAvatar: getIndianAvatar(viewerRole === 'student' ? viewerName : peerName),
-      alumniName: viewerRole === 'alumni' ? viewerName : peerName,
-      alumniMeta: viewerRole === 'alumni' ? 'ITER Alumni Mentor' : peerMeta,
-      alumniAvatar: getIndianAvatar(viewerRole === 'alumni' ? viewerName : peerName),
-      topic: 'Direct Mentorship & Proof-of-Work Chat',
-      online: true,
-      unreadForStudent: 0,
-      unreadForAlumni: 0,
-      messages: [],
-    };
+    const newThread = buildThreadForTarget(
+      peer.name,
+      viewerRole,
+      viewerName,
+      currentUserId,
+      peer
+    );
     setThreads((prev) => [newThread, ...prev]);
     setActiveThreadId(newThread.id);
     setShowNewPicker(false);
@@ -423,19 +663,43 @@ export default function AlumStudentChatSection({
       ? activeThread.alumniAvatar
       : activeThread.studentAvatar
     : '';
+  const activePeerUserId = activeThread
+    ? viewerRole === 'student'
+      ? activeThread.alumniUserId
+      : activeThread.studentUserId
+    : undefined;
+  const activePeerOnline = Boolean(
+    activeThread &&
+      ((activePeerUserId && onlineUserIds.has(activePeerUserId)) ||
+        activeThread.online)
+  );
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
+        <div className="flex flex-wrap items-center gap-2.5">
           <h2 className="font-luma-title text-xl sm:text-2xl leading-snug tracking-tight text-zinc-900 dark:text-zinc-100">
             Alumni ↔ Student Direct Chat
           </h2>
+          {currentUserId && (
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${
+                connected
+                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-[#34D399]'
+                  : 'border-zinc-300 dark:border-zinc-700 text-zinc-500'
+              }`}
+            >
+              <Radio className="w-3 h-3" />
+              <span>
+                {mode === 'supabase' ? 'Supabase Realtime' : 'Cross-Tab Sync'}
+              </span>
+            </span>
+          )}
         </div>
         <button
           type="button"
           onClick={() => setShowNewPicker((v) => !v)}
-          className="inline-flex items-center gap-1.5 rounded-full bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950 px-4 py-2 text-xs font-semibold hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-1.5 rounded-full bg-[#0F172A] dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] text-white dark:text-[#041E24] px-4 py-2 text-xs font-semibold hover:opacity-90 transition-opacity"
         >
           <Plus className="w-3.5 h-3.5" />
           New {viewerRole === 'student' ? 'Alumni' : 'Student'} Chat
@@ -445,18 +709,23 @@ export default function AlumStudentChatSection({
       {showNewPicker && (
         <div className="rounded-2xl border border-[#E4E4E7] dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-2.5">
           <p className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
-            Start a direct thread with an ITER {viewerRole === 'student' ? 'Alumnus' : 'Student'}:
+            Start a direct thread with an ITER{' '}
+            {viewerRole === 'student' ? 'Alumnus' : 'Student'}:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {directoryPeers.map((peer) => (
               <button
-                key={peer.name}
+                key={peer.userId || peer.name}
                 type="button"
-                onClick={() => startNewChatWith(peer.name, peer.meta)}
-                className="text-left rounded-xl border border-[#E4E4E7] dark:border-slate-800 px-3 py-2 hover:border-blue-500 transition-colors"
+                onClick={() => startNewChatWith(peer)}
+                className="text-left rounded-xl border border-[#E4E4E7] dark:border-slate-800 px-3 py-2 hover:border-[#0891B2] dark:hover:border-[#22D3EE] transition-colors"
               >
-                <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">{peer.name}</p>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">{peer.meta}</p>
+                <p className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                  {peer.name}
+                </p>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                  {peer.meta}
+                </p>
               </button>
             ))}
           </div>
@@ -466,7 +735,11 @@ export default function AlumStudentChatSection({
       {callToast && (
         <div className="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/50 px-4 py-2.5 text-xs font-semibold text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
           <span>{callToast}</span>
-          <button type="button" onClick={() => setCallToast(null)} className="underline text-[11px]">
+          <button
+            type="button"
+            onClick={() => setCallToast(null)}
+            className="underline text-[11px]"
+          >
             Dismiss
           </button>
         </div>
@@ -487,32 +760,44 @@ export default function AlumStudentChatSection({
               />
             </div>
             <div className="flex items-center gap-1.5">
-              {(['all', 'unread'] as const).map((mode) => (
+              {(['all', 'unread'] as const).map((m) => (
                 <button
-                  key={mode}
+                  key={m}
                   type="button"
-                  onClick={() => setFilterMode(mode)}
+                  onClick={() => setFilterMode(m)}
                   className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold capitalize ${
-                    filterMode === mode
-                      ? 'bg-[#18181B] dark:bg-zinc-100 text-white dark:text-zinc-950'
+                    filterMode === m
+                      ? 'bg-[#0F172A] dark:bg-zinc-100 text-white dark:text-zinc-950'
                       : 'bg-zinc-100 dark:bg-slate-800 text-zinc-600 dark:text-zinc-300'
                   }`}
                 >
-                  {mode}
+                  {m}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto divide-y divide-[#F4F4F5] dark:divide-slate-800/70">
+          <div className="flex-1 overflow-y-auto overscroll-contain divide-y divide-[#F4F4F5] dark:divide-slate-800/70">
             {filteredThreads.length === 0 ? (
-              <div className="p-6 text-center text-xs text-zinc-500">No conversations match your filter.</div>
+              <div className="p-6 text-center text-xs text-zinc-500">
+                No conversations match your filter.
+              </div>
             ) : (
               filteredThreads.map((t) => {
-                const peerName = viewerRole === 'student' ? t.alumniName : t.studentName;
-                const peerMeta = viewerRole === 'student' ? t.alumniMeta : t.studentMeta;
-                const peerAvatar = viewerRole === 'student' ? t.alumniAvatar : t.studentAvatar;
-                const unread = viewerRole === 'student' ? t.unreadForStudent : t.unreadForAlumni;
+                const peerName =
+                  viewerRole === 'student' ? t.alumniName : t.studentName;
+                const peerMeta =
+                  viewerRole === 'student' ? t.alumniMeta : t.studentMeta;
+                const peerAvatar =
+                  viewerRole === 'student' ? t.alumniAvatar : t.studentAvatar;
+                const peerId =
+                  viewerRole === 'student' ? t.alumniUserId : t.studentUserId;
+                const isOnline =
+                  (peerId && onlineUserIds.has(peerId)) || t.online;
+                const unread =
+                  viewerRole === 'student'
+                    ? t.unreadForStudent
+                    : t.unreadForAlumni;
                 const last = t.messages[t.messages.length - 1];
 
                 return (
@@ -522,7 +807,7 @@ export default function AlumStudentChatSection({
                     onClick={() => selectThread(t.id)}
                     className={`w-full text-left p-3 flex items-start gap-2.5 transition-colors ${
                       activeThread?.id === t.id
-                        ? 'bg-blue-50/80 dark:bg-blue-950/30'
+                        ? 'bg-[#0891B2]/10 dark:bg-[#22D3EE]/10'
                         : 'hover:bg-zinc-50 dark:hover:bg-slate-900'
                     }`}
                   >
@@ -532,8 +817,11 @@ export default function AlumStudentChatSection({
                         alt={peerName}
                         className="h-9 w-9 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700"
                       />
-                      {t.online && (
-                        <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
+                      {isOnline && (
+                        <span
+                          title="Online"
+                          className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900"
+                        />
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -541,9 +829,11 @@ export default function AlumStudentChatSection({
                         <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                           {peerName}
                         </span>
-                        <span className="text-[10px] text-zinc-400 shrink-0">{last?.time || 'New'}</span>
+                        <span className="text-[10px] text-zinc-400 shrink-0">
+                          {last?.time || 'New'}
+                        </span>
                       </div>
-                      <p className="text-[10px] font-medium text-blue-600 dark:text-blue-400 truncate">
+                      <p className="text-[10px] font-medium text-[#0891B2] dark:text-[#22D3EE] truncate">
                         {peerMeta}
                       </p>
                       <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
@@ -551,7 +841,7 @@ export default function AlumStudentChatSection({
                       </p>
                     </div>
                     {unread > 0 && (
-                      <span className="h-4 min-w-4 px-1 rounded-full bg-blue-600 text-[10px] font-bold text-white flex items-center justify-center shrink-0">
+                      <span className="h-4 min-w-4 px-1 rounded-full bg-[#0891B2] dark:bg-[#22D3EE] text-[10px] font-bold text-white dark:text-[#041E24] flex items-center justify-center shrink-0">
                         {unread}
                       </span>
                     )}
@@ -568,17 +858,22 @@ export default function AlumStudentChatSection({
             <>
               <div className="px-4 py-3 border-b border-[#E4E4E7] dark:border-slate-800 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <img
-                    src={activePeerAvatar}
-                    alt={activePeerName}
-                    className="h-9 w-9 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700 shrink-0"
-                  />
+                  <div className="relative shrink-0">
+                    <img
+                      src={activePeerAvatar}
+                      alt={activePeerName}
+                      className="h-9 w-9 rounded-full object-cover border border-[#E4E4E7] dark:border-slate-700"
+                    />
+                    {activePeerOnline && (
+                      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900" />
+                    )}
+                  </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
                       <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
                         {activePeerName}
                       </span>
-                      <BadgeCheck className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                      <BadgeCheck className="w-3.5 h-3.5 text-[#0891B2] dark:text-[#22D3EE] shrink-0" />
                     </div>
                     <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
                       {activePeerMeta} • {activeThread.topic}
@@ -588,29 +883,40 @@ export default function AlumStudentChatSection({
                 <button
                   type="button"
                   onClick={() =>
-                    setCallToast(`15-min video call invite sent to ${activePeerName} via Alum Connect Meet.`)
+                    setCallToast(
+                      `15-min video call invite sent to ${activePeerName} via AlmaConnect Meet.`
+                    )
                   }
                   className="inline-flex items-center gap-1 rounded-lg border border-[#E4E4E7] dark:border-slate-700 px-2.5 py-1.5 text-[11px] font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-slate-800 shrink-0"
                 >
-                  <Video className="w-3.5 h-3.5 text-blue-600" /> 15m Call
+                  <Video className="w-3.5 h-3.5 text-[#0891B2] dark:text-[#22D3EE]" /> 15m Call
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FAFAFA]/70 dark:bg-slate-950/40">
+              <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-3 bg-[#FAFAFA]/70 dark:bg-slate-950/40">
                 {activeThread.messages.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center text-xs text-zinc-500 gap-2">
                     <MessageSquare className="w-6 h-6 text-zinc-400" />
-                    <p>Start the conversation with {activePeerName} using a quick-reply chip or message below.</p>
+                    <p>
+                      Start the conversation with {activePeerName} using a
+                      quick-reply chip or message below.
+                    </p>
                   </div>
                 ) : (
                   activeThread.messages.map((m) => {
-                    const isMine = m.senderRole === viewerRole;
+                    const isMine = currentUserId
+                      ? m.senderUserId === currentUserId ||
+                        m.senderRole === viewerRole
+                      : m.senderRole === viewerRole;
                     return (
-                      <div key={m.id} className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
+                      <div
+                        key={m.id}
+                        className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}
+                      >
                         <div
                           className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed ${
                             isMine
-                              ? 'bg-[#18181B] dark:bg-blue-600 text-white rounded-br-sm'
+                              ? 'bg-[#0F172A] dark:bg-[#0891B2] text-white rounded-br-sm'
                               : 'bg-white dark:bg-slate-800 border border-[#E4E4E7] dark:border-slate-700 text-zinc-900 dark:text-zinc-100 rounded-bl-sm'
                           }`}
                         >
@@ -621,15 +927,21 @@ export default function AlumStudentChatSection({
                               target="_blank"
                               rel="noreferrer"
                               className={`mt-2 flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[10px] font-mono underline ${
-                                isMine ? 'bg-white/10 text-white' : 'bg-zinc-100 dark:bg-slate-900 text-blue-600'
+                                isMine
+                                  ? 'bg-white/10 text-white'
+                                  : 'bg-zinc-100 dark:bg-slate-900 text-[#0891B2] dark:text-[#22D3EE]'
                               }`}
                             >
-                              <FolderGit2 className="w-3 h-3 shrink-0" /> {m.attachment}
+                              <FolderGit2 className="w-3 h-3 shrink-0" />{' '}
+                              {m.attachment}
                             </a>
                           )}
                         </div>
                         <span className="text-[10px] text-zinc-400 mt-1 px-1 flex items-center gap-1">
-                          {m.time} {isMine && <CheckCheck className="w-3 h-3 text-blue-500" />}
+                          {m.time}{' '}
+                          {isMine && (
+                            <CheckCheck className="w-3 h-3 text-[#0891B2] dark:text-[#22D3EE]" />
+                          )}
                         </span>
                       </div>
                     );
@@ -646,9 +958,13 @@ export default function AlumStudentChatSection({
                       onClick={() => {
                         if (chip === 'Share Project Link') {
                           setAttachRepo(true);
-                          setDraft('Here is my latest build & GitHub repo for review: ');
+                          setDraft(
+                            'Here is my latest build & GitHub repo for review: '
+                          );
                         } else {
-                          setDraft(`Hi ${activePeerName.split(' ')[0]}, I would like to ${chip.toLowerCase()}.`);
+                          setDraft(
+                            `Hi ${activePeerName.split(' ')[0]}, I would like to ${chip.toLowerCase()}.`
+                          );
                         }
                       }}
                       className="rounded-full border border-[#E4E4E7] dark:border-slate-700 bg-zinc-50 dark:bg-slate-800 hover:bg-zinc-100 dark:hover:bg-slate-700 px-2.5 py-0.5 text-[10px] font-medium text-zinc-700 dark:text-zinc-300"
@@ -657,7 +973,7 @@ export default function AlumStudentChatSection({
                     </button>
                   ))}
                   {attachRepo && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-2.5 py-0.5 text-[10px] font-semibold text-blue-700 dark:text-blue-300">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 px-2.5 py-0.5 text-[10px] font-semibold text-[#0891B2] dark:text-[#22D3EE]">
                       <FolderGit2 className="w-3 h-3" /> Repo Attached
                     </span>
                   )}
@@ -666,21 +982,32 @@ export default function AlumStudentChatSection({
                   <input
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        void handleSend();
+                      }
+                    }}
                     placeholder={`Message ${activePeerName}...`}
-                    className="flex-1 rounded-xl border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 outline-none focus:border-blue-500"
+                    className="flex-1 rounded-xl border border-[#E4E4E7] dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 outline-none focus:border-[#0891B2] dark:focus:border-[#22D3EE]"
                   />
                   <button
                     type="button"
-                    onClick={handleSend}
-                    className="inline-flex items-center gap-1 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 text-xs font-semibold transition-colors"
+                    disabled={sending || !draft.trim()}
+                    onClick={() => void handleSend()}
+                    className="inline-flex items-center gap-1 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] dark:bg-[linear-gradient(90deg,#22D3EE_0%,#34D399_100%)] text-white dark:text-[#041E24] disabled:opacity-50 px-3.5 py-2 text-xs font-semibold transition-all"
                   >
-                    <Send className="w-3.5 h-3.5" /> Send
+                    <Send className="w-3.5 h-3.5" /> {sending ? 'Sending' : 'Send'}
                   </button>
                 </div>
               </div>
             </>
-          ) : null}
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center p-6 text-center text-xs text-zinc-500 gap-2">
+              <MessageSquare className="w-7 h-7 text-zinc-400" />
+              <p>Select a thread or start a new conversation.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

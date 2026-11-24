@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useSyncExternalStore,
+} from 'react';
 
 export type ThemeMode = 'auto' | 'light' | 'dark';
 
@@ -17,6 +23,7 @@ const ThemeContext = createContext<ThemeContextValue>({
 });
 
 const STORAGE_KEY = 'iter-alum-theme';
+const THEME_CHANGE_EVENT = 'alma-theme-mode-change';
 
 function getIndiaTimeTheme(): 'light' | 'dark' {
   try {
@@ -29,7 +36,6 @@ function getIndiaTimeTheme(): 'light' | 'dark' {
     // Light mode from 6:00 AM to 5:59 PM IST; Dark mode from 6:00 PM to 5:59 AM IST
     return istHour >= 6 && istHour < 18 ? 'light' : 'dark';
   } catch {
-    // Fallback UTC+5:30 calculation
     const now = new Date();
     const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
     const istHour = Math.floor(((utcMinutes + 330) % 1440) / 60);
@@ -37,50 +43,74 @@ function getIndiaTimeTheme(): 'light' | 'dark' {
   }
 }
 
+function subscribeThemeMode(onStoreChange: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  const handler = () => onStoreChange();
+  window.addEventListener('storage', handler);
+  window.addEventListener(THEME_CHANGE_EVENT, handler);
+  return () => {
+    window.removeEventListener('storage', handler);
+    window.removeEventListener(THEME_CHANGE_EVENT, handler);
+  };
+}
+
+function getThemeModeSnapshot(): ThemeMode {
+  try {
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved === 'auto' || saved === 'light' || saved === 'dark') {
+      return saved;
+    }
+  } catch {
+    // ignore storage errors
+  }
+  return 'auto';
+}
+
+function getServerThemeMode(): ThemeMode {
+  return 'auto';
+}
+
+function subscribeIstTheme(onStoreChange: () => void): () => void {
+  if (typeof window === 'undefined') return () => {};
+  const interval = window.setInterval(onStoreChange, 60_000);
+  return () => window.clearInterval(interval);
+}
+
+function getServerIstTheme(): 'light' | 'dark' {
+  return 'light';
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>('auto');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+  const mode = useSyncExternalStore(
+    subscribeThemeMode,
+    getThemeModeSnapshot,
+    getServerThemeMode,
+  );
+  const istTheme = useSyncExternalStore(
+    subscribeIstTheme,
+    getIndiaTimeTheme,
+    getServerIstTheme,
+  );
+
+  const resolvedTheme: 'light' | 'dark' = mode === 'auto' ? istTheme : mode;
 
   useEffect(() => {
+    const root = document.documentElement;
+    if (resolvedTheme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [resolvedTheme]);
+
+  const setMode = useCallback((next: ThemeMode) => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
-      if (saved === 'auto' || saved === 'light' || saved === 'dark') {
-        setModeState(saved);
-      }
+      window.localStorage.setItem(STORAGE_KEY, next);
+      window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
     } catch {
       // ignore storage errors
     }
   }, []);
-
-  useEffect(() => {
-    const applyTheme = () => {
-      const nextResolved: 'light' | 'dark' =
-        mode === 'auto' ? getIndiaTimeTheme() : mode;
-      setResolvedTheme(nextResolved);
-
-      const root = document.documentElement;
-      if (nextResolved === 'dark') {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    };
-
-    applyTheme();
-    if (mode !== 'auto') return;
-
-    const interval = window.setInterval(applyTheme, 60_000);
-    return () => window.clearInterval(interval);
-  }, [mode]);
-
-  const setMode = (next: ThemeMode) => {
-    setModeState(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      // ignore storage errors
-    }
-  };
 
   return (
     <ThemeContext.Provider value={{ mode, resolvedTheme, setMode }}>
