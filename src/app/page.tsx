@@ -188,21 +188,6 @@ export default async function HomePage() {
               Explore Talent Nodes
             </Link>
           </div>
-
-          <div className="w-full max-w-2xl pt-2 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
-            <span className="font-medium shrink-0">
-              Alumni Reviewing &amp; Hiring From:
-            </span>
-            <div className="w-full sm:flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-              <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#0F172A] dark:text-white">
-                {[...HIRING_COMPANIES, ...HIRING_COMPANIES].map((c, i) => (
-                  <span key={`${c.name}-${i}`} className="shrink-0">
-                    {c.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="rounded-2xl border border-[rgba(100,116,139,0.22)] dark:border-[rgba(226,232,240,0.18)] bg-white/65 dark:bg-[#14171E]/68 backdrop-blur-xl p-2 grid grid-cols-1 md:grid-cols-3 gap-2 shadow-2xs">
@@ -232,6 +217,21 @@ export default async function HomePage() {
               />
             </Link>
           ))}
+        </div>
+
+        <div className="w-full flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs text-[#475569] dark:text-[#94A3B8]">
+          <span className="font-medium shrink-0">
+            Alumni Reviewing &amp; Hiring From:
+          </span>
+          <div className="w-full sm:flex-1 min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="animate-marquee-left gap-8 items-center text-xs sm:text-sm font-semibold text-[#0F172A] dark:text-white">
+              {[...HIRING_COMPANIES, ...HIRING_COMPANIES].map((c, i) => (
+                <span key={`${c.name}-${i}`} className="shrink-0">
+                  {c.name}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
 
